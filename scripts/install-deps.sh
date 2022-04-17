@@ -2,7 +2,9 @@
 
 set -e
 
-apt install -y \
+apt-get update
+
+apt-get install -y \
   libasound2-dev \
   python3-dev \
   python3-pip
