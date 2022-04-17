@@ -18,6 +18,7 @@ pip install --upgrade pip
 pip install \
     pygame \
     pymunk \
+    pynput \
     simpleaudio \
     sphinx \
     sphinxcontrib-mermaid \
