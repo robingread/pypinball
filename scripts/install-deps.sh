@@ -2,6 +2,6 @@
 
 set -e
 
-sudo apt install -y \
+apt install -y \
   libasound2-dev \
   python3-dev
