@@ -10,4 +10,8 @@ source $DST_DIR/bin/activate
 pip install --upgrade pip
 pip install \
     pygame \
-    pymunk
+    pymunk \
+    simpleaudio \
+    sphinx \
+    sphinxcontrib-mermaid \
+    sphinx_rtd_theme
