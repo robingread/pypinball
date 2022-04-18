@@ -1,5 +1,6 @@
 stages:
   - build_image
+  - test
   - build_docs
 
 build docker image:
@@ -11,6 +12,16 @@ build docker image:
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
+
+run unit tests:
+  stage: test
+  image: $CI_REGISTRY_IMAGE
+  needs:
+    - build docker image
+  script:
+    - ./scripts/setup-venv.sh
+    - source venv/bin/activate
+    - ./scripts/run-tests.sh
 
 docs:
   stage: build_docs
