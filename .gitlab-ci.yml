@@ -13,6 +13,16 @@ build docker image:
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
 
+check black formatting:
+  stage: test
+  image: $CI_REGISTRY_IMAGE
+  needs:
+    - build docker image
+  script:
+    - ./scripts/setup-venv.sh
+    - source venv/bin/activate
+    - ./scripts/black-formatter.sh
+
 run unit tests:
   stage: test
   image: $CI_REGISTRY_IMAGE
