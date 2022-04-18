@@ -19,6 +19,7 @@ pip install \
     pygame \
     pymunk \
     pynput \
+    pytest \
     simpleaudio \
     sphinx \
     sphinxcontrib-mermaid \
