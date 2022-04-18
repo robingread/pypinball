@@ -16,6 +16,7 @@ virtualenv --clear --python /usr/bin/python3 $DST_DIR
 source $DST_DIR/bin/activate
 pip install --upgrade pip
 pip install \
+    black \
     pygame \
     pymunk \
     pynput \
