@@ -16,3 +16,5 @@ pip uninstall -y -q pypinball
 ./scripts/black-formatter.sh
 ./scripts/run-tests.sh
 ./scripts/build-docs.sh
+
+echo "Test suite has PASSED!"
