@@ -12,7 +12,7 @@ class KeyboardInput(InputInterface):
     def __init__(self):
 
         # We import here to avoid the unit tests from failing on Gitlab CI.
-        logging.debug('Importing the pynput package')
+        logging.debug("Importing the pynput package")
         import pynput
 
         listener = pynput.keyboard.Listener(
