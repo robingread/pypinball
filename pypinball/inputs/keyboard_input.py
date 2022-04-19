@@ -1,6 +1,6 @@
 import logging
-from .buttons import Buttons
 from .input_interface import InputInterface
+from .. import domain
 
 
 class KeyboardInput(InputInterface):
@@ -61,9 +61,9 @@ class KeyboardInput(InputInterface):
     def get_input_state(self) -> dict:
 
         ret = {
-            Buttons.CENTER: self._center_button_state,
-            Buttons.LEFT: self._left_button_state,
-            Buttons.RIGHT: self._right_button_state,
+            domain.Buttons.CENTER: self._center_button_state,
+            domain.Buttons.LEFT: self._left_button_state,
+            domain.Buttons.RIGHT: self._right_button_state,
         }
 
         self._center_button_state = False
