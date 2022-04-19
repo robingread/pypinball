@@ -1,4 +1,5 @@
 import unittest
+import pypinball
 import pypinball.audio
 import pypinball.inputs
 import pypinball.utils
@@ -38,13 +39,13 @@ class TestInputToAudioMapping(unittest.TestCase):
         Test that a single input button pressed maps to one audio Sound type to be played.
         """
         input_state = {
-            pypinball.inputs.Buttons.LEFT: True,
-            pypinball.inputs.Buttons.RIGHT: False,
+            pypinball.domain.Buttons.LEFT: True,
+            pypinball.domain.Buttons.RIGHT: False,
         }
 
         button_sound_map = {
-            pypinball.inputs.Buttons.LEFT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
-            pypinball.inputs.Buttons.RIGHT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
+            pypinball.domain.Buttons.LEFT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
+            pypinball.domain.Buttons.RIGHT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
         }
 
         exp = [pypinball.audio.Sounds.FLIPPER_ACTIVATE]
@@ -58,13 +59,13 @@ class TestInputToAudioMapping(unittest.TestCase):
         Test that two input buttons pressed maps to two audio Sound types to be played.
         """
         input_state = {
-            pypinball.inputs.Buttons.LEFT: True,
-            pypinball.inputs.Buttons.RIGHT: True,
+            pypinball.domain.Buttons.LEFT: True,
+            pypinball.domain.Buttons.RIGHT: True,
         }
 
         button_sound_map = {
-            pypinball.inputs.Buttons.LEFT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
-            pypinball.inputs.Buttons.RIGHT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
+            pypinball.domain.Buttons.LEFT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
+            pypinball.domain.Buttons.RIGHT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
         }
 
         exp = [pypinball.audio.Sounds.FLIPPER_ACTIVATE] * 2
