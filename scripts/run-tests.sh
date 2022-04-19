@@ -3,4 +3,4 @@
 set -e
 
 pip install .
-pytest test
+pytest -q test
