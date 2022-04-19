@@ -3,7 +3,6 @@ from .display_interface import DisplayInterface
 
 
 class PyGameDisplay(DisplayInterface):
-
     def __init__(self, width: int, height: int):
         pygame.init()
         self._screen = pygame.display.set_mode(size=(width, height))
@@ -14,7 +13,9 @@ class PyGameDisplay(DisplayInterface):
 
     def draw_ball(self, pos: list, radius: int) -> None:
         colour = (0, 2, 128)
-        pygame.draw.circle(surface=self._screen, center=pos, radius=radius, color=colour)
+        pygame.draw.circle(
+            surface=self._screen, center=pos, radius=radius, color=colour
+        )
 
     def update(self) -> None:
         pygame.display.flip()

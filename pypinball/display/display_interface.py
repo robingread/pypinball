@@ -2,7 +2,6 @@ import typing
 
 
 class DisplayInterface(typing.Protocol):
-
     def clear(self) -> None:
         ...
 
