@@ -1,7 +1,7 @@
 import logging
 import typing
 from .audio import Sounds
-from .inputs import Buttons
+from .domain import Buttons
 
 
 INPUT_STATE = typing.Dict[Buttons, bool]
