@@ -20,5 +20,9 @@ class Flipper:
         return self._angle
 
     @property
+    def config(self) -> FlipperConfig:
+        return self._config
+
+    @property
     def uid(self) -> int:
         return self._uid
