@@ -2,5 +2,5 @@
 
 set -e
 
-pip install .
+pip install -q .
 pytest -q test
