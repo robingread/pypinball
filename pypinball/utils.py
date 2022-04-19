@@ -32,8 +32,9 @@ def map_button_state_to_sound_type(
     input_state: INPUT_STATE, sound_map: BUTTON_SOUND_MAP
 ) -> list:
     """
-    Map the input ``Button`` state to a specified ``Sound`` type. This method checks the state of the inputs and
-    specifies which sound types should be played as a result.
+    Map the input ``Button`` state to a specified ``Sound`` type. This method
+    checks the state of the inputs and specifies which sound types should be
+    played as a result.
 
     Args:
         input_state (dict): Dictionary where keys are ``Button`` enums and the value is a ``bool``.
