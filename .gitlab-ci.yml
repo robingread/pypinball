@@ -1,7 +1,6 @@
 stages:
   - build_image
   - test
-  - build_docs
 
 build docker image:
   stage: build_image
@@ -13,16 +12,6 @@ build docker image:
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
 
-check black formatting:
-  stage: test
-  image: $CI_REGISTRY_IMAGE
-  needs:
-    - build docker image
-  script:
-    - ./scripts/setup-venv.sh
-    - source venv/bin/activate
-    - ./scripts/black-formatter.sh
-
 run unit tests:
   stage: test
   image: $CI_REGISTRY_IMAGE
@@ -31,14 +20,4 @@ run unit tests:
   script:
     - ./scripts/setup-venv.sh
     - source venv/bin/activate
-    - ./scripts/run-tests.sh
-
-docs:
-  stage: build_docs
-  image: $CI_REGISTRY_IMAGE
-  needs:
-    - build docker image
-  script:
-    - ./scripts/setup-venv.sh
-    - source venv/bin/activate
-    - ./scripts/build-docs.sh
+    - ./scripts/ci-test.sh
