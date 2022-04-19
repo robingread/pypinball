@@ -47,5 +47,5 @@ class Ball:
         """
         self._position_history.insert(0, self._position)
         if len(self._position_history) > self._history:
-            self._position_history = self.position_history[:self._history]
+            self._position_history = self.position_history[: self._history]
         self._position = position

@@ -1,1 +1,1 @@
-from .ball import  Ball
+from .ball import Ball
