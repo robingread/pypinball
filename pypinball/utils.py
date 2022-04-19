@@ -2,10 +2,30 @@ import logging
 import typing
 from .audio import Sounds
 from .domain import Buttons
+from .physics import PhysicsInterface
 
 
 INPUT_STATE = typing.Dict[Buttons, bool]
 BUTTON_SOUND_MAP = typing.Dict[Buttons, Sounds]
+
+
+def actuate_flippers(input_state: INPUT_STATE, physics: PhysicsInterface) -> None:
+    """
+    Actuate flippers in the Physics model based upon the button input state.
+
+    Args:
+        input_state (dict): Dictionary where keys are ``Button`` enums and the value is a ``bool``.
+        physics (PhysicsInterface): Concrete physics interface.
+
+    Returns:
+        None
+    """
+    for button, state in input_state.items():
+        if button == Buttons.CENTER:
+            continue
+        elif not state:
+            continue
+        physics.actuate_flippers(actuate_button=button)
 
 
 def map_button_state_to_sound_type(
