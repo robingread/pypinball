@@ -24,6 +24,12 @@ class FlipperConfig:
 
 
 class Flipper:
+    """
+    Flipper class used to store the (static) configuration data as well as
+    the dynamic data which changes as Flippers are actuated via the Physics
+    implementation.
+    """
+
     def __init__(self, uid: int, config: FlipperConfig):
         self._uid = uid
         self._angle = config.min_angle
