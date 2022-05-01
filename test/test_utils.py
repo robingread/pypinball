@@ -23,8 +23,9 @@ class FakePhysicsInterface(pypinball.physics.PhysicsInterface):
     def __init__(self):
         self.actuation_commands = list()
 
-    def actuate_flippers(self, actuate_button: pypinball.domain.Buttons) -> None:
-        self.actuation_commands.append(actuate_button)
+    def actuate_flipper(self, flipper: pypinball.domain.Flipper) -> bool:
+        self.actuation_commands.append(flipper.config.actuation_button)
+        return True
 
 
 class TestInputToAudioMapping(unittest.TestCase):
@@ -124,6 +125,33 @@ class TestActuateFlippers(unittest.TestCase):
     def setUp(self) -> None:
         self.physics = FakePhysicsInterface()
 
+    def _get_flipper_config(self) -> list:
+        ret = [
+            pypinball.domain.Flipper(
+                uid=0,
+                config=pypinball.domain.FlipperConfig(
+                    position=(0, 1),
+                    rest_angle=0.0,
+                    length=0.1,
+                    actuation_direction=1,
+                    actuation_angle=1.0,
+                    actuation_button=pypinball.domain.Buttons.LEFT,
+                ),
+            ),
+            pypinball.domain.Flipper(
+                uid=1,
+                config=pypinball.domain.FlipperConfig(
+                    position=(1, 1),
+                    rest_angle=0.0,
+                    length=0.1,
+                    actuation_direction=1,
+                    actuation_angle=-1.0,
+                    actuation_button=pypinball.domain.Buttons.RIGHT,
+                ),
+            ),
+        ]
+        return ret
+
     def _get_input_state(
         self, center_button=False, left_button=False, right_button=False
     ) -> dict:
@@ -135,7 +163,10 @@ class TestActuateFlippers(unittest.TestCase):
 
     def test_actuate_flipper_no_buttons(self):
         input_state = self._get_input_state(left_button=False, right_button=False)
-        pypinball.utils.actuate_flippers(input_state, self.physics)
+        flippers = self._get_flipper_config()
+        pypinball.utils.actuate_flippers(
+            input_state=input_state, flippers=flippers, physics=self.physics
+        )
 
         res = self.physics.actuation_commands
         exp = list()
@@ -144,7 +175,10 @@ class TestActuateFlippers(unittest.TestCase):
 
     def test_actuate_left_flipper(self):
         input_state = self._get_input_state(left_button=True, right_button=False)
-        pypinball.utils.actuate_flippers(input_state, self.physics)
+        flippers = self._get_flipper_config()
+        pypinball.utils.actuate_flippers(
+            input_state=input_state, flippers=flippers, physics=self.physics
+        )
 
         res = self.physics.actuation_commands
         exp = [pypinball.domain.Buttons.LEFT]
@@ -153,7 +187,10 @@ class TestActuateFlippers(unittest.TestCase):
 
     def test_actuate_right_flipper(self):
         input_state = self._get_input_state(left_button=False, right_button=True)
-        pypinball.utils.actuate_flippers(input_state, self.physics)
+        flippers = self._get_flipper_config()
+        pypinball.utils.actuate_flippers(
+            input_state=input_state, flippers=flippers, physics=self.physics
+        )
 
         res = self.physics.actuation_commands
         exp = [pypinball.domain.Buttons.RIGHT]
@@ -162,7 +199,10 @@ class TestActuateFlippers(unittest.TestCase):
 
     def test_actuate_both_flippers(self):
         input_state = self._get_input_state(left_button=True, right_button=True)
-        pypinball.utils.actuate_flippers(input_state, self.physics)
+        flippers = self._get_flipper_config()
+        pypinball.utils.actuate_flippers(
+            input_state=input_state, flippers=flippers, physics=self.physics
+        )
 
         res = self.physics.actuation_commands
         exp = [pypinball.domain.Buttons.LEFT, pypinball.domain.Buttons.RIGHT]
@@ -171,7 +211,10 @@ class TestActuateFlippers(unittest.TestCase):
 
     def test_actuate_with_center_button_pressed(self):
         input_state = self._get_input_state(center_button=True)
-        pypinball.utils.actuate_flippers(input_state, self.physics)
+        flippers = self._get_flipper_config()
+        pypinball.utils.actuate_flippers(
+            input_state=input_state, flippers=flippers, physics=self.physics
+        )
 
         res = self.physics.actuation_commands
         exp = list()
