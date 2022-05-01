@@ -2,6 +2,13 @@ import logging
 from .input_interface import InputInterface
 from .. import domain
 
+try:
+    import pynput
+except ImportError:
+    logging.error(
+        "Unable to import the pynput module. Beware, things may not work properly when it comes to reading keyboard input!"
+    )
+
 
 class KeyboardInput(InputInterface):
     """
@@ -10,10 +17,6 @@ class KeyboardInput(InputInterface):
     """
 
     def __init__(self):
-
-        # We import here to avoid the unit tests from failing on Gitlab CI.
-        logging.debug("Importing the pynput package")
-        import pynput
 
         listener = pynput.keyboard.Listener(
             on_press=self._on_press, on_release=self._on_release
