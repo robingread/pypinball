@@ -32,7 +32,7 @@ class Flipper:
 
     def __init__(self, uid: int, config: FlipperConfig):
         self._uid = uid
-        self._angle = config.min_angle
+        self._angle = config.rest_angle
         self._config = config
 
     @property
