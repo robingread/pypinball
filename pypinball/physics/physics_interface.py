@@ -3,6 +3,9 @@ from .. import domain
 
 
 class PhysicsInterface(typing.Protocol):
+    def actuate_flipper(self, flipper: domain.Flipper) -> bool:
+        ...
+
     def actuate_flippers(self, actuate_button: domain.Buttons) -> None:
         ...
 
