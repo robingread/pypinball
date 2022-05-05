@@ -1,12 +1,13 @@
 import logging
 import typing
-from .audio import Sounds
+from .audio import AudioInterface, Sounds
 from .domain import Buttons, Flipper
 from .physics import PhysicsInterface
 
 
 INPUT_STATE = typing.Dict[Buttons, bool]
 BUTTON_SOUND_MAP = typing.Dict[Buttons, Sounds]
+SOUND_FILE_MAP = typing.Dict[Sounds, str]
 
 
 def actuate_flippers(
@@ -52,6 +53,33 @@ def launch_new_ball(
     elif not input_state[Buttons.CENTER]:
         return False
     return True
+
+
+def handle_input_button_audio(
+    input_state: INPUT_STATE,
+    audio_interface: AudioInterface,
+    button_to_sound_map: BUTTON_SOUND_MAP,
+    sound_to_file_map: SOUND_FILE_MAP,
+) -> None:
+    """
+    Play audio files based on input button state.
+
+    Args:
+        input_state (dict): Input button state.
+        audio_interface (AudioInterface): Audio interface for playing audio.
+        button_to_sound_map (dict): Mapping buttons to game sounds.
+        sound_to_file_map (dict): Mapping game sounds to audio file paths.
+
+    Returns:
+        None
+    """
+    sounds = map_button_state_to_sound_type(
+        input_state=input_state, sound_map=button_to_sound_map
+    )
+
+    for sound in sounds:
+        file_path = sound_to_file_map[sound]
+        audio_interface.play_sound_file(file_path)
 
 
 def map_button_state_to_sound_type(
