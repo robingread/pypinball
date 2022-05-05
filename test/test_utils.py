@@ -85,6 +85,68 @@ class TestInputToAudioMapping(unittest.TestCase):
         self.assertListEqual(ret, exp)
 
 
+class TestHandleInputButtonAudio(unittest.TestCase):
+    """
+    Test the utils.handle_input_button_audio() method.
+    """
+    def setUp(self) -> None:
+        self.audio = MocAudioInterface()
+
+        self.input_state = {
+            pypinball.domain.Buttons.RIGHT: True,
+            pypinball.domain.Buttons.LEFT: False,
+            pypinball.domain.Buttons.CENTER: False,
+        }
+
+        self.button_to_sounds = {
+            pypinball.domain.Buttons.LEFT: pypinball.audio.Sounds.GAME_START,
+            pypinball.domain.Buttons.RIGHT: pypinball.audio.Sounds.GAME_OVER,
+        }
+
+        self.sounds_to_file = {
+            pypinball.audio.Sounds.GAME_START: pypinball.resources.get_audio_resource_path(
+                filename="Bounce1.wav"
+            ),
+            pypinball.audio.Sounds.GAME_OVER: pypinball.resources.get_audio_resource_path(
+                filename="Bounce4.wav"
+            ),
+        }
+
+    def test_button_with_mapped_sound(self):
+        input_state = {
+            pypinball.domain.Buttons.RIGHT: True,
+            pypinball.domain.Buttons.LEFT: False,
+            pypinball.domain.Buttons.CENTER: False,
+        }
+
+        pypinball.utils.handle_input_button_audio(
+            input_state=input_state,
+            audio_interface=self.audio,
+            button_to_sound_map=self.button_to_sounds,
+            sound_to_file_map=self.sounds_to_file,
+        )
+
+        exp = [pypinball.resources.get_audio_resource_path(filename="Bounce4.wav")]
+        self.assertListEqual(self.audio.commands, exp)
+
+    def test_button_with_unmapped_sound(self):
+        input_state = {
+            pypinball.domain.Buttons.RIGHT: False,
+            pypinball.domain.Buttons.LEFT: False,
+            pypinball.domain.Buttons.CENTER: True,
+        }
+
+        pypinball.utils.handle_input_button_audio(
+            input_state=input_state,
+            audio_interface=self.audio,
+            button_to_sound_map=self.button_to_sounds,
+            sound_to_file_map=self.sounds_to_file,
+        )
+
+        exp = list()
+        self.assertListEqual(self.audio.commands, exp)
+
+
 class TestLaunchNewBall(unittest.TestCase):
     def setUp(self) -> None:
         self.physics = None
