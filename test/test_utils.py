@@ -6,7 +6,7 @@ import pypinball.physics
 import pypinball.utils
 
 
-class FakeAudioInterface(pypinball.audio.AudioInterface):
+class MocAudioInterface(pypinball.audio.AudioInterface):
     """
     Define a Fake Audio Interface for testing purposes.
     """
@@ -34,7 +34,7 @@ class TestInputToAudioMapping(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = FakeAudioInterface()
+        self.audio = MocAudioInterface()
 
     def test_fake_audio_interface_play_audio_file(self):
         """
