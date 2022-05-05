@@ -13,7 +13,7 @@ if [ -d pypinball.egg-info ]; then
 fi
 
 pip uninstall -y -q pypinball
-./scripts/black-formatter.sh
+./scripts/check-formatting.sh
 ./scripts/run-tests.sh
 ./scripts/build-docs.sh
 
