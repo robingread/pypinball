@@ -89,6 +89,7 @@ class TestHandleInputButtonAudio(unittest.TestCase):
     """
     Test the utils.handle_input_button_audio() method.
     """
+
     def setUp(self) -> None:
         self.audio = MocAudioInterface()
 
