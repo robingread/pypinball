@@ -1,4 +1,6 @@
 import dataclasses
+import typing
+
 from .buttons import Buttons
 
 
@@ -46,3 +48,13 @@ class Flipper:
     @property
     def uid(self) -> int:
         return self._uid
+
+
+@dataclasses.dataclass
+class FlipperState:
+    """
+    State of the flipper, including the position and angle in the world frame.
+    """
+
+    angle: float
+    position: typing.Tuple[float, float]
