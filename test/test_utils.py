@@ -194,7 +194,7 @@ class TestActuateFlippers(unittest.TestCase):
                 uid=0,
                 config=pypinball.domain.FlipperConfig(
                     position=(0, 1),
-                    rest_angle=0.0,
+                    angle=0.0,
                     length=0.1,
                     actuation_direction=1,
                     actuation_angle=1.0,
@@ -205,7 +205,7 @@ class TestActuateFlippers(unittest.TestCase):
                 uid=1,
                 config=pypinball.domain.FlipperConfig(
                     position=(1, 1),
-                    rest_angle=0.0,
+                    angle=0.0,
                     length=0.1,
                     actuation_direction=1,
                     actuation_angle=-1.0,

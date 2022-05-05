@@ -7,17 +7,17 @@ class FlipperConfig:
     """
     Flipper configuration dataclass. Flippers have the following properties:
 
-    - position (tuple): Position in the format (x, y).
+    - position (tuple): Position in the format (x, y) in the world coordinates.
+    - angle (float): Angle of the flipper in the world coordinates.
     - length (float): Length of the flipper arm.
-    - rest_angle (float):
     - actuation_angle (float):
     - actuation_button (Buttons): Button that actuates the flipper.
     - actuation_direction (int): Direction the flipper actuates in. 1 corresponds to counter clockwise and -1 clockwise.
     """
 
     position: tuple
+    angle: float
     length: float
-    rest_angle: float
     actuation_angle: float
     actuation_button: Buttons
     actuation_direction: int
@@ -32,7 +32,7 @@ class Flipper:
 
     def __init__(self, uid: int, config: FlipperConfig):
         self._uid = uid
-        self._angle = config.rest_angle
+        self._angle = config.angle
         self._config = config
 
     @property
