@@ -7,7 +7,7 @@ if [ -d build/ ]; then
   rm -rf build/
 fi
 
-if [ -d *.egg-info ]; then
+if [ -d pypinball.egg-info ]; then
   echo "Removing any/all *.egg-info directories"
   rm -rf *.egg-info
 fi
