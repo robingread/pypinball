@@ -14,6 +14,14 @@ To develop, setup the virtualenv:
 ./scripts/setup-venv.sh
 ```
 
+## Testing
+
+To run the testing suite:
+
+```bash
+./scripts/ci-test.sh
+```
+
 ## Documentation
 
 To build the documentation, run:
