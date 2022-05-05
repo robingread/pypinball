@@ -15,5 +15,17 @@ class PhysicsInterface(typing.Protocol):
     def add_flipper(self, flipper: domain.Flipper) -> bool:
         ...
 
+    def get_flipper_state(self, uid: int) -> domain.FlipperState:
+        """
+        Get the state of a flipper.
+
+        Args:
+            uid (int): ID of the flipper.
+
+        Returns:
+            FlipperState: State of the flipper.
+        """
+        ...
+
     def update(self) -> None:
         ...
