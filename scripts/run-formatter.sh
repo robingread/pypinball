@@ -2,4 +2,4 @@
 
 set -e
 
-black -v pypinball test
+black pypinball test
