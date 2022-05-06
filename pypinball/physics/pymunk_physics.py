@@ -150,6 +150,11 @@ class PymunkPhysics(PhysicsInterface):
         self._flippers[flipper.uid] = entity
         return True
 
+    def get_ball_state(self, uid: int) -> domain.BallState:
+        if uid not in self._balls.keys():
+            raise KeyError(f"Unknown ball id: {uid}")
+        return domain.BallState(uid=uid, position=self._balls[uid].position)
+
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         if uid not in self._flippers.keys():
             raise KeyError(f"Unknown flipper id: {uid}")
