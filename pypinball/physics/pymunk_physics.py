@@ -12,6 +12,10 @@ class PymunkEntity:
     body: pymunk.Body
     shape: pymunk.Shape
 
+    @property
+    def position(self) -> typing.Tuple[float, float]:
+        return self.body.position
+
 
 @dataclasses.dataclass
 class PymunkFlipper:
@@ -54,8 +58,8 @@ class PymunkFlipper:
 
 
 def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
-    mass = 1
-    radius = 25
+    mass = 0.1
+    radius = 15
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass, inertia)
     body.position = ball.position
@@ -112,7 +116,7 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
 
 class PymunkPhysics(PhysicsInterface):
     def __init__(self):
-        self._balls = list()
+        self._balls = dict()
         self._bumpers = list()
         self._flippers = dict()
 
@@ -126,10 +130,14 @@ class PymunkPhysics(PhysicsInterface):
         except KeyError:
             return False
 
-    def add_ball(self, ball: domain.Ball) -> None:
+    def add_ball(self, ball: domain.Ball) -> bool:
+        if ball.uid in self._balls.keys():
+            logging.warning(f"Unable to add ball. ID is already registered: {ball.uid}")
+            return False
         entity = create_pymunk_ball(ball=ball)
         self._space.add(entity.body, entity.shape)
-        self._balls.append(entity)
+        self._balls[entity.id] = entity
+        return True
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
         if flipper.uid in self._flippers.keys():
