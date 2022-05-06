@@ -1,3 +1,4 @@
+import dataclasses
 import typing
 
 
@@ -49,3 +50,9 @@ class Ball:
         if len(self._position_history) > self._history:
             self._position_history = self.position_history[: self._history]
         self._position = position
+
+
+@dataclasses.dataclass
+class BallState:
+    uid: int
+    position: typing.Tuple[float, float]
