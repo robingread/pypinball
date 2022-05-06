@@ -9,10 +9,15 @@ class Ball:
     defined by the ``history`` parameter passed during initialisation.
     """
 
-    def __init__(self, position: typing.Tuple[float, float], history=15):
+    def __init__(self, uid: int, position: typing.Tuple[float, float], history=15):
+        self._uid = uid
         self._history = history
         self._position = position
         self._position_history = list()
+
+    @property
+    def uid(self) -> int:
+        return self._uid
 
     @property
     def position(self) -> typing.Tuple[float, float]:
