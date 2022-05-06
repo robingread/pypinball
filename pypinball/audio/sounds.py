@@ -11,3 +11,8 @@ class Sounds(enum.Enum):
     FLIPPER_BALL_BOUNCE = enum.auto()
     GAME_START = enum.auto()
     GAME_OVER = enum.auto()
+
+    COLLISION_BALL_BALL = enum.auto()
+    COLLISION_BALL_BUMPER = enum.auto()
+    COLLISION_BALL_FLIPPER = enum.auto()
+    COLLISION_BALL_WALL = enum.auto()
