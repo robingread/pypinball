@@ -1,3 +1,4 @@
+import numpy
 import pypinball
 import unittest
 
@@ -72,3 +73,35 @@ class TestBallLaunch(unittest.TestCase):
 
         new_state = self.physics.get_ball_state(uid=self.ball.uid)
         self.assertLessEqual(new_state.position[1], initial_state.position[1])
+
+
+class TestGravity(unittest.TestCase):
+    """
+    Test that balls behave under gravity as expected.
+    """
+
+    def setUp(self) -> None:
+        self.physics = pypinball.physics.PymunkPhysics()
+
+    def test_default_gravity(self):
+        """
+        Test that the default value for the gravity vector is (0, 1), and that
+        the ball indeed falls under gravity in the expected direction.
+        """
+        ball = pypinball.domain.Ball(uid=0, position=(100, 100))
+        self.physics.add_ball(ball=ball)
+        initial_state = self.physics.get_ball_state(uid=ball.uid)
+
+        for _ in range(10):
+            self.physics.update()
+
+        new_state = self.physics.get_ball_state(uid=ball.uid)
+
+        a = numpy.array(initial_state.position)
+        b = numpy.array(new_state.position)
+        diff = b - a
+        motion_unit_vec = diff / numpy.linalg.norm(diff)
+
+        exp_unit_vec = numpy.array([0.0, 1.0])
+
+        self.assertTrue(numpy.allclose(motion_unit_vec, exp_unit_vec))
