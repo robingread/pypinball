@@ -35,7 +35,7 @@ class PymunkFlipper:
     flipper_body: pymunk.Body
     flipper_shape: pymunk.Poly
     joint_body: pymunk.Body
-    joint: pymunk.PinJoint
+    joint: pymunk.PivotJoint
     joint_limit: pymunk.RotaryLimitJoint
     spring: pymunk.DampedRotarySpring
 
