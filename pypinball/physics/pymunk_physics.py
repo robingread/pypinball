@@ -67,7 +67,7 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     body.position = ball.position
     shape = pymunk.Circle(body, radius, (0, 0))
     shape.elasticity = 0.95
-    return PymunkEntity(id=0, body=body, shape=shape)
+    return PymunkEntity(id=ball.uid, body=body, shape=shape)
 
 
 def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
