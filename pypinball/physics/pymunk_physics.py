@@ -2,6 +2,7 @@ import dataclasses
 import logging
 import typing
 import pymunk
+import random
 from .physics_interface import PhysicsInterface
 from .. import domain
 
@@ -15,6 +16,16 @@ class PymunkEntity:
     @property
     def position(self) -> typing.Tuple[float, float]:
         return self.body.position
+
+    def add_to_space(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
+
+    def apply_impulse(self, direction: typing.Tuple[float, float]) -> None:
+        print("Applying impulse on ball")
+        force = random.randint(75_000, 120_000)
+        force_vec = pymunk.Vec2d(x=direction[0], y=direction[1]) * force
+        position = self.body.position
+        self.body.apply_force_at_world_point(force=force_vec, point=position)
 
 
 @dataclasses.dataclass
@@ -65,7 +76,7 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     body.position = ball.position
     shape = pymunk.Circle(body, radius, (0, 0))
     shape.elasticity = 0.95
-    return PymunkEntity(id=0, body=body, shape=shape)
+    return PymunkEntity(id=ball.uid, body=body, shape=shape)
 
 
 def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
@@ -135,8 +146,8 @@ class PymunkPhysics(PhysicsInterface):
             logging.warning(f"Unable to add ball. ID is already registered: {ball.uid}")
             return False
         entity = create_pymunk_ball(ball=ball)
-        self._space.add(entity.body, entity.shape)
-        self._balls[entity.id] = entity
+        entity.add_to_space(space=self._space)
+        self._balls[ball.uid] = entity
         return True
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
@@ -161,6 +172,14 @@ class PymunkPhysics(PhysicsInterface):
         return domain.FlipperState(
             angle=self._flippers[uid].angle, position=self._flippers[uid].position
         )
+
+    def launch_ball(self, uid: int) -> bool:
+        if uid not in self._balls.keys():
+            msg = f"Failed to launch ball with UID {uid}. This ID is not registred in the Physics implementaion."
+            logging.warning(msg)
+            return False
+        self._balls[uid].apply_impulse(direction=(0.0, -1.0))
+        return True
 
     def update(self) -> None:
         dt = 1.0 / 60.0 / 5.0
