@@ -39,5 +39,17 @@ class PhysicsInterface(typing.Protocol):
         """
         ...
 
+    def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:
+        """
+        Set the 2D gravity vector in the format (x, y).
+
+        Args:
+            vec: Vector.
+
+        Returns:
+            None
+        """
+        ...
+
     def update(self) -> None:
         ...
