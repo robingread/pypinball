@@ -21,6 +21,7 @@ pip install \
     pymunk \
     pynput \
     pytest \
+    numpy \
     simpleaudio \
     sphinx \
     sphinxcontrib-mermaid \
