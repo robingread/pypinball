@@ -39,6 +39,18 @@ class PhysicsInterface(typing.Protocol):
         """
         ...
 
+    def launch_ball(self, uid: int) -> bool:
+        """
+        Launch a ball by applying a high impulse/force to it.
+
+        Args:
+            uid (int): ID of the target ball.
+
+        Returns:
+            bool: ``True`` if successful else ``False``. For example specifying a ball that doesn't exist.
+        """
+        ...
+
     def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:
         """
         Set the 2D gravity vector in the format (x, y).
