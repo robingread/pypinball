@@ -3,6 +3,12 @@ from .. import domain
 
 
 class PhysicsInterface(typing.Protocol):
+    """
+    Definition of the Interface to a Physics Engine for the game. This class
+    does not provide any implementation and should be inherited by any
+    concrete implementation classes.
+    """
+
     def actuate_flipper(self, uid: int) -> bool:
         """
         Actuate a flipper in the Physics simulation.
@@ -81,4 +87,10 @@ class PhysicsInterface(typing.Protocol):
         ...
 
     def update(self) -> None:
+        """
+        Perform an update/tick of the Physics engine.
+
+        Returns:
+            None
+        """
         ...
