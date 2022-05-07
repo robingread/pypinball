@@ -173,6 +173,14 @@ class PymunkPhysics(PhysicsInterface):
             angle=self._flippers[uid].angle, position=self._flippers[uid].position
         )
 
+    def launch_ball(self, uid: int) -> bool:
+        if uid not in self._balls.keys():
+            msg = f"Failed to launch ball with UID {uid}. This ID is not registred in the Physics implementaion."
+            logging.warning(msg)
+            return False
+        self._balls[uid].apply_impulse(direction=(0.0, -1.0))
+        return True
+
     def update(self) -> None:
         dt = 1.0 / 60.0 / 5.0
         for x in range(5):
