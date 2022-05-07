@@ -16,6 +16,8 @@ class PymunkEntity:
     def position(self) -> typing.Tuple[float, float]:
         return self.body.position
 
+    def add_to_space(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
 
 @dataclasses.dataclass
 class PymunkFlipper:
@@ -135,8 +137,8 @@ class PymunkPhysics(PhysicsInterface):
             logging.warning(f"Unable to add ball. ID is already registered: {ball.uid}")
             return False
         entity = create_pymunk_ball(ball=ball)
-        self._space.add(entity.body, entity.shape)
-        self._balls[entity.id] = entity
+        entity.add_to_space(space=self._space)
+        self._balls[ball.uid] = entity
         return True
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
