@@ -283,3 +283,64 @@ class TestActuateFlippers(unittest.TestCase):
         exp = list()
 
         self.assertListEqual(res, exp)
+
+
+class TestPlaySounds(unittest.TestCase):
+    """
+    Test the utils.play_sound() method.
+    """
+
+    def setUp(self) -> None:
+        self.audio = MocAudioInterface()
+        self.sound_file_map = {
+            pypinball.audio.Sounds.GAME_START: "game_start.wav",
+            pypinball.audio.Sounds.GAME_OVER: "game_over.wav",
+        }
+
+    def test_play_mapped_sounds(self):
+        """
+        Test that playing a list of ``Sounds`` that do have a mapping to
+        a file path are played by the ``MocAudioInterface``.
+        """
+        sounds = [pypinball.audio.Sounds.GAME_START, pypinball.audio.Sounds.GAME_OVER]
+
+        pypinball.utils.play_sounds(
+            sounds=sounds, sounds_to_files=self.sound_file_map, audio=self.audio
+        )
+
+        exp = ["game_start.wav", "game_over.wav"]
+        self.assertListEqual(exp, self.audio.commands)
+
+    def test_play_some_unmapped_sounds(self):
+        """
+        Test that playing a list of ``Sounds`` that do NOT have a mapping to
+        a file path are NOT played by the ``MocAudioInterface``.
+        """
+        sounds = [
+            pypinball.audio.Sounds.GAME_START,
+            pypinball.audio.Sounds.FLIPPER_ACTIVATE,
+        ]
+
+        pypinball.utils.play_sounds(
+            sounds=sounds, sounds_to_files=self.sound_file_map, audio=self.audio
+        )
+
+        exp = ["game_start.wav"]
+        self.assertListEqual(exp, self.audio.commands)
+
+    def test_play_unmapped_sounds(self):
+        """
+        Test that playing a list of ``Sounds`` that do NOT have a mapping to
+        a file path are NOT played by the ``MocAudioInterface``.
+        """
+        sounds = [
+            pypinball.audio.Sounds.BALL_LAUNCH,
+            pypinball.audio.Sounds.FLIPPER_ACTIVATE,
+        ]
+
+        pypinball.utils.play_sounds(
+            sounds=sounds, sounds_to_files=self.sound_file_map, audio=self.audio
+        )
+
+        exp = list()
+        self.assertListEqual(exp, self.audio.commands)
