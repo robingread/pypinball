@@ -134,9 +134,9 @@ class PymunkPhysics(PhysicsInterface):
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
 
-    def actuate_flipper(self, flipper: domain.Flipper) -> bool:
+    def actuate_flipper(self, uid: int) -> bool:
         try:
-            self._flippers[flipper.uid].actuate()
+            self._flippers[uid].actuate()
             return True
         except KeyError:
             return False
