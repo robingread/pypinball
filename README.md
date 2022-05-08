@@ -30,3 +30,9 @@ To build the documentation, run:
 source venv/bin/activate
 ./scripts/build-docs.sh
 ```
+
+## Gitlab CI Variables
+
+| Name | Default | Description |
+|---|---|---|
+| `BUILD_DOCKER_IMAGE` | "true" | Whether to build a Docker image. This can be used to build a Docker image only once a day and use that image throughout the day rather than needing to build it on each CI run. |
