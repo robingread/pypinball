@@ -2,7 +2,12 @@ stages:
   - build_image
   - test
 
+variables:
+  BUILD_DOCKER_IMAGE: "false"
+
 build docker image:
+  rules:
+    - if: $BUILD_DOCKER_IMAGE == "true"
   stage: build_image
   image: docker
   services:
@@ -15,8 +20,6 @@ build docker image:
 run unit tests:
   stage: test
   image: $CI_REGISTRY_IMAGE
-  needs:
-    - build docker image
   script:
     - ./scripts/setup-venv.sh
     - source venv/bin/activate
