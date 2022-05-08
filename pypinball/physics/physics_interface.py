@@ -88,7 +88,8 @@ class PhysicsInterface(typing.Protocol):
 
     def update(self) -> None:
         """
-        Perform an update/tick of the Physics engine.
+        Perform an update/tick of the Physics engine. This method should be
+        called on a regular basis.
 
         Returns:
             None
