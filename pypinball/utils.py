@@ -30,7 +30,7 @@ def actuate_flippers(
 
     for flipper in flippers:
         if flipper.config.actuation_button in pressed_buttons:
-            physics.actuate_flipper(flipper=flipper)
+            physics.actuate_flipper(uid=flipper.uid)
 
 
 def launch_new_ball(

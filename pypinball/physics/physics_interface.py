@@ -3,8 +3,16 @@ from .. import domain
 
 
 class PhysicsInterface(typing.Protocol):
-    def actuate_flipper(self, flipper: domain.Flipper) -> bool:
-        ...
+    def actuate_flipper(self, uid: int) -> bool:
+        """
+        Actuate a flipper in the Physics simulation.
+
+        Args:
+            uid (int): Unique ID of the flipper.
+
+        Returns:
+            bool: ``True`` if the flipper has been added and was actuated, else ``False``.
+        """
 
     def actuate_flippers(self, actuate_button: domain.Buttons) -> None:
         ...

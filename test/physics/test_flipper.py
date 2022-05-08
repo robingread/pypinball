@@ -105,7 +105,7 @@ class TestPymunkFlipper(unittest.TestCase):
         Test that actuating a flipper changes the angle in the desired direction.
         """
         self.physics.add_flipper(flipper=self.left_flipper)
-        self.physics.actuate_flipper(flipper=self.left_flipper)
+        self.physics.actuate_flipper(uid=self.left_flipper.uid)
 
         tracker = AngleTracker(reference=self.left_flipper.config.angle)
         for _ in range(100):
@@ -123,7 +123,7 @@ class TestPymunkFlipper(unittest.TestCase):
         Test that actuating a flipper changes the angle in the desired direction.
         """
         self.physics.add_flipper(flipper=self.right_flipper)
-        self.physics.actuate_flipper(flipper=self.right_flipper)
+        self.physics.actuate_flipper(uid=self.right_flipper.uid)
 
         tracker = AngleTracker(reference=self.right_flipper.config.angle)
         for _ in range(100):
@@ -135,3 +135,11 @@ class TestPymunkFlipper(unittest.TestCase):
             self.right_flipper.config.angle + self.right_flipper.config.actuation_angle
         )
         self.assertAlmostEqual(tracker.absolute_angle, target_angle, delta=0.1)
+
+    def test_actuate_unregistered_flipper(self):
+        """
+        Test that actuating a flipper that hasn't been added to the Physics
+        environment doesn't do anything.
+        """
+        ret = self.physics.actuate_flipper(uid=self.right_flipper.uid)
+        self.assertFalse(ret)

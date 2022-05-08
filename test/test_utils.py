@@ -23,8 +23,8 @@ class FakePhysicsInterface(pypinball.physics.PhysicsInterface):
     def __init__(self):
         self.actuation_commands = list()
 
-    def actuate_flipper(self, flipper: pypinball.domain.Flipper) -> bool:
-        self.actuation_commands.append(flipper.config.actuation_button)
+    def actuate_flipper(self, uid: int) -> bool:
+        self.actuation_commands.append(uid)
         return True
 
 
@@ -244,7 +244,7 @@ class TestActuateFlippers(unittest.TestCase):
         )
 
         res = self.physics.actuation_commands
-        exp = [pypinball.domain.Buttons.LEFT]
+        exp = [flippers[0].uid]
 
         self.assertListEqual(res, exp)
 
@@ -256,7 +256,7 @@ class TestActuateFlippers(unittest.TestCase):
         )
 
         res = self.physics.actuation_commands
-        exp = [pypinball.domain.Buttons.RIGHT]
+        exp = [flippers[1].uid]
 
         self.assertListEqual(res, exp)
 
@@ -268,7 +268,7 @@ class TestActuateFlippers(unittest.TestCase):
         )
 
         res = self.physics.actuation_commands
-        exp = [pypinball.domain.Buttons.LEFT, pypinball.domain.Buttons.RIGHT]
+        exp = [flippers[0].uid, flippers[1].uid]
 
         self.assertListEqual(res, exp)
 
