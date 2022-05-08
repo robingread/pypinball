@@ -20,8 +20,6 @@ build docker image:
 run unit tests:
   stage: test
   image: $CI_REGISTRY_IMAGE
-  needs:
-    - build docker image
   script:
     - ./scripts/setup-venv.sh
     - source venv/bin/activate
