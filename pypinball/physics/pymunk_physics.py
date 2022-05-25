@@ -157,6 +157,7 @@ class PymunkPhysics(PhysicsInterface):
         self._balls = dict()
         self._bumpers = list()
         self._flippers = dict()
+        self._walls = dict()
 
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
@@ -186,6 +187,15 @@ class PymunkPhysics(PhysicsInterface):
         entity = create_pymunk_flipper(flipper=flipper)
         entity.add_to_space(space=self._space)
         self._flippers[flipper.uid] = entity
+        return True
+
+    def add_wall(self, wall: domain.Wall) -> bool:
+        if wall.uid in self._walls.keys():
+            logging.warning(f"Unable to add wall. ID is already registered: {wall.uid}")
+            return False
+        entity = create_pymunk_wall(wall=wall, space=self._space)
+        entity.add_to_space(space=self._space)
+        self._walls[wall.uid] = entity
         return True
 
     def get_ball_state(self, uid: int) -> domain.BallState:
