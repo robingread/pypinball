@@ -238,6 +238,39 @@ class PymunkPhysics(PhysicsInterface):
         self._walls[wall.uid] = entity
         return True
 
+    def get_collisions(self) -> typing.List[domain.Collision]:
+        ret = list()
+
+        for collision in self._collision_handler.collisions:
+            ball_shape = collision[0]
+            other_shape = collision[1]
+            collision_type = -1
+
+            ball_id = -1
+            other_id = -1
+
+            for uid, ball in self._balls.items():
+                if ball_shape == ball.shape:
+                    ball_id = uid
+
+            if collision[1].collision_type == CollisionEntity.WALL:
+                for uid, wall in self._walls.items():
+                    for segment in wall.segment_bodies:
+                        print("here:", segment, other_shape)
+                        if segment == other_shape:
+                            other_id = uid
+                            collision_type = domain.CollisionType.BALL_AND_WALL
+
+            ret.append(
+                domain.Collision(
+                    type=collision_type,
+                    ball_id=ball_id,
+                    other_id=other_id,
+                )
+            )
+
+        return ret
+
     def get_ball_state(self, uid: int) -> domain.BallState:
         if uid not in self._balls.keys():
             raise KeyError(f"Unknown ball id: {uid}")
