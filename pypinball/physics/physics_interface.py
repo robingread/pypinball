@@ -29,6 +29,17 @@ class PhysicsInterface(typing.Protocol):
     def add_flipper(self, flipper: domain.Flipper) -> bool:
         ...
 
+    def add_wall(self, wall: domain.Wall) -> bool:
+        """
+        Add a wall section to the Phyics scene.
+
+        Args:
+            wall (Wall): Wall section to add.
+
+        Returns:
+            bool: ``True`` if the wall was added successfully, else ``False``.
+        """
+
     def get_collisions(self) -> typing.List[domain.Collision]:
         """
         Get a list of collisions that have taken place in the last update.

@@ -105,3 +105,67 @@ class TestGravity(unittest.TestCase):
         exp_unit_vec = numpy.array([0.0, 1.0])
 
         self.assertTrue(numpy.allclose(motion_unit_vec, exp_unit_vec))
+
+
+class TestWallGeneration(unittest.TestCase):
+    """
+    Test that wall sections can be added to the Physics scene.
+    """
+
+    def setUp(self):
+        self.physics = pypinball.physics.PymunkPhysics()
+
+    def test_add_wall_section(self):
+        """
+        Test that adding a wall section to the scene returns ``True``.
+        """
+        wall = pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10.0, 10.0)])
+        ret = self.physics.add_wall(wall=wall)
+        self.assertTrue(ret)
+
+    def test_adding_wall_section_twice_fails(self):
+        """
+        Test that adding the same wall section to the scene twice fails. The
+        first time the section is added should work, but not the second time.
+        """
+        wall = pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10.0, 10.0)])
+
+        ret = self.physics.add_wall(wall=wall)
+        self.assertTrue(ret)
+
+        ret = self.physics.add_wall(wall=wall)
+        self.assertFalse(ret)
+
+
+class TestBallDropOnDiagonalWall(unittest.TestCase):
+    """
+    Test condition where we add a ball to the scene with a wall that is diagonal.
+    The ball should fall down, hit the wall, bounce to the right and register
+    a collision.
+    """
+
+    def setUp(self):
+        self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
+        self.wall = pypinball.domain.Wall(uid=1, points=[(75.0, 50.0), (125.0, 100.0)])
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball)
+        self.physics.add_wall(wall=self.wall)
+
+    def test_ball_has_moved_to_right_after_bounce(self):
+        """
+        Test that after hitting the wall, the wall bounces to the right.
+        """
+        for _ in range(100):
+            self.physics.update()
+        ball_state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertGreater(
+            ball_state.position[0],
+            self.ball.position[0],
+            msg="Ball has not bounced to the right.",
+        )
+        self.assertGreater(
+            ball_state.position[1],
+            self.ball.position[1],
+            msg="Ball has not fallen down in Y axis under gravity.",
+        )
