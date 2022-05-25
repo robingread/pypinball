@@ -1,10 +1,23 @@
 import dataclasses
+import enum
 import logging
 import typing
 import pymunk
 import random
 from .physics_interface import PhysicsInterface
 from .. import domain
+
+
+class CollisionEntity(enum.IntEnum):
+    """
+    Enum for storing the different type of object in an enum which is used to
+    identify the type of object (and ultimately collision) that has taken place.
+    """
+
+    BALL = enum.auto()
+    BUMPER = enum.auto()
+    FLIPPER = enum.auto()
+    WALL = enum.auto()
 
 
 @dataclasses.dataclass
