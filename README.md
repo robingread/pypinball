@@ -3,6 +3,7 @@
 
 [![pipeline status](https://gitlab.com/robin.g.read/pypinball/badges/dev/pipeline.svg)](https://gitlab.com/robin.g.read/pypinball/-/commits/dev)
 [![coverage report](https://gitlab.com/robin.g.read/pypinball/badges/dev/coverage.svg)](https://gitlab.com/robin.g.read/pypinball/-/commits/dev)
+[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Setup
 
