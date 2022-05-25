@@ -59,6 +59,21 @@ class TestBallLaunch(unittest.TestCase):
 
     def test_launch_ball(self):
         """
+        Test that the launch_ball() method returns ``True``.
+        """
+        ret = self.physics.launch_ball(uid=self.ball.uid)
+        self.assertTrue(ret, msg="Failed to launch valid ball.")
+
+    def test_launch_undefined_ball(self):
+        """
+        Test that the launch_ball() method returns ``False`` when attempting
+        to launch ball that is not registered within the physics simulation.
+        """
+        ret = self.physics.launch_ball(uid=100)
+        self.assertFalse(ret, msg="Launched an unregistered ball.")
+
+    def test_launch_ball_motion(self):
+        """
         Test that after being launched, the ball position has changed from the
         initial position when it was created, and it is moving against the
         gravity vector.
