@@ -17,4 +17,3 @@ class AudioInterface(typing.Protocol):
         Returns:
             bool: Whether the sound was played successfully.
         """
-        ...
