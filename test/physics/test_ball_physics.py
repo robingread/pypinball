@@ -169,3 +169,25 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
             self.ball.position[1],
             msg="Ball has not fallen down in Y axis under gravity.",
         )
+
+    def test_physics_reports_collision_between_ball_and_wall(self):
+        """
+        Test that the PymunkPhysics call registers a collision between the
+        ball and the wall.
+        """
+        exp = [
+            pypinball.domain.Collision(
+                ball_id=self.ball.uid,
+                other_id=self.wall.uid,
+                type=pypinball.domain.CollisionType.BALL_AND_WALL,
+            )
+        ]
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="No collisions reported between wall and ball"
+        )
