@@ -99,6 +99,7 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     body.position = ball.position
     shape = pymunk.Circle(body, radius, (0, 0))
     shape.elasticity = 0.95
+    shape.collision_type = CollisionEntity.BALL
     return PymunkEntity(id=ball.uid, body=body, shape=shape)
 
 
@@ -120,6 +121,7 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
 
     flipper_shape.group = 1
     flipper_shape.elasticity = 0.5
+    flipper_shape.collision_type = CollisionEntity.FLIPPER
 
     spring = pymunk.DampedRotarySpring(
         a=flipper_body,
@@ -160,6 +162,7 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
             b=wall.points[j],
             radius=segment_radius,
         )
+        segment.collision_type = CollisionEntity.WALL
         segment.elasticity = 0.9
         segments.append(segment)
     return PymunkWall(id=wall.uid, segment_bodies=segments)
