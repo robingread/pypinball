@@ -105,3 +105,33 @@ class TestGravity(unittest.TestCase):
         exp_unit_vec = numpy.array([0.0, 1.0])
 
         self.assertTrue(numpy.allclose(motion_unit_vec, exp_unit_vec))
+
+
+class TestWallGeneration(unittest.TestCase):
+    """
+    Test that wall sections can be added to the Physics scene.
+    """
+
+    def setUp(self):
+        self.physics = pypinball.physics.PymunkPhysics()
+
+    def test_add_wall_section(self):
+        """
+        Test that adding a wall section to the scene returns ``True``.
+        """
+        wall = pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10.0, 10.0)])
+        ret = self.physics.add_wall(wall=wall)
+        self.assertTrue(ret)
+
+    def test_adding_wall_section_twice_fails(self):
+        """
+        Test that adding the same wall section to the scene twice fails. The
+        first time the section is added should work, but not the second time.
+        """
+        wall = pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10.0, 10.0)])
+
+        ret = self.physics.add_wall(wall=wall)
+        self.assertTrue(ret)
+
+        ret = self.physics.add_wall(wall=wall)
+        self.assertFalse(ret)
