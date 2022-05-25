@@ -24,14 +24,29 @@ class PhysicsInterface(typing.Protocol):
         ...
 
     def add_ball(self, ball: domain.Ball) -> bool:
-        ...
+        """
+        Add a ball to the Physics simulation.
+
+        Args:
+            ball (Ball): Ball instance.
+
+        Returns:
+            bool: ``True`` if the ball was added else ``False``.
+        """
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
-        ...
+        """
+        Addd a flipper to the Physics simulation
+        Args:
+            flipper (Flipper): Flipper instance.
+
+        Returns:
+            bool: ``True`` if the flipper was added else ``False``.
+        """
 
     def add_wall(self, wall: domain.Wall) -> bool:
         """
-        Add a wall section to the Phyics scene.
+        Add a wall section to the Physics simulation.
 
         Args:
             wall (Wall): Wall section to add.
@@ -47,7 +62,6 @@ class PhysicsInterface(typing.Protocol):
         Returns:
             list: List of collisions.
         """
-        ...
 
     def get_ball_state(self, uid: int) -> domain.BallState:
         """
@@ -59,7 +73,6 @@ class PhysicsInterface(typing.Protocol):
         Returns:
             BallState: State of the ball.
         """
-        ...
 
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         """
@@ -71,7 +84,6 @@ class PhysicsInterface(typing.Protocol):
         Returns:
             FlipperState: State of the flipper.
         """
-        ...
 
     def launch_ball(self, uid: int) -> bool:
         """
@@ -83,7 +95,6 @@ class PhysicsInterface(typing.Protocol):
         Returns:
             bool: ``True`` if successful else ``False``. For example specifying a ball that doesn't exist.
         """
-        ...
 
     def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:
         """
@@ -95,7 +106,6 @@ class PhysicsInterface(typing.Protocol):
         Returns:
             None
         """
-        ...
 
     def update(self) -> None:
         """
@@ -105,4 +115,3 @@ class PhysicsInterface(typing.Protocol):
         Returns:
             None
         """
-        ...

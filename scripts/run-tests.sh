@@ -5,4 +5,4 @@ set -e
 echo "Running Python unittests..."
 
 pip install -q .
-pytest -q test
+coverage run -m pytest -q test
