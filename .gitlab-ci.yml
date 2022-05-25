@@ -24,3 +24,9 @@ run unit tests:
     - ./scripts/setup-venv.sh
     - source venv/bin/activate
     - ./scripts/ci-test.sh
+  coverage: '/TOTAL.*\s([.\d]+)%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/coverage.xml
