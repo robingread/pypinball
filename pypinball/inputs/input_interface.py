@@ -18,4 +18,3 @@ class InputInterface(typing.Protocol):
         Returns:
             dict: State dictionary.
         """
-        ...
