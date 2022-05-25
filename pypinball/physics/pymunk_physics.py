@@ -168,6 +168,24 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
     return PymunkWall(id=wall.uid, segment_bodies=segments)
 
 
+class CollisionsHandler:
+    def __init__(self):
+        self._collisions = list()
+
+    @property
+    def collisions(self) -> typing.List[typing.Tuple[pymunk.Shape, pymunk.Shape]]:
+        return self._collisions
+
+    def clear(self) -> None:
+        self._collisions.clear()
+
+    def handle_collision(
+        self, arbiter: pymunk.Arbiter, space: pymunk.Space, data: dict
+    ) -> bool:
+        self._collisions.append(arbiter.shapes)
+        return True
+
+
 class PymunkPhysics(PhysicsInterface):
     def __init__(self):
         self._balls = dict()
@@ -175,8 +193,14 @@ class PymunkPhysics(PhysicsInterface):
         self._flippers = dict()
         self._walls = dict()
 
+        self._collision_handler = CollisionsHandler()
+
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
+        handler = self._space.add_wildcard_collision_handler(
+            collision_type_a=CollisionEntity.BALL
+        )
+        handler.begin = self._collision_handler.handle_collision
 
     def actuate_flipper(self, uid: int) -> bool:
         try:
@@ -235,6 +259,9 @@ class PymunkPhysics(PhysicsInterface):
         return True
 
     def update(self) -> None:
+        logging.debug("Updating Pymunk Physics")
+        self._collision_handler.clear()
+
         dt = 1.0 / 60.0 / 5.0
         for x in range(5):
             self._space.step(dt)
