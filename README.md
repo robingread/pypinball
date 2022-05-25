@@ -1,5 +1,9 @@
 # Pi-Pinball
 
+
+[![pipeline status](https://gitlab.com/robin.g.read/pypinball/badges/dev/pipeline.svg)](https://gitlab.com/robin.g.read/pypinball/-/commits/dev)
+[![coverage report](https://gitlab.com/robin.g.read/pypinball/badges/dev/coverage.svg)](https://gitlab.com/robin.g.read/pypinball/-/commits/dev)
+
 ## Setup
 
 Install dependencies:
