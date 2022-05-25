@@ -68,6 +68,16 @@ class PymunkFlipper:
         )
 
 
+@dataclasses.dataclass
+class PymunkWall:
+    id: int
+    segment_bodies: typing.List[pymunk.Segment]
+
+    def add_to_space(self, space: pymunk.Space) -> None:
+        for segment in self.segment_bodies:
+            space.add(segment)
+
+
 def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     mass = 0.1
     radius = 15
@@ -123,6 +133,23 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
         joint=joint,
         spring=spring,
     )
+
+
+def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
+    n = len(wall.points) - 1
+    segment_radius = 1
+    segments = list()
+    for i in range(n):
+        j = i + 1
+        segment = pymunk.Segment(
+            body=space.static_body,
+            a=wall.points[i],
+            b=wall.points[j],
+            radius=segment_radius,
+        )
+        segment.elasticity = 0.9
+        segments.append(segment)
+    return PymunkWall(id=wall.uid, segment_bodies=segments)
 
 
 class PymunkPhysics(PhysicsInterface):
