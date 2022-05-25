@@ -17,6 +17,7 @@ source $DST_DIR/bin/activate
 pip install --upgrade pip
 pip install \
     black \
+    coverage \
     pygame \
     pymunk \
     pynput \
