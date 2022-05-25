@@ -1,8 +1,8 @@
 .idea/
 build/
+coverage/
 docs/build/*
 venv/
 *.egg-info/
 
-.coverage
 *.pyc
