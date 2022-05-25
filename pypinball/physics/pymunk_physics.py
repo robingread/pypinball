@@ -1,10 +1,23 @@
 import dataclasses
+import enum
 import logging
 import typing
 import pymunk
 import random
 from .physics_interface import PhysicsInterface
 from .. import domain
+
+
+class CollisionEntity(enum.IntEnum):
+    """
+    Enum for storing the different type of object in an enum which is used to
+    identify the type of object (and ultimately collision) that has taken place.
+    """
+
+    BALL = enum.auto()
+    BUMPER = enum.auto()
+    FLIPPER = enum.auto()
+    WALL = enum.auto()
 
 
 @dataclasses.dataclass
@@ -86,6 +99,7 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     body.position = ball.position
     shape = pymunk.Circle(body, radius, (0, 0))
     shape.elasticity = 0.95
+    shape.collision_type = CollisionEntity.BALL
     return PymunkEntity(id=ball.uid, body=body, shape=shape)
 
 
@@ -107,6 +121,7 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
 
     flipper_shape.group = 1
     flipper_shape.elasticity = 0.5
+    flipper_shape.collision_type = CollisionEntity.FLIPPER
 
     spring = pymunk.DampedRotarySpring(
         a=flipper_body,
@@ -147,9 +162,28 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
             b=wall.points[j],
             radius=segment_radius,
         )
+        segment.collision_type = CollisionEntity.WALL
         segment.elasticity = 0.9
         segments.append(segment)
     return PymunkWall(id=wall.uid, segment_bodies=segments)
+
+
+class CollisionsHandler:
+    def __init__(self):
+        self._collisions = list()
+
+    @property
+    def collisions(self) -> typing.List[typing.Tuple[pymunk.Shape, pymunk.Shape]]:
+        return self._collisions
+
+    def clear(self) -> None:
+        self._collisions.clear()
+
+    def handle_collision(
+        self, arbiter: pymunk.Arbiter, space: pymunk.Space, data: dict
+    ) -> bool:
+        self._collisions.append(arbiter.shapes)
+        return True
 
 
 class PymunkPhysics(PhysicsInterface):
@@ -159,8 +193,14 @@ class PymunkPhysics(PhysicsInterface):
         self._flippers = dict()
         self._walls = dict()
 
+        self._collision_handler = CollisionsHandler()
+
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
+        handler = self._space.add_wildcard_collision_handler(
+            collision_type_a=CollisionEntity.BALL
+        )
+        handler.begin = self._collision_handler.handle_collision
 
     def actuate_flipper(self, uid: int) -> bool:
         try:
@@ -198,6 +238,39 @@ class PymunkPhysics(PhysicsInterface):
         self._walls[wall.uid] = entity
         return True
 
+    def get_collisions(self) -> typing.List[domain.Collision]:
+        ret = list()
+
+        for collision in self._collision_handler.collisions:
+            ball_shape = collision[0]
+            other_shape = collision[1]
+            collision_type = -1
+
+            ball_id = -1
+            other_id = -1
+
+            for uid, ball in self._balls.items():
+                if ball_shape == ball.shape:
+                    ball_id = uid
+
+            if collision[1].collision_type == CollisionEntity.WALL:
+                for uid, wall in self._walls.items():
+                    for segment in wall.segment_bodies:
+                        print("here:", segment, other_shape)
+                        if segment == other_shape:
+                            other_id = uid
+                            collision_type = domain.CollisionType.BALL_AND_WALL
+
+            ret.append(
+                domain.Collision(
+                    type=collision_type,
+                    ball_id=ball_id,
+                    other_id=other_id,
+                )
+            )
+
+        return ret
+
     def get_ball_state(self, uid: int) -> domain.BallState:
         if uid not in self._balls.keys():
             raise KeyError(f"Unknown ball id: {uid}")
@@ -219,6 +292,9 @@ class PymunkPhysics(PhysicsInterface):
         return True
 
     def update(self) -> None:
+        logging.debug("Updating Pymunk Physics")
+        self._collision_handler.clear()
+
         dt = 1.0 / 60.0 / 5.0
         for x in range(5):
             self._space.step(dt)

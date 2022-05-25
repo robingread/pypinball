@@ -4,4 +4,5 @@ docs/build/*
 venv/
 *.egg-info/
 
+.coverage
 *.pyc
