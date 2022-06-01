@@ -243,3 +243,41 @@ class TestBallDropsOnLaunchedBall(unittest.TestCase):
         self.assertListEqual(
             collisions, exp, msg="No collisions reported between balls"
         )
+
+
+class TestBallDropsOnFlipper(unittest.TestCase):
+    def setUp(self) -> None:
+        self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
+        self.flipper = pypinball.domain.Flipper(
+            uid=1,
+            config=pypinball.domain.FlipperConfig(
+                position=(75.0, 50.0),
+                angle=1.3,
+                length=25,
+                actuation_angle=1.0,
+                actuation_direction=1,
+                actuation_button=pypinball.domain.Buttons.LEFT,
+            ),
+        )
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball)
+        self.physics.add_flipper(flipper=self.flipper)
+
+    def test_physics_reports_collision_between_ball_and_flipper(self):
+        exp = [
+            pypinball.domain.Collision(
+                type=pypinball.domain.CollisionType.BALL_AND_FLIPPER,
+                ball_id=0,
+                other_id=1,
+            )
+        ]
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            print(self.physics.get_ball_state(uid=0))
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="No collisions reported between ball and flipper"
+        )
