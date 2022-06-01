@@ -240,6 +240,7 @@ class PymunkPhysics(PhysicsInterface):
 
     def get_collisions(self) -> typing.List[domain.Collision]:
         ret = list()
+        ball_collisions = list()
 
         for collision in self._collision_handler.collisions:
             ball_shape = collision[0]
@@ -256,10 +257,31 @@ class PymunkPhysics(PhysicsInterface):
             if collision[1].collision_type == CollisionEntity.WALL:
                 for uid, wall in self._walls.items():
                     for segment in wall.segment_bodies:
-                        print("here:", segment, other_shape)
                         if segment == other_shape:
                             other_id = uid
                             collision_type = domain.CollisionType.BALL_AND_WALL
+
+            elif other_shape.collision_type == CollisionEntity.BALL:
+                for uid, ball in self._balls.items():
+                    if other_shape != ball.shape:
+                        continue
+                    o = uid
+                    t = {ball_id, o}
+                    if t in ball_collisions:
+                        continue
+                    other_id = uid
+                    ball_collisions.append(t)
+                    collision_type = domain.CollisionType.BALL_AND_BALL
+
+            elif other_shape.collision_type == CollisionEntity.FLIPPER:
+                for uid, flipper in self._flippers.items():
+                    if other_shape != flipper.flipper_shape:
+                        continue
+                    other_id = uid
+                    collision_type = domain.CollisionType.BALL_AND_FLIPPER
+
+            if ball_id == -1 or other_id == -1 or collision_type == -1:
+                continue
 
             ret.append(
                 domain.Collision(
