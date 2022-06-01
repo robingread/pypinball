@@ -298,8 +298,8 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         self.flipper = pypinball.domain.Flipper(
             uid=1,
             config=pypinball.domain.FlipperConfig(
-                position=(75.0, 50.0),
-                angle=1.3,
+                position=(75.0, 250.0),
+                angle=1.0,
                 length=25,
                 actuation_angle=1.0,
                 actuation_direction=1,
