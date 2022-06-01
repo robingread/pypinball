@@ -208,6 +208,53 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
         )
 
 
+class TestBallDropInEmptyScene(unittest.TestCase):
+    """
+    Test dropping a ball in an empty scene.
+    """
+
+    def setUp(self) -> None:
+        self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball)
+
+    def test_ball_drop_downwards(self):
+        """
+        Test that after hitting the wall, the wall bounces to the right.
+        """
+        for _ in range(100):
+            self.physics.update()
+        ball_state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertAlmostEqual(
+            ball_state.position[0],
+            self.ball.position[0],
+            delta=0.001,
+            msg="Ball X component has changed when falling under gravity.",
+        )
+        self.assertGreater(
+            ball_state.position[1],
+            self.ball.position[1],
+            msg="Ball has not fallen down in Y axis under gravity.",
+        )
+
+    def test_no_collisions_reported(self):
+        """
+        Test that a ball falling within a scene with nothing else reports
+        no collisions.
+        """
+        exp = []
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="No collisions reported between wall and ball"
+        )
+
+
 class TestBallDropsOnLaunchedBall(unittest.TestCase):
     """
     Test condition where a ball is launched into another ball and only a
