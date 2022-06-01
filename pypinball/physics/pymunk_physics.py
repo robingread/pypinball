@@ -256,7 +256,6 @@ class PymunkPhysics(PhysicsInterface):
             if collision[1].collision_type == CollisionEntity.WALL:
                 for uid, wall in self._walls.items():
                     for segment in wall.segment_bodies:
-                        print("here:", segment, other_shape)
                         if segment == other_shape:
                             other_id = uid
                             collision_type = domain.CollisionType.BALL_AND_WALL
