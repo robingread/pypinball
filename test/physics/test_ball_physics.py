@@ -206,3 +206,40 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
         self.assertListEqual(
             collisions, exp, msg="No collisions reported between wall and ball"
         )
+
+
+class TestBallDropsOnLaunchedBall(unittest.TestCase):
+    """
+    Test condition where a ball is launched into another ball and only a
+    single collision between the two balls is registered.
+    """
+
+    def setUp(self) -> None:
+        self.ball_1 = pypinball.domain.Ball(uid=0, position=(100.0, 100.0))
+        self.ball_2 = pypinball.domain.Ball(uid=1, position=(100.0, 0.0))
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball_1)
+        self.physics.add_ball(ball=self.ball_2)
+        self.physics.launch_ball(uid=self.ball_1.uid)
+
+    def test_physics_reports_collision_between_ball_and_ball(self):
+        """
+        Test that the PymunkPhysics call registers a collision between the
+        two balls.
+        """
+        exp = [
+            pypinball.domain.Collision(
+                type=pypinball.domain.CollisionType.BALL_AND_BALL,
+                ball_id=self.ball_1.uid,
+                other_id=self.ball_2.uid,
+            )
+        ]
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="No collisions reported between balls"
+        )
