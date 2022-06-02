@@ -293,6 +293,11 @@ class TestBallDropsOnLaunchedBall(unittest.TestCase):
 
 
 class TestBallDropsOnFlipper(unittest.TestCase):
+    """
+    Test the condition when a ball drops onto a flipper which is angled towards
+    the right.
+    """
+
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.flipper = pypinball.domain.Flipper(
@@ -311,6 +316,10 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         self.physics.add_flipper(flipper=self.flipper)
 
     def test_physics_reports_collision_between_ball_and_flipper(self):
+        """
+        Test that the Physics interface registers a collision between the
+        ball and the flipper.
+        """
         exp = [
             pypinball.domain.Collision(
                 type=pypinball.domain.CollisionType.BALL_AND_FLIPPER,
