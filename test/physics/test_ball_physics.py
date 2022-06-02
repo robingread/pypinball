@@ -331,7 +331,6 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         collisions = list()
         for _ in range(100):
             self.physics.update()
-            print(self.physics.get_ball_state(uid=0))
             collisions += self.physics.get_collisions()
 
         self.assertListEqual(
