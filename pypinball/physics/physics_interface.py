@@ -20,9 +20,6 @@ class PhysicsInterface(typing.Protocol):
             bool: ``True`` if the flipper has been added and was actuated, else ``False``.
         """
 
-    def actuate_flippers(self, actuate_button: domain.Buttons) -> None:
-        ...
-
     def add_ball(self, ball: domain.Ball) -> bool:
         """
         Add a ball to the Physics simulation.
