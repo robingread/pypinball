@@ -4,3 +4,10 @@ from . import domain
 from . import inputs
 from . import physics
 from . import resources
+from .audio import AudioInterface
+from .audio import Sounds
+from .controller import Controller
+from .display import DisplayInterface
+from .game_config import GameConfig
+from .inputs import InputInterface
+from .physics import PhysicsInterface

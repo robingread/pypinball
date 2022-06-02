@@ -1,7 +1,7 @@
 import logging
 import typing
 from .audio import AudioInterface, Sounds
-from .domain import Buttons, Flipper
+from .domain import Buttons, Flipper, Collision, CollisionType
 from .physics import PhysicsInterface
 
 
@@ -108,6 +108,30 @@ def map_button_state_to_sound_type(
             logging.warning(
                 f"Unable to map button: {input_key}. The button is not in the sound map."
             )
+    return ret
+
+
+def map_collision_type_to_sound_type(
+    collisions: typing.List[Collision], sound_map: typing.Dict[CollisionType, Sounds]
+) -> typing.List[Sounds]:
+    """
+    Get a list of ``Sounds`` to play given a list of ``Collision`` instances
+    using a dict mapping ``CollisionType`` instances to a ``Sound``.
+
+    Args:
+        collisions (list): List of ``Collision`` instances.
+        sound_map (dict): Dictionary mapping ``CollisionType`` to ``Sounds``.
+
+    Returns:
+        list: List of ``Sound`` values to play.
+    """
+    ret = list()
+    for collision in collisions:
+        try:
+            sound = sound_map[collision.type]
+            ret.append(sound)
+        except KeyError:
+            pass
     return ret
 
 
