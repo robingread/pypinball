@@ -293,13 +293,18 @@ class TestBallDropsOnLaunchedBall(unittest.TestCase):
 
 
 class TestBallDropsOnFlipper(unittest.TestCase):
+    """
+    Test the condition when a ball drops onto a flipper which is angled towards
+    the right.
+    """
+
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.flipper = pypinball.domain.Flipper(
             uid=1,
             config=pypinball.domain.FlipperConfig(
-                position=(75.0, 50.0),
-                angle=1.3,
+                position=(75.0, 250.0),
+                angle=1.0,
                 length=25,
                 actuation_angle=1.0,
                 actuation_direction=1,
@@ -310,7 +315,33 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         self.physics.add_ball(ball=self.ball)
         self.physics.add_flipper(flipper=self.flipper)
 
+    def test_ball_bounces_right_after_collision(self):
+        """
+        Test that the ball has fallen under gravity and that it has moved
+        to the right after the collision with the flipper.
+        """
+        for _ in range(100):
+            self.physics.update()
+
+        state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertGreater(
+            state.position[0],
+            self.ball.position[0],
+            msg="Ball position Y component has not increased",
+        )
+
+        self.assertGreater(
+            state.position[1],
+            self.ball.position[1],
+            msg="Ball has not moved right after collision",
+        )
+
     def test_physics_reports_collision_between_ball_and_flipper(self):
+        """
+        Test that the Physics interface registers a collision between the
+        ball and the flipper.
+        """
         exp = [
             pypinball.domain.Collision(
                 type=pypinball.domain.CollisionType.BALL_AND_FLIPPER,
@@ -322,7 +353,6 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         collisions = list()
         for _ in range(100):
             self.physics.update()
-            print(self.physics.get_ball_state(uid=0))
             collisions += self.physics.get_collisions()
 
         self.assertListEqual(
