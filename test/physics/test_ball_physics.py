@@ -315,6 +315,28 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         self.physics.add_ball(ball=self.ball)
         self.physics.add_flipper(flipper=self.flipper)
 
+    def test_ball_bounces_right_after_collision(self):
+        """
+        Test that the ball has fallen under gravity and that it has moved
+        to the right after the collision with the flipper.
+        """
+        for _ in range(100):
+            self.physics.update()
+
+        state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertGreater(
+            state.position[0],
+            self.ball.position[0],
+            msg="Ball position Y component has not increased",
+        )
+
+        self.assertGreater(
+            state.position[1],
+            self.ball.position[1],
+            msg="Ball has not moved right after collision",
+        )
+
     def test_physics_reports_collision_between_ball_and_flipper(self):
         """
         Test that the Physics interface registers a collision between the
