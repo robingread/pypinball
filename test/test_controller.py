@@ -12,6 +12,10 @@ MOC_SOUND_FILE_MAP = pypinball.GameConfig(
 
 
 class TestBallDropInEmptyScene(unittest.TestCase):
+    """
+    Test the condition where a ball is free-falling within an empty scene.
+    """
+
     def setUp(self) -> None:
         self.audio = moc_interfaces.MocAudio()
         self.config = MOC_SOUND_FILE_MAP
