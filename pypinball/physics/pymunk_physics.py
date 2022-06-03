@@ -39,6 +39,9 @@ class PymunkEntity:
         position = self.body.position
         self.body.apply_force_at_world_point(force=force_vec, point=position)
 
+    def remove_from_space(self, space: pymunk.Space) -> None:
+        space.remove(self.body, self.shape)
+
 
 @dataclasses.dataclass
 class PymunkFlipper:
@@ -315,6 +318,13 @@ class PymunkPhysics(PhysicsInterface):
             logging.warning(msg)
             return False
         self._balls[uid].apply_impulse(direction=(0.0, -1.0))
+        return True
+
+    def remove_ball(self, uid: int) -> bool:
+        if uid not in self._balls.keys():
+            return False
+        self._balls[uid].remove_from_space(space=self._space)
+        del self._balls[uid]
         return True
 
     def set_debug_display(self, screen) -> None:
