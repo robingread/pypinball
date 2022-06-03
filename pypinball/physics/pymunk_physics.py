@@ -3,6 +3,7 @@ import enum
 import logging
 import typing
 import pymunk
+import pymunk.pygame_util
 import random
 from .physics_interface import PhysicsInterface
 from .. import domain
