@@ -335,6 +335,9 @@ class PymunkPhysics(PhysicsInterface):
         logging.debug("Updating Pymunk Physics")
         self._collision_handler.clear()
 
+        if self._draw_options is not None:
+            self._space.debug_draw(options=self._draw_options)
+
         dt = 1.0 / 60.0 / 5.0
         for x in range(5):
             self._space.step(dt)
