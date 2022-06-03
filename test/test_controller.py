@@ -110,3 +110,43 @@ class TestDropBallOnFlipper(unittest.TestCase):
         for _ in range(100):
             self.controller.tick()
         self.assertTrue("ball_flipper_collision" in self.audio.sounds)
+
+
+class TestControllerSetup(unittest.TestCase):
+    """
+    Test the Controller.setup() method.
+    """
+
+    def setUp(self) -> None:
+        class MocPhysics(pypinball.PhysicsInterface):
+            def add_flipper(self, *args, **kwargs) -> bool:
+                return False
+
+            def add_wall(self, *args, **kwargs) -> bool:
+                return False
+
+        self.audio = moc_interfaces.MocAudio()
+        self.config = pypinball.GameConfig(
+            playing_area=(10, 10),
+            sound_to_file_map=dict(),
+            walls=[pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10, 10)])],
+        )
+        self.display = moc_interfaces.MocDisplayInterface()
+        self.input = moc_interfaces.MocInputInterface()
+        self.physics = MocPhysics()
+
+        self.controller = pypinball.Controller(
+            audio_interface=self.audio,
+            display_interface=self.display,
+            config=self.config,
+            input_interface=self.input,
+            physics_interface=self.physics,
+        )
+
+    def test_setup_fails_when_adding_wall_and_flipper_fails(self):
+        """
+        Test that if the Physics Interface isn't able to create a wall or flipper
+        then the Controller.setup() method returns ``False```.
+        """
+        res = self.controller.setup()
+        self.assertFalse(res)
