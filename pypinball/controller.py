@@ -90,6 +90,8 @@ class Controller:
         self._physics.update()
         self._display.update()
 
+        self._handle_lost_balls()
+
         # Handle audio
         sounds = list()
         sounds += utils.map_button_state_to_sound_type(
@@ -110,3 +112,21 @@ class Controller:
             sounds_to_files=self._config.sound_to_file_map,
             audio=self._audio,
         )
+
+    def _handle_lost_balls(self) -> None:
+        states = self._physics.get_ball_states()
+        sounds = set()
+        for state in states:
+            ball_in_area = utils.check_ball_is_within_area(
+                ball_position=state.position,
+                width=self._config.playing_area[0],
+                height=self._config.playing_area[1],
+            )
+
+            if ball_in_area:
+                continue
+
+            sounds.add(audio.Sounds.BALL_LOST)
+            self._physics.remove_ball(uid=state.uid)
+
+        self._handle_sounds(sounds=list(sounds))
