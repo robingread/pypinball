@@ -1,4 +1,5 @@
 import logging
+import typing
 from . import audio
 from . import domain
 from . import display
@@ -97,6 +98,13 @@ class Controller:
         sounds += utils.map_collision_type_to_sound_type(
             collisions=self._physics.get_collisions(), sound_map=COLLISION_TO_AUDIO_MAP
         )
+        utils.play_sounds(
+            sounds=sounds,
+            sounds_to_files=self._config.sound_to_file_map,
+            audio=self._audio,
+        )
+
+    def _handle_sounds(self, sounds: typing.List[audio.Sounds]) -> None:
         utils.play_sounds(
             sounds=sounds,
             sounds_to_files=self._config.sound_to_file_map,
