@@ -5,7 +5,8 @@ from . import moc_interfaces
 
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
     sound_to_file_map={
-        pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision"
+        pypinball.Sounds.BALL_LOST: "ball_lost",
+        pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
     }
 )
 
@@ -32,6 +33,18 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             self.controller.tick()
 
         exp = set()
+        self.assertSetEqual(exp, self.audio.sounds)
+
+    def test_ball_lost_sounds_played(self):
+        """
+        Test that the BALL_LOST sound is played once a ball falls beyond the
+        playable area under gravity. The BALL_LOST sound should be the ONLY
+        sound that is played.
+        """
+        for _ in range(500):
+            self.controller.tick()
+
+        exp = {"ball_lost"}
         self.assertSetEqual(exp, self.audio.sounds)
 
 
