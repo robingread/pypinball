@@ -108,7 +108,4 @@ class TestDropBallOnFlipper(unittest.TestCase):
         """
         for _ in range(100):
             self.controller.tick()
-
-        exp = {"ball_flipper_collision"}
-
-        self.assertSetEqual(exp, self.audio.sounds)
+        self.assertTrue("ball_flipper_collision" in self.audio.sounds)
