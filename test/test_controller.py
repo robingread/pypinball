@@ -4,13 +4,19 @@ from . import moc_interfaces
 
 
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
+    playing_area=(450, 650),
     sound_to_file_map={
-        pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision"
-    }
+        pypinball.Sounds.BALL_LOST: "ball_lost",
+        pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
+    },
 )
 
 
 class TestBallDropInEmptyScene(unittest.TestCase):
+    """
+    Test the condition where a ball is free-falling within an empty scene.
+    """
+
     def setUp(self) -> None:
         self.audio = moc_interfaces.MocAudio()
         self.config = MOC_SOUND_FILE_MAP
@@ -28,11 +34,38 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         )
 
     def test_no_audio_played(self):
-        for _ in range(100):
+        """
+        Test that a ball free-falling over a short distance produces no sound
+        events.
+        """
+        for _ in range(5):
             self.controller.tick()
 
         exp = set()
         self.assertSetEqual(exp, self.audio.sounds)
+
+    def test_ball_lost_sounds_played(self):
+        """
+        Test that the BALL_LOST sound is played once a ball falls beyond the
+        playable area under gravity. The BALL_LOST sound should be the ONLY
+        sound that is played.
+        """
+        for _ in range(500):
+            self.controller.tick()
+
+        exp = {"ball_lost"}
+        self.assertSetEqual(exp, self.audio.sounds)
+
+    def test_lost_ball_is_removed_from_physics(self):
+        """
+        Test that the ball is removed from the PhysicsInterface once it falls
+        outside the playing area.
+        """
+        for _ in range(500):
+            self.controller.tick()
+
+        res = self.physics.get_ball_states()
+        self.assertListEqual([], res)
 
 
 class TestDropBallOnFlipper(unittest.TestCase):
@@ -76,7 +109,4 @@ class TestDropBallOnFlipper(unittest.TestCase):
         """
         for _ in range(100):
             self.controller.tick()
-
-        exp = {"ball_flipper_collision"}
-
-        self.assertSetEqual(exp, self.audio.sounds)
+        self.assertTrue("ball_flipper_collision" in self.audio.sounds)

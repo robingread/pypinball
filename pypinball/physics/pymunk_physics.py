@@ -39,6 +39,9 @@ class PymunkEntity:
         position = self.body.position
         self.body.apply_force_at_world_point(force=force_vec, point=position)
 
+    def remove_from_space(self, space: pymunk.Space) -> None:
+        space.remove(self.body, self.shape)
+
 
 @dataclasses.dataclass
 class PymunkFlipper:
@@ -299,6 +302,9 @@ class PymunkPhysics(PhysicsInterface):
             raise KeyError(f"Unknown ball id: {uid}")
         return domain.BallState(uid=uid, position=self._balls[uid].position)
 
+    def get_ball_states(self) -> typing.List[domain.BallState]:
+        return [self.get_ball_state(uid=uid) for uid in self._balls.keys()]
+
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         if uid not in self._flippers.keys():
             raise KeyError(f"Unknown flipper id: {uid}")
@@ -312,6 +318,13 @@ class PymunkPhysics(PhysicsInterface):
             logging.warning(msg)
             return False
         self._balls[uid].apply_impulse(direction=(0.0, -1.0))
+        return True
+
+    def remove_ball(self, uid: int) -> bool:
+        if uid not in self._balls.keys():
+            return False
+        self._balls[uid].remove_from_space(space=self._space)
+        del self._balls[uid]
         return True
 
     def set_debug_display(self, screen) -> None:

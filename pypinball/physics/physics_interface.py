@@ -71,6 +71,14 @@ class PhysicsInterface(typing.Protocol):
             BallState: State of the ball.
         """
 
+    def get_ball_states(self) -> typing.List[domain.BallState]:
+        """
+        Get the state of all the balls.
+
+        Returns:
+            list: List of ``BallState`` instances.
+        """
+
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         """
         Get the state of a flipper.
@@ -91,6 +99,17 @@ class PhysicsInterface(typing.Protocol):
 
         Returns:
             bool: ``True`` if successful else ``False``. For example specifying a ball that doesn't exist.
+        """
+
+    def remove_ball(self, uid: int) -> bool:
+        """
+        Remove a ball from the Physics simulation.
+
+        Args:
+            uid (int): Ball unique identifier.
+
+        Returns:
+            bool: ``True`` if the ball was removed, else ``False``.
         """
 
     def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:

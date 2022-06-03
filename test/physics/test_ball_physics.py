@@ -47,6 +47,36 @@ class TestBallGeneration(unittest.TestCase):
             self.physics.get_ball_state(uid=10)
 
 
+class TestRemoveBall(unittest.TestCase):
+    """
+    Test the remove_ball() method in the PymunkPhysics class.
+    """
+
+    def setUp(self) -> None:
+        self.ball = pypinball.domain.Ball(uid=0, position=(50.0, 50.0))
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball)
+
+    def test_remove_ball_success(self):
+        """
+        Test that removing an added ball is successful.
+        """
+        self.assertTrue(self.physics.remove_ball(uid=self.ball.uid))
+
+    def test_remove_unknown_ball_fails(self):
+        """
+        Test that removing an unknown ball fails.
+        """
+        self.assertFalse(self.physics.remove_ball(uid=10))
+
+    def test_get_state_fails_after_ball_remove(self):
+        """
+        Test that getting the state of an unknown ball throws an Exception.
+        """
+        with self.assertRaises(KeyError):
+            self.physics.get_ball_state(uid=10)
+
+
 class TestBallLaunch(unittest.TestCase):
     """
     Test the general functionality of launching a ball via the PymunkPhysics class.
