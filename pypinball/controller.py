@@ -46,9 +46,6 @@ class Controller:
         self._config = config
         self._input = input_interface
         self._physics = physics_interface
-
-        self._flippers = list()
-
         self._id_generator = ObjectIdGenerator()
 
     def tick(self) -> None:
@@ -58,7 +55,9 @@ class Controller:
 
         # Handle inputs to update Physics
         utils.actuate_flippers(
-            input_state=input_state, flippers=self._flippers, physics=self._physics
+            input_state=input_state,
+            flippers=self._config.flippers,
+            physics=self._physics,
         )
 
         if input_state[domain.Buttons.CENTER]:
