@@ -4,10 +4,11 @@ from . import moc_interfaces
 
 
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
+    playing_area=(450, 650),
     sound_to_file_map={
         pypinball.Sounds.BALL_LOST: "ball_lost",
         pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
-    }
+    },
 )
 
 
