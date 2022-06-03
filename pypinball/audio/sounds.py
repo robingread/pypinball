@@ -7,6 +7,7 @@ class Sounds(enum.Enum):
     """
 
     BALL_LAUNCH = enum.auto()
+    BALL_LOST = enum.auto()
     FLIPPER_ACTIVATE = enum.auto()
     FLIPPER_BALL_BOUNCE = enum.auto()
     GAME_START = enum.auto()

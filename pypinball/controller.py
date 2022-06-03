@@ -9,7 +9,7 @@ from .game_config import GameConfig
 
 
 BUTTON_AUDIO_MAP = {
-    domain.Buttons.CENTER: audio.Sounds.GAME_START,
+    domain.Buttons.CENTER: audio.Sounds.BALL_LAUNCH,
     domain.Buttons.LEFT: audio.Sounds.FLIPPER_ACTIVATE,
     domain.Buttons.RIGHT: audio.Sounds.FLIPPER_ACTIVATE,
 }
@@ -46,10 +46,21 @@ class Controller:
         self._config = config
         self._input = input_interface
         self._physics = physics_interface
-
-        self._flippers = list()
-
         self._id_generator = ObjectIdGenerator()
+
+    def setup(self) -> bool:
+        """
+        Setup the controller to prepare before running/ticking. This method
+        will return ``False`` if there are any issues in the setup process.
+
+        Returns:
+            bool: Whether the setup was fully successful.
+        """
+        logging.debug("Setting up controller")
+        ret = list()
+        ret += [self._physics.add_flipper(f) for f in self._config.flippers]
+        ret += [self._physics.add_wall(w) for w in self._config.walls]
+        return all(ret)
 
     def tick(self) -> None:
         logging.debug("Ticking controller")
@@ -58,7 +69,9 @@ class Controller:
 
         # Handle inputs to update Physics
         utils.actuate_flippers(
-            input_state=input_state, flippers=self._flippers, physics=self._physics
+            input_state=input_state,
+            flippers=self._config.flippers,
+            physics=self._physics,
         )
 
         if input_state[domain.Buttons.CENTER]:
