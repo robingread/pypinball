@@ -34,7 +34,6 @@ class PymunkEntity:
         space.add(self.body, self.shape)
 
     def apply_impulse(self, direction: typing.Tuple[float, float]) -> None:
-        print("Applying impulse on ball")
         force = random.randint(75_000, 120_000)
         force_vec = pymunk.Vec2d(x=direction[0], y=direction[1]) * force
         position = self.body.position
@@ -202,6 +201,8 @@ class PymunkPhysics(PhysicsInterface):
         )
         handler.begin = self._collision_handler.handle_collision
 
+        self._draw_options = None
+
     def actuate_flipper(self, uid: int) -> bool:
         try:
             self._flippers[uid].actuate()
@@ -312,6 +313,9 @@ class PymunkPhysics(PhysicsInterface):
             return False
         self._balls[uid].apply_impulse(direction=(0.0, -1.0))
         return True
+
+    def set_debug_display(self, screen) -> None:
+        self._draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     def update(self) -> None:
         logging.debug("Updating Pymunk Physics")
