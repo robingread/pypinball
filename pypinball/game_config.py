@@ -6,6 +6,8 @@ from . import domain
 
 @dataclasses.dataclass
 class GameConfig:
+    playing_area: typing.Tuple[float, float]
+
     flippers: typing.List[domain.Flipper] = dataclasses.field(default_factory=list)
 
     walls: typing.List[domain.Wall] = dataclasses.field(default_factory=list)
