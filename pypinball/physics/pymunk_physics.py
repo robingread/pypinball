@@ -34,7 +34,6 @@ class PymunkEntity:
         space.add(self.body, self.shape)
 
     def apply_impulse(self, direction: typing.Tuple[float, float]) -> None:
-        print("Applying impulse on ball")
         force = random.randint(75_000, 120_000)
         force_vec = pymunk.Vec2d(x=direction[0], y=direction[1]) * force
         position = self.body.position
