@@ -9,7 +9,7 @@ from .game_config import GameConfig
 
 
 BUTTON_AUDIO_MAP = {
-    domain.Buttons.CENTER: audio.Sounds.GAME_START,
+    domain.Buttons.CENTER: audio.Sounds.BALL_LAUNCH,
     domain.Buttons.LEFT: audio.Sounds.FLIPPER_ACTIVATE,
     domain.Buttons.RIGHT: audio.Sounds.FLIPPER_ACTIVATE,
 }
