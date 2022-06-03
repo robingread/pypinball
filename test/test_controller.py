@@ -47,6 +47,17 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         exp = {"ball_lost"}
         self.assertSetEqual(exp, self.audio.sounds)
 
+    def test_lost_ball_is_removed_from_physics(self):
+        """
+        Test that the ball is removed from the PhysicsInterface once it falls
+        outside the playing area.
+        """
+        for _ in range(500):
+            self.controller.tick()
+
+        res = self.physics.get_ball_states()
+        self.assertListEqual([], res)
+
 
 class TestDropBallOnFlipper(unittest.TestCase):
     """
