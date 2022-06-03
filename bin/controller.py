@@ -2,6 +2,7 @@ import logging
 import pypinball
 
 GAME_CONFIG = pypinball.GameConfig(
+    playing_area=(600, 650),
     flippers=[
         pypinball.domain.Flipper(
             uid=1,
