@@ -29,7 +29,11 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         )
 
     def test_no_audio_played(self):
-        for _ in range(100):
+        """
+        Test that a ball free-falling over a short distance produces no sound
+        events.
+        """
+        for _ in range(5):
             self.controller.tick()
 
         exp = set()
