@@ -71,6 +71,14 @@ class PhysicsInterface(typing.Protocol):
             BallState: State of the ball.
         """
 
+    def get_ball_states(self) -> typing.List[domain.BallState]:
+        """
+        Get the state of all the balls.
+
+        Returns:
+            list: List of ``BallState`` instances.
+        """
+
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         """
         Get the state of a flipper.
