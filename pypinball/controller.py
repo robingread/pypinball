@@ -48,6 +48,20 @@ class Controller:
         self._physics = physics_interface
         self._id_generator = ObjectIdGenerator()
 
+    def setup(self) -> bool:
+        """
+        Setup the controller to prepare before running/ticking. This method
+        will return ``False`` if there are any issues in the setup process.
+
+        Returns:
+            bool: Whether the setup was fully successful.
+        """
+        logging.debug("Setting up controller")
+        ret = list()
+        ret += [self._physics.add_flipper(f) for f in self._config.flippers]
+        ret += [self._physics.add_wall(w) for w in self._config.walls]
+        return all(ret)
+
     def tick(self) -> None:
         logging.debug("Ticking controller")
 
