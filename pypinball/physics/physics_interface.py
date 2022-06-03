@@ -101,6 +101,17 @@ class PhysicsInterface(typing.Protocol):
             bool: ``True`` if successful else ``False``. For example specifying a ball that doesn't exist.
         """
 
+    def remove_ball(self, uid: int) -> bool:
+        """
+        Remove a ball from the Physics simulation.
+
+        Args:
+            uid (int): Ball unique identifier.
+
+        Returns:
+            bool: ``True`` if the ball was removed, else ``False``.
+        """
+
     def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:
         """
         Set the 2D gravity vector in the format (x, y).
