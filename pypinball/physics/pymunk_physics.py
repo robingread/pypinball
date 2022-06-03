@@ -201,6 +201,8 @@ class PymunkPhysics(PhysicsInterface):
         )
         handler.begin = self._collision_handler.handle_collision
 
+        self._draw_options = None
+
     def actuate_flipper(self, uid: int) -> bool:
         try:
             self._flippers[uid].actuate()
@@ -311,6 +313,9 @@ class PymunkPhysics(PhysicsInterface):
             return False
         self._balls[uid].apply_impulse(direction=(0.0, -1.0))
         return True
+
+    def set_debug_display(self, screen) -> None:
+        self._draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     def update(self) -> None:
         logging.debug("Updating Pymunk Physics")
