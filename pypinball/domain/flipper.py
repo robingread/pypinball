@@ -34,12 +34,7 @@ class Flipper:
 
     def __init__(self, uid: int, config: FlipperConfig):
         self._uid = uid
-        self._angle = config.angle
         self._config = config
-
-    @property
-    def angle(self) -> float:
-        return self._angle
 
     @property
     def config(self) -> FlipperConfig:
