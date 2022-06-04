@@ -48,3 +48,8 @@ class MocInputInterface(pypinball.InputInterface):
             pypinball.domain.Buttons.LEFT: self._left,
             pypinball.domain.Buttons.RIGHT: self._right,
         }
+
+    def set_input_state(self, center=False, left=False, right=False) -> None:
+        self._center = center
+        self._left = left
+        self._right = right

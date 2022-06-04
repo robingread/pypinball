@@ -10,6 +10,7 @@ MOC_SOUND_FILE_MAP = pypinball.GameConfig(
         pypinball.Sounds.COLLISION_BALL_BALL: "ball_ball_collision",
         pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
         pypinball.Sounds.COLLISION_BALL_WALL: "ball_wall_collision",
+        pypinball.Sounds.FLIPPER_ACTIVATE: "flipper_activate",
     },
 )
 
@@ -94,6 +95,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
     def setUp(self) -> None:
         self.audio = moc_interfaces.MocAudio()
         self.config = MOC_SOUND_FILE_MAP
+        self.input = moc_interfaces.MocInputInterface()
         self.physics = pypinball.physics.PymunkPhysics()
 
         self.ball = pypinball.domain.Ball(uid=0, position=(20.0, 0.0))
@@ -116,7 +118,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
             audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
-            input_interface=moc_interfaces.MocInputInterface(),
+            input_interface=self.input,
             physics_interface=self.physics,
         )
 
@@ -127,6 +129,19 @@ class TestDropBallOnFlipper(unittest.TestCase):
         for _ in range(100):
             self.controller.tick()
         self.assertTrue("ball_flipper_collision" in self.audio.sounds)
+
+    def test_flipper_actuation_plays_sound(self):
+        """
+        Test that a sound is played when a flipper is actuated.
+        """
+        self.input.set_input_state(left=True, right=False, center=False)
+
+        for _ in range(10):
+            self.controller.tick()
+            self.input.set_input_state(left=False, right=False, center=False)
+
+        res = "flipper_activate" in self.audio.sounds
+        self.assertTrue(res)
 
 
 class TestDropBallOnWall(unittest.TestCase):
