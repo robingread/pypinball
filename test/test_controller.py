@@ -7,6 +7,7 @@ MOC_SOUND_FILE_MAP = pypinball.GameConfig(
     playing_area=(450, 650),
     sound_to_file_map={
         pypinball.Sounds.BALL_LOST: "ball_lost",
+        pypinball.Sounds.COLLISION_BALL_BALL: "ball_ball_collision",
         pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
         pypinball.Sounds.COLLISION_BALL_WALL: "ball_wall_collision",
     },
@@ -67,6 +68,21 @@ class TestBallDropInEmptyScene(unittest.TestCase):
 
         res = self.physics.get_ball_states()
         self.assertListEqual([], res)
+
+    def test_launch_ball_into_second_ball_plays_audio(self):
+        """
+        Test that a ball-ball collision sound is played when a second ball is
+        added to the scene and launched at the first one.
+        """
+        ball = pypinball.domain.Ball(uid=10, position=(20.0, 250.0))
+        self.physics.add_ball(ball=ball)
+        self.physics.launch_ball(uid=ball.uid)
+
+        for _ in range(10):
+            self.controller.tick()
+
+        res = "ball_ball_collision" in self.audio.sounds
+        self.assertTrue(res)
 
 
 class TestDropBallOnFlipper(unittest.TestCase):
