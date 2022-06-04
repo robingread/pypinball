@@ -90,8 +90,6 @@ class Controller:
         self._physics.update()
         self._display.update()
 
-        self._handle_lost_balls()
-
         # Handle audio
         sounds = list()
         sounds += utils.map_button_state_to_sound_type(
@@ -105,6 +103,8 @@ class Controller:
             sounds_to_files=self._config.sound_to_file_map,
             audio=self._audio,
         )
+
+        self._handle_lost_balls()
 
     def _handle_sounds(self, sounds: typing.List[audio.Sounds]) -> None:
         utils.play_sounds(
