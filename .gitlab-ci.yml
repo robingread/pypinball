@@ -26,7 +26,11 @@ run unit tests:
     - ./scripts/ci-test.sh
   coverage: '/TOTAL.*\s([.\d]+)%/'
   artifacts:
+    when: always
+    paths:
+      - coverage/test-report.xml
     reports:
       coverage_report:
         coverage_format: cobertura
         path: coverage/coverage.xml
+      junit: coverage/test-report.xml
