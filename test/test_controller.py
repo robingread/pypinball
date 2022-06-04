@@ -8,6 +8,7 @@ MOC_SOUND_FILE_MAP = pypinball.GameConfig(
     sound_to_file_map={
         pypinball.Sounds.BALL_LOST: "ball_lost",
         pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
+        pypinball.Sounds.COLLISION_BALL_WALL: "ball_wall_collision",
     },
 )
 
@@ -110,6 +111,45 @@ class TestDropBallOnFlipper(unittest.TestCase):
         for _ in range(100):
             self.controller.tick()
         self.assertTrue("ball_flipper_collision" in self.audio.sounds)
+
+
+class TestDropBallOnWall(unittest.TestCase):
+    """
+    Test dropping the ball onto a Wall element.
+    """
+
+    def setUp(self) -> None:
+        self.audio = moc_interfaces.MocAudio()
+        self.config = MOC_SOUND_FILE_MAP
+        self.display = moc_interfaces.MocDisplayInterface()
+        self.input = moc_interfaces.MocInputInterface()
+        self.physics = pypinball.physics.PymunkPhysics()
+
+        self.ball = pypinball.domain.Ball(uid=0, position=(50, 50))
+        self.physics.add_ball(ball=self.ball)
+        self.physics.add_wall(
+            wall=pypinball.domain.Wall(uid=1, points=[(25.0, 100.0), (75.0, 150.0)])
+        )
+
+        self.controller = pypinball.Controller(
+            audio_interface=self.audio,
+            config=self.config,
+            display_interface=moc_interfaces.MocDisplayInterface(),
+            input_interface=moc_interfaces.MocInputInterface(),
+            physics_interface=self.physics,
+        )
+
+        self.controller.setup()
+
+    def test_sound_on_collision(self):
+        """
+        Test that a sound is played when the ball is dropped onto the wall element.
+        """
+        for _ in range(100):
+            self.controller.tick()
+
+        res = "ball_wall_collision" in self.audio.sounds
+        self.assertTrue(res)
 
 
 class TestControllerSetup(unittest.TestCase):
