@@ -29,7 +29,8 @@ To run the testing suite:
 
 ## Documentation
 
-To build the documentation, run:
+Pre-built documentation can be found at [https://robin.g.read.gitlab.io/pypinball/index.html](https://robin.g.read.gitlab.io/pypinball/index.html). 
+To build the documentation locally, run:
 
 ```bash
 source venv/bin/activate
