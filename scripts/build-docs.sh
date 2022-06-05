@@ -3,7 +3,4 @@
 set -e
 
 echo "Building docs..."
-
-pushd docs
-make html
-popd
+sphinx-build docs/source docs/build/public
