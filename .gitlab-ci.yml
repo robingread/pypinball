@@ -1,6 +1,7 @@
 stages:
   - build_image
   - test
+  - deploy
 
 variables:
   BUILD_DOCKER_IMAGE: "false"
@@ -34,3 +35,17 @@ run unit tests:
         coverage_format: cobertura
         path: coverage/coverage.xml
       junit: coverage/test-report.xml
+
+pages:
+  stage: deploy
+  image: $CI_REGISTRY_IMAGE
+  script:
+    - ./scripts/setup-venv.sh
+    - source venv/bin/activate
+    - ./scripts/build-docs.sh
+    - cp -r docs/build/public/ public
+  artifacts:
+    paths:
+      - public
+  only:
+    - dev
