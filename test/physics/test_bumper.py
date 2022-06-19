@@ -40,3 +40,19 @@ class TestBumper(unittest.TestCase):
         bumper2 = pypinball.domain.RoundBumper(uid=1, position=(50, 100), radius=15.0)
         ret = self.physics.add_bumper(bumper=bumper2)
         self.assertTrue(ret)
+
+    def test_remove_bumper_method_returns_true(self):
+        """
+        Test the remove_bumper() method returns ``True``
+        """
+        bumper = pypinball.domain.RoundBumper(uid=0, position=(50, 100), radius=15.0)
+        self.physics.add_bumper(bumper=bumper)
+        ret = self.physics.remove_bumper(uid=bumper.uid)
+        self.assertTrue(ret)
+
+    def test_remove_unknown_bumper(self):
+        """
+        Test removing an unknown bumper fails.
+        """
+        ret = self.physics.remove_bumper(uid=100)
+        self.assertFalse(ret)

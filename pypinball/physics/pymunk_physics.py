@@ -53,6 +53,9 @@ class PymunkBumper:
     def add_to_space(self, space: pymunk.Space) -> None:
         space.add(self.body, self.shape)
 
+    def remove_from_space(self, space: pymunk.Space) -> None:
+        space.remove(self.body, self.shape)
+
 
 @dataclasses.dataclass
 class PymunkFlipper:
@@ -382,6 +385,13 @@ class PymunkPhysics(PhysicsInterface):
             return False
         self._balls[uid].remove_from_space(space=self._space)
         del self._balls[uid]
+        return True
+
+    def remove_bumper(self, uid) -> bool:
+        if uid not in self._bumpers.keys():
+            return False
+        self._bumpers[uid].remove_from_space(space=self._space)
+        del self._bumpers[uid]
         return True
 
     def set_debug_display(self, screen) -> None:

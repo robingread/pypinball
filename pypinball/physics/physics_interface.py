@@ -124,6 +124,17 @@ class PhysicsInterface(typing.Protocol):
             bool: ``True`` if the ball was removed, else ``False``.
         """
 
+    def remove_bumper(self, uid) -> bool:
+        """
+        Remove a bumper from the Physics simulation.
+
+        Args:
+              uid (int): Bumper identifier.
+
+        Returns:
+            bool: ``True`` is the bumper was removed, else ``False``.
+        """
+
     def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:
         """
         Set the 2D gravity vector in the format (x, y).
