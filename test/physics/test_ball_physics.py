@@ -521,3 +521,21 @@ class TestBallDroppedOnRectangleBumper(unittest.TestCase):
         self.assertListEqual(
             collisions, exp, msg="No collisions reported between ball and bummper"
         )
+
+    def test_ball_does_not_hit_removed_bumper(self):
+        self.bumper = pypinball.domain.RectangleBumper(
+            uid=1, position=(100, 150), angle=1.0, size=(100, 25)
+        )
+        self.physics.add_bumper(bumper=self.bumper)
+        self.physics.remove_bumper(uid=self.bumper.uid)
+
+        exp = []
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="Unexpected collision between ball and bumper"
+        )
