@@ -49,3 +49,10 @@ class TestBumper(unittest.TestCase):
         self.physics.add_bumper(bumper=bumper)
         ret = self.physics.remove_bumper(uid=bumper.uid)
         self.assertTrue(ret)
+
+    def test_remove_unknown_bumper(self):
+        """
+        Test removing an unknown bumper fails.
+        """
+        ret = self.physics.remove_bumper(uid=100)
+        self.assertFalse(ret)
