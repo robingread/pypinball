@@ -388,3 +388,136 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         self.assertListEqual(
             collisions, exp, msg="No collisions reported between ball and flipper"
         )
+
+
+class TestBallDroppedOnRoundBumper(unittest.TestCase):
+    def setUp(self):
+        self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
+        self.bumper = pypinball.domain.RoundBumper(uid=1, radius=10, position=(90, 150))
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball)
+        self.physics.add_bumper(bumper=self.bumper)
+
+    def test_ball_bounces_right(self):
+        """
+        Test that when the ball is dropped on the bumper, it bounces off
+        and moves to the right and continues to fall downwards
+        """
+        for _ in range(100):
+            self.physics.update()
+
+        state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertGreater(
+            state.position[0],
+            self.ball.position[0],
+            msg="Ball position Y component has not increased",
+        )
+
+        self.assertGreater(
+            state.position[1],
+            self.ball.position[1],
+            msg="Ball has not moved right after collision",
+        )
+
+    def test_physics_reports_collision_between_ball_and_bumper(self):
+        exp = [
+            pypinball.domain.Collision(
+                type=pypinball.domain.CollisionType.BALL_AND_BUMPER,
+                ball_id=0,
+                other_id=1,
+            )
+        ]
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="No collisions reported between ball and bummper"
+        )
+
+
+class TestBallDroppedOnRectangleBumper(unittest.TestCase):
+    def setUp(self):
+        self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
+        self.physics = pypinball.physics.PymunkPhysics()
+        self.physics.add_ball(ball=self.ball)
+
+    def test_ball_bounces_right_when_bumper_rotated_clockwise(self):
+        """
+        Test that when the ball is dropped on the bumper, it bounces off
+        and moves to the right and continues to fall downwards
+        """
+        self.bumper = pypinball.domain.RectangleBumper(
+            uid=1, position=(100, 150), angle=1.0, size=(100, 25)
+        )
+        self.physics.add_bumper(bumper=self.bumper)
+
+        for _ in range(100):
+            self.physics.update()
+
+        state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertGreater(
+            state.position[0],
+            self.ball.position[0],
+            msg="Ball position Y component has not increased",
+        )
+
+        self.assertGreater(
+            state.position[1],
+            self.ball.position[1],
+            msg="Ball has not moved right after collision",
+        )
+
+    def test_ball_bounces_left_when_bumper_rotated_counter_clockwise(self):
+        """
+        Test that when the ball is dropped on the bumper, it bounces off
+        and moves to the left and continues to fall downwards
+        """
+        self.bumper = pypinball.domain.RectangleBumper(
+            uid=1, position=(100, 150), angle=-1.0, size=(100, 25)
+        )
+        self.physics.add_bumper(bumper=self.bumper)
+
+        for _ in range(100):
+            self.physics.update()
+
+        state = self.physics.get_ball_state(uid=self.ball.uid)
+
+        self.assertLess(
+            state.position[0],
+            self.ball.position[0],
+            msg="Ball has not moved right after collision",
+        )
+
+        self.assertGreater(
+            state.position[1],
+            self.ball.position[1],
+            msg="Ball position Y component has not increased",
+        )
+
+    def test_physics_reports_collision_between_ball_and_bumper(self):
+        self.bumper = pypinball.domain.RectangleBumper(
+            uid=1, position=(100, 150), angle=1.0, size=(100, 25)
+        )
+        self.physics.add_bumper(bumper=self.bumper)
+
+        exp = [
+            pypinball.domain.Collision(
+                type=pypinball.domain.CollisionType.BALL_AND_BUMPER,
+                ball_id=0,
+                other_id=1,
+            )
+        ]
+
+        collisions = list()
+        for _ in range(100):
+            self.physics.update()
+            collisions += self.physics.get_collisions()
+
+        self.assertListEqual(
+            collisions, exp, msg="No collisions reported between ball and bummper"
+        )

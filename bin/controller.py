@@ -48,6 +48,9 @@ GAME_CONFIG = pypinball.GameConfig(
         pypinball.Sounds.COLLISION_BALL_BALL: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
         ),
+        pypinball.Sounds.COLLISION_BALL_BUMPER: pypinball.resources.get_audio_resource_path(
+            filename="Bounce4.wav"
+        ),
         pypinball.Sounds.COLLISION_BALL_FLIPPER: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
         ),
@@ -73,6 +76,11 @@ input_interface = pypinball.inputs.KeyboardInput()
 
 physics_interface = pypinball.physics.PymunkPhysics()
 physics_interface.set_debug_display(screen=display_interface._screen)
+physics_interface.add_bumper(
+    bumper=pypinball.domain.RectangleBumper(
+        uid=1000, position=(100, 100), size=(100, 25), angle=1
+    )
+)
 
 controller = pypinball.Controller(
     audio_interface=audio_interface,

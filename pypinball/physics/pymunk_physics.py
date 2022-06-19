@@ -45,6 +45,16 @@ class PymunkEntity:
 
 
 @dataclasses.dataclass
+class PymunkBumper:
+    uid: int
+    body: pymunk.Body
+    shape: pymunk.Shape
+
+    def add_to_space(self, space: pymunk.Space) -> None:
+        space.add(self.body, self.shape)
+
+
+@dataclasses.dataclass
 class PymunkFlipper:
     id: int
     actuation_direction: int
@@ -104,6 +114,34 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     shape.elasticity = 0.95
     shape.collision_type = CollisionEntity.BALL
     return PymunkEntity(id=ball.uid, body=body, shape=shape)
+
+
+def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
+    mass = 0.1
+    radius = 15
+    inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
+    body = pymunk.Body(mass=mass, moment=inertia, body_type=pymunk.Body.STATIC)
+    body.position = bumper.position
+    shape = pymunk.Circle(body=body, radius=20)
+    shape.elasticity = 1.2
+    shape.collision_type = CollisionEntity.BUMPER
+    return PymunkBumper(uid=bumper.uid, body=body, shape=shape)
+
+
+def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
+    w, h = bumper.size
+    mass = 0.1
+    inertia = pymunk.moment_for_box(mass=mass, size=bumper.size)
+    body = pymunk.Body(mass=mass, moment=inertia, body_type=pymunk.Body.STATIC)
+    body.position = bumper.position
+    body.angle = bumper.angle
+    shape = pymunk.Poly(
+        body=body,
+        vertices=[(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)],
+    )
+    shape.elasticity = 1.2
+    shape.collision_type = CollisionEntity.BUMPER
+    return PymunkBumper(uid=bumper.uid, body=body, shape=shape)
 
 
 def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
@@ -192,7 +230,7 @@ class CollisionsHandler:
 class PymunkPhysics(PhysicsInterface):
     def __init__(self):
         self._balls = dict()
-        self._bumpers = list()
+        self._bumpers = dict()
         self._flippers = dict()
         self._walls = dict()
 
@@ -221,6 +259,17 @@ class PymunkPhysics(PhysicsInterface):
         entity = create_pymunk_ball(ball=ball)
         entity.add_to_space(space=self._space)
         self._balls[ball.uid] = entity
+        return True
+
+    def add_bumper(self, bumper: domain.Bumper) -> bool:
+        if bumper.uid in self._bumpers.keys():
+            return False
+        if isinstance(bumper, domain.RoundBumper):
+            entity = create_round_bumper(bumper=bumper)
+        else:
+            entity = create_rectangle_bumper(bumper=bumper)
+        entity.add_to_space(space=self._space)
+        self._bumpers[bumper.uid] = entity
         return True
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
@@ -284,6 +333,13 @@ class PymunkPhysics(PhysicsInterface):
                         continue
                     other_id = uid
                     collision_type = domain.CollisionType.BALL_AND_FLIPPER
+
+            elif other_shape.collision_type == CollisionEntity.BUMPER:
+                for uid, bumper in self._bumpers.items():
+                    if other_shape != bumper.shape:
+                        continue
+                    other_id = uid
+                    collision_type = domain.CollisionType.BALL_AND_BUMPER
 
             if ball_id == -1 or other_id == -1 or collision_type == -1:
                 continue

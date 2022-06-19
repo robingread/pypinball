@@ -31,6 +31,18 @@ class PhysicsInterface(typing.Protocol):
             bool: ``True`` if the ball was added else ``False``.
         """
 
+    def add_bumper(self, bumper: domain.Bumper) -> bool:
+        """
+        Add a bumper to the Physics simulation.
+
+
+        Args:
+            bumper (Bumper): Bumper instance.
+
+        Returns:
+            bool: ``True`` is the bumper was added else ``False``.
+        """
+
     def add_flipper(self, flipper: domain.Flipper) -> bool:
         """
         Addd a flipper to the Physics simulation
