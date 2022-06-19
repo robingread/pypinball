@@ -334,6 +334,13 @@ class PymunkPhysics(PhysicsInterface):
                     other_id = uid
                     collision_type = domain.CollisionType.BALL_AND_FLIPPER
 
+            elif other_shape.collision_type == CollisionEntity.BUMPER:
+                for uid, bumper in self._bumpers.items():
+                    if other_shape != bumper.shape:
+                        continue
+                    other_id = uid
+                    collision_type = domain.CollisionType.BALL_AND_BUMPER
+
             if ball_id == -1 or other_id == -1 or collision_type == -1:
                 continue
 
