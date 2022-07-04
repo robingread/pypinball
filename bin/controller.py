@@ -81,6 +81,12 @@ physics_interface.add_bumper(
         uid=1000, position=(100, 100), size=(100, 25), angle=1
     )
 )
+physics_interface.add_bumper(
+    bumper=pypinball.domain.RoundBumper(uid=1001, position=(200, 100), radius=15)
+)
+physics_interface.add_bumper(
+    bumper=pypinball.domain.RoundBumper(uid=1002, position=(250, 250), radius=15)
+)
 
 controller = pypinball.Controller(
     audio_interface=audio_interface,
@@ -92,6 +98,20 @@ controller = pypinball.Controller(
 
 controller.setup()
 
+RUN = True
+
+
+def shutdown_cb():
+    global RUN
+    RUN = False
+
+
+display_interface.window_close.register_handler(func=shutdown_cb)
 logging.info("Starting main loop")
 for _ in range(10000):
     controller.tick()
+    if not RUN:
+        print("exiting")
+        break
+
+display_interface.close()
