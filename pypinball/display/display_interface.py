@@ -1,7 +1,11 @@
 import typing
+from ..event import Event
 
 
 class DisplayInterface(typing.Protocol):
+
+    window_close: Event
+
     def clear(self) -> None:
         """
         Clear the display window.
