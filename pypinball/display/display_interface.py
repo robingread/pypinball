@@ -5,6 +5,14 @@ class DisplayInterface(typing.Protocol):
     def clear(self) -> None:
         """ """
 
+    def close(self) -> None:
+        """
+        Close the display window.
+
+        Returns:
+            None
+        """
+
     def display_image(self, path: str) -> None:
         """ """
 
