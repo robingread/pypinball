@@ -3,7 +3,12 @@ import typing
 
 class DisplayInterface(typing.Protocol):
     def clear(self) -> None:
-        """ """
+        """
+        Clear the display window.
+
+        Returns:
+            None
+        """
 
     def close(self) -> None:
         """
