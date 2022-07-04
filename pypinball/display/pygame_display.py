@@ -1,5 +1,6 @@
 import pygame
 from .display_interface import DisplayInterface
+from ..event import Event
 
 
 class PyGameDisplay(DisplayInterface):
@@ -7,6 +8,7 @@ class PyGameDisplay(DisplayInterface):
         pygame.init()
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
+        self.window_close = Event()
 
     def clear(self) -> None:
         self._screen.fill(pygame.Color("white"))
@@ -24,3 +26,8 @@ class PyGameDisplay(DisplayInterface):
         pygame.display.flip()
         self._clock.tick(50)
         pygame.display.set_caption("fps: " + str(self._clock.get_fps()))
+
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                self.window_close.emit()
+                break
