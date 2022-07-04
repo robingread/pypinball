@@ -11,6 +11,9 @@ class PyGameDisplay(DisplayInterface):
     def clear(self) -> None:
         self._screen.fill(pygame.Color("white"))
 
+    def close(self) -> None:
+        pygame.quit()
+
     def draw_ball(self, pos: list, radius: int) -> None:
         colour = (0, 2, 128)
         pygame.draw.circle(
