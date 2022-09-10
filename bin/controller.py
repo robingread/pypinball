@@ -95,23 +95,7 @@ controller = pypinball.Controller(
     input_interface=input_interface,
     physics_interface=physics_interface,
 )
-
 controller.setup()
-
-RUN = True
-
-
-def shutdown_cb():
-    global RUN
-    RUN = False
-
-
-display_interface.window_close.register_handler(func=shutdown_cb)
-logging.info("Starting main loop")
-for _ in range(10000):
-    controller.tick()
-    if not RUN:
-        print("exiting")
-        break
+controller.run()
 
 display_interface.close()

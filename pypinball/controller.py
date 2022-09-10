@@ -49,6 +49,8 @@ class Controller:
         self._physics = physics_interface
         self._id_generator = ObjectIdGenerator()
 
+        self._should_quit = False
+
     def setup(self) -> bool:
         """
         Setup the controller to prepare before running/ticking. This method
@@ -58,10 +60,20 @@ class Controller:
             bool: Whether the setup was fully successful.
         """
         logging.debug("Setting up controller")
+
+        self._should_quit = False
         ret = list()
         ret += [self._physics.add_flipper(f) for f in self._config.flippers]
         ret += [self._physics.add_wall(w) for w in self._config.walls]
         return all(ret)
+
+    def stop(self) -> None:
+        self._should_quit = True
+
+    def run(self) -> None:
+        logging.info("Starting main loop")
+        while not self._should_quit:
+            self.tick()
 
     def tick(self) -> None:
         logging.debug("Ticking controller")
