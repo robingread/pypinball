@@ -13,7 +13,7 @@ Install dependencies:
 ./scripts/install-deps.sh
 ```
 
-To develop, setup the virtualenv:
+To start development first setup the `virtualenv`:
 
 ```bash
 ./scripts/setup-venv.sh
@@ -26,6 +26,13 @@ To run the testing suite:
 ```bash
 ./scripts/ci-test.sh
 ```
+
+This test suite will:
+
+- Remove all installed instances of `pypinball`.
+- Check that the code adheres to the [`black`](https://black.readthedocs.io/en/stable/) formatting standard.
+- Run all unit-tests in the `test` directory.
+- Build all documentation locally in the `docs` directory.
 
 ## Documentation
 

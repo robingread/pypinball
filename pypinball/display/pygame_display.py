@@ -1,10 +1,12 @@
 import pygame
 from .display_interface import DisplayInterface
 from ..event import Event
+from .. import events
 
 
 class PyGameDisplay(DisplayInterface):
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, game_events: events.GameEventPublisher):
+        self._game_events = game_events
         pygame.init()
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
@@ -29,5 +31,5 @@ class PyGameDisplay(DisplayInterface):
 
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
-                self.window_close.emit()
+                self._game_events.emit(event=events.GameEvents.QUIT)
                 break

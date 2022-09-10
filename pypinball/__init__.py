@@ -1,6 +1,7 @@
 from . import audio
 from . import display
 from . import domain
+from . import events
 from . import inputs
 from . import physics
 from . import resources

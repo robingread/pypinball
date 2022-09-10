@@ -26,17 +26,6 @@ GAME_CONFIG = pypinball.GameConfig(
                 actuation_direction=-1,
             ),
         ),
-        pypinball.domain.Flipper(
-            uid=3,
-            config=pypinball.domain.FlipperConfig(
-                position=(400, 400),
-                angle=3.141,
-                length=25,
-                actuation_angle=1.0,
-                actuation_button=pypinball.Buttons.RIGHT,
-                actuation_direction=-1,
-            ),
-        ),
     ],
     walls=[
         pypinball.domain.Wall(
@@ -64,14 +53,28 @@ GAME_CONFIG = pypinball.GameConfig(
             filename="Bounce4.wav"
         ),
     },
+    event_to_sounds={
+        pypinball.events.GameEvents.BALL_LAUNCHED: pypinball.resources.get_audio_resource_path(
+            filename="Bounce4.wav"
+        ),
+    },
 )
 
 logger = logging.getLogger(name="pypinball")
 logger.setLevel(level=logging.DEBUG)
 logger.info("Starting game")
 
+events_pub = pypinball.events.GameEventPublisher()
+
 audio_interface = pypinball.audio.SimpleAudio()
-display_interface = pypinball.display.PyGameDisplay(width=450, height=650)
+audio_event_handler = pypinball.audio.AudioGameEventHandler(
+    interface=audio_interface, events_to_sound=GAME_CONFIG.event_to_sounds
+)
+events_pub.subscribe(audio_event_handler.update)
+
+display_interface = pypinball.display.PyGameDisplay(
+    width=450, height=650, game_events=events_pub
+)
 input_interface = pypinball.inputs.KeyboardInput()
 
 physics_interface = pypinball.physics.PymunkPhysics()
@@ -94,24 +97,9 @@ controller = pypinball.Controller(
     display_interface=display_interface,
     input_interface=input_interface,
     physics_interface=physics_interface,
+    event_publisher=events_pub,
 )
-
 controller.setup()
-
-RUN = True
-
-
-def shutdown_cb():
-    global RUN
-    RUN = False
-
-
-display_interface.window_close.register_handler(func=shutdown_cb)
-logging.info("Starting main loop")
-for _ in range(10000):
-    controller.tick()
-    if not RUN:
-        print("exiting")
-        break
+controller.run()
 
 display_interface.close()
