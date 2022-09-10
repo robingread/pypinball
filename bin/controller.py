@@ -26,17 +26,6 @@ GAME_CONFIG = pypinball.GameConfig(
                 actuation_direction=-1,
             ),
         ),
-        pypinball.domain.Flipper(
-            uid=3,
-            config=pypinball.domain.FlipperConfig(
-                position=(400, 400),
-                angle=3.141,
-                length=25,
-                actuation_angle=1.0,
-                actuation_button=pypinball.Buttons.RIGHT,
-                actuation_direction=-1,
-            ),
-        ),
     ],
     walls=[
         pypinball.domain.Wall(
