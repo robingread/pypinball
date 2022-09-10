@@ -64,14 +64,25 @@ GAME_CONFIG = pypinball.GameConfig(
             filename="Bounce4.wav"
         ),
     },
+    event_to_sounds={
+        pypinball.events.GameEvents.BALL_LAUNCHED: pypinball.resources.get_audio_resource_path(
+            filename="Bounce4.wav"
+        ),
+    },
 )
 
 logger = logging.getLogger(name="pypinball")
 logger.setLevel(level=logging.DEBUG)
 logger.info("Starting game")
 
+events_pub = pypinball.events.GameEventPublisher()
+
 audio_interface = pypinball.audio.SimpleAudio()
-display_interface = pypinball.display.PyGameDisplay(width=450, height=650)
+audio_event_handler = pypinball.audio.AudioGameEventHandler(
+    interface=audio_interface, events_to_sound=GAME_CONFIG.event_to_sounds
+)
+events_pub.subscribe(audio_event_handler.update)
+
 input_interface = pypinball.inputs.KeyboardInput()
 
 physics_interface = pypinball.physics.PymunkPhysics()
@@ -94,6 +105,7 @@ controller = pypinball.Controller(
     display_interface=display_interface,
     input_interface=input_interface,
     physics_interface=physics_interface,
+    event_publisher=events_pub,
 )
 controller.setup()
 controller.run()

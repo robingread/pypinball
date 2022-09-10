@@ -3,6 +3,7 @@ import typing
 from . import audio
 from . import domain
 from . import display
+from . import events
 from . import inputs
 from . import physics
 from . import utils
@@ -41,6 +42,7 @@ class Controller:
         config: GameConfig,
         input_interface: inputs.InputInterface,
         physics_interface: physics.PhysicsInterface,
+        event_publisher: events.GameEventPublisher,
     ):
         self._audio = audio_interface
         self._display = display_interface
@@ -48,6 +50,7 @@ class Controller:
         self._input = input_interface
         self._physics = physics_interface
         self._id_generator = ObjectIdGenerator()
+        self._event_publisher = event_publisher
 
         self._should_quit = False
 
@@ -92,11 +95,7 @@ class Controller:
             ball = domain.Ball(uid=uid, position=(400, 500))
             self._physics.add_ball(ball=ball)
             self._physics.launch_ball(uid=ball.uid)
-            utils.play_sounds(
-                sounds=[audio.Sounds.BALL_LAUNCH],
-                sounds_to_files=self._config.sound_to_file_map,
-                audio=self._audio,
-            )
+            self._event_publisher.emit(event=events.GameEvents.BALL_LAUNCHED)
 
         self._display.clear()
         self._physics.update()
@@ -110,12 +109,7 @@ class Controller:
         sounds += utils.map_collision_type_to_sound_type(
             collisions=self._physics.get_collisions(), sound_map=COLLISION_TO_AUDIO_MAP
         )
-        utils.play_sounds(
-            sounds=sounds,
-            sounds_to_files=self._config.sound_to_file_map,
-            audio=self._audio,
-        )
-
+        self._handle_sounds(sounds=sounds)
         self._handle_lost_balls()
 
     def _handle_sounds(self, sounds: typing.List[audio.Sounds]) -> None:
