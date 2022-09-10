@@ -8,7 +8,8 @@ class TestBumper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
     def test_add_bumper(self):
         """

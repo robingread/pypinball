@@ -77,7 +77,7 @@ display_interface = pypinball.display.PyGameDisplay(
 )
 input_interface = pypinball.inputs.KeyboardInput()
 
-physics_interface = pypinball.physics.PymunkPhysics()
+physics_interface = pypinball.physics.PymunkPhysics(event_pub=events_pub)
 physics_interface.set_debug_display(screen=display_interface._screen)
 physics_interface.add_bumper(
     bumper=pypinball.domain.RectangleBumper(

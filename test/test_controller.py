@@ -24,7 +24,8 @@ class TestBallDropInEmptyScene(unittest.TestCase):
     def setUp(self) -> None:
         self.audio = moc_interfaces.MocAudio()
         self.config = MOC_SOUND_FILE_MAP
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.events = pypinball.events.GameEventPublisher()
 
         self.ball = pypinball.domain.Ball(uid=0, position=(20.0, 0.0))
@@ -99,7 +100,8 @@ class TestDropBallOnFlipper(unittest.TestCase):
         self.audio = moc_interfaces.MocAudio()
         self.config = MOC_SOUND_FILE_MAP
         self.input = moc_interfaces.MocInputInterface()
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.events = pypinball.events.GameEventPublisher()
 
         self.ball = pypinball.domain.Ball(uid=0, position=(20.0, 0.0))
@@ -159,7 +161,8 @@ class TestDropBallOnWall(unittest.TestCase):
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.input = moc_interfaces.MocInputInterface()
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.events = pypinball.events.GameEventPublisher()
 
         self.ball = pypinball.domain.Ball(uid=0, position=(50, 50))
@@ -200,7 +203,8 @@ class TestDropBallOnBumper(unittest.TestCase):
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.input = moc_interfaces.MocInputInterface()
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.events = pypinball.events.GameEventPublisher()
 
         self.ball = pypinball.domain.Ball(uid=0, position=(50, 50))

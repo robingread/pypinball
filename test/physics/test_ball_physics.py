@@ -9,7 +9,8 @@ class TestBallGeneration(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
     def test_add_ball(self):
         """
@@ -54,7 +55,8 @@ class TestRemoveBall(unittest.TestCase):
 
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(50.0, 50.0))
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
 
     def test_remove_ball_success(self):
@@ -84,7 +86,10 @@ class TestBallLaunch(unittest.TestCase):
 
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(100, 100))
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
 
     def test_launch_ball(self):
@@ -126,7 +131,8 @@ class TestGravity(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
     def test_default_gravity(self):
         """
@@ -158,7 +164,8 @@ class TestWallGeneration(unittest.TestCase):
     """
 
     def setUp(self):
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
     def test_add_wall_section(self):
         """
@@ -192,7 +199,8 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
     def setUp(self):
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.wall = pypinball.domain.Wall(uid=1, points=[(75.0, 50.0), (125.0, 100.0)])
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
         self.physics.add_wall(wall=self.wall)
 
@@ -245,7 +253,8 @@ class TestBallDropInEmptyScene(unittest.TestCase):
 
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
 
     def test_ball_drop_downwards(self):
@@ -294,7 +303,8 @@ class TestBallDropsOnLaunchedBall(unittest.TestCase):
     def setUp(self) -> None:
         self.ball_1 = pypinball.domain.Ball(uid=0, position=(100.0, 100.0))
         self.ball_2 = pypinball.domain.Ball(uid=1, position=(100.0, 0.0))
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball_1)
         self.physics.add_ball(ball=self.ball_2)
         self.physics.launch_ball(uid=self.ball_1.uid)
@@ -341,7 +351,8 @@ class TestBallDropsOnFlipper(unittest.TestCase):
                 actuation_button=pypinball.domain.Buttons.LEFT,
             ),
         )
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
         self.physics.add_flipper(flipper=self.flipper)
 
@@ -394,7 +405,8 @@ class TestBallDroppedOnRoundBumper(unittest.TestCase):
     def setUp(self):
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.bumper = pypinball.domain.RoundBumper(uid=1, radius=10, position=(90, 150))
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
         self.physics.add_bumper(bumper=self.bumper)
 
@@ -442,7 +454,8 @@ class TestBallDroppedOnRoundBumper(unittest.TestCase):
 class TestBallDroppedOnRectangleBumper(unittest.TestCase):
     def setUp(self):
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
 
     def test_ball_bounces_right_when_bumper_rotated_clockwise(self):

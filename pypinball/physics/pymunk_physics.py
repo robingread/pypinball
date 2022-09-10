@@ -7,6 +7,7 @@ import pymunk.pygame_util
 import random
 from .physics_interface import PhysicsInterface
 from .. import domain
+from .. import events
 
 
 class CollisionEntity(enum.IntEnum):
@@ -231,11 +232,12 @@ class CollisionsHandler:
 
 
 class PymunkPhysics(PhysicsInterface):
-    def __init__(self):
+    def __init__(self, event_pub: events.GameEventPublisher):
         self._balls = dict()
         self._bumpers = dict()
         self._flippers = dict()
         self._walls = dict()
+        self._event_pub = event_pub
 
         self._collision_handler = CollisionsHandler()
 

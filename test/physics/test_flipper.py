@@ -45,7 +45,8 @@ class TestAngleTracker(unittest.TestCase):
 
 class TestPymunkFlipper(unittest.TestCase):
     def setUp(self):
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
         self.left_flipper = pypinball.domain.Flipper(
             uid=0,
