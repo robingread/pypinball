@@ -83,6 +83,9 @@ audio_event_handler = pypinball.audio.AudioGameEventHandler(
 )
 events_pub.subscribe(audio_event_handler.update)
 
+display_interface = pypinball.display.PyGameDisplay(
+    width=450, height=650, game_events=events_pub
+)
 input_interface = pypinball.inputs.KeyboardInput()
 
 physics_interface = pypinball.physics.PymunkPhysics()

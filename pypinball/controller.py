@@ -66,6 +66,7 @@ class Controller:
 
         self._should_quit = False
         ret = list()
+        ret += [self._event_publisher.subscribe(callback=self._handle_game_events)]
         ret += [self._physics.add_flipper(f) for f in self._config.flippers]
         ret += [self._physics.add_wall(w) for w in self._config.walls]
         return all(ret)
@@ -136,3 +137,7 @@ class Controller:
             self._physics.remove_ball(uid=state.uid)
 
         self._handle_sounds(sounds=list(sounds))
+
+    def _handle_game_events(self, event: events.GameEvents) -> None:
+        if event in [events.GameEvents.QUIT]:
+            self.stop()
