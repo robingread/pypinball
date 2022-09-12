@@ -72,9 +72,22 @@ class Controller:
         return all(ret)
 
     def stop(self) -> None:
+        """
+        Stop running the controller.
+
+        Returns:
+            None
+        """
+        logging.info("Stopping the controller main loop")
         self._should_quit = True
 
     def run(self) -> None:
+        """
+        Start running the controller main loop.
+
+        Returns:
+            None
+        """
         logging.info("Starting main loop")
         while not self._should_quit:
             self.tick()
