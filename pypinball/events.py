@@ -18,6 +18,19 @@ class GameEvents(enum.Enum):
     QUIT = enum.auto()
 
 
+# TODO: Add unit-tests for this class.
+class MockEventHandler:
+    def __init__(self):
+        self._events = list()
+
+    @property
+    def events(self) -> typing.List[GameEvents]:
+        return self._events
+
+    def handle_event(self, event: GameEvents) -> None:
+        self._events.append(event)
+
+
 class GameEventPublisher:
     """
     Class for publishing different game events (see the GameEvent enums).

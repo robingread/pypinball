@@ -72,9 +72,22 @@ class Controller:
         return all(ret)
 
     def stop(self) -> None:
+        """
+        Stop running the controller.
+
+        Returns:
+            None
+        """
+        logging.info("Stopping the controller main loop")
         self._should_quit = True
 
     def run(self) -> None:
+        """
+        Start running the controller main loop.
+
+        Returns:
+            None
+        """
         logging.info("Starting main loop")
         while not self._should_quit:
             self.tick()
@@ -96,7 +109,6 @@ class Controller:
             ball = domain.Ball(uid=uid, position=(400, 500))
             self._physics.add_ball(ball=ball)
             self._physics.launch_ball(uid=ball.uid)
-            self._event_publisher.emit(event=events.GameEvents.BALL_LAUNCHED)
 
         self._display.clear()
         self._physics.update()
@@ -106,9 +118,6 @@ class Controller:
         sounds = list()
         sounds += utils.map_button_state_to_sound_type(
             input_state=input_state, sound_map=BUTTON_AUDIO_MAP
-        )
-        sounds += utils.map_collision_type_to_sound_type(
-            collisions=self._physics.get_collisions(), sound_map=COLLISION_TO_AUDIO_MAP
         )
         self._handle_sounds(sounds=sounds)
         self._handle_lost_balls()
