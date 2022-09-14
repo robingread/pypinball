@@ -18,7 +18,6 @@ class GameEvents(enum.Enum):
     QUIT = enum.auto()
 
 
-# TODO: Add unit-tests for this class.
 class MockEventHandler:
     """
     Mock Event Handler class mainly intended for testing purposes. Internally
