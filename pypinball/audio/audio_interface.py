@@ -15,6 +15,7 @@ class AudioInterface(typing.Protocol):
     def play_sound_file(self, file_path: str) -> bool:
         """
         Play a sound file.
+
         Args:
             file_path (str): Full system path to the audio file.
 
