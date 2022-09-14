@@ -1,6 +1,5 @@
 import pygame
 from .display_interface import DisplayInterface
-from ..event import Event
 from .. import events
 
 
@@ -10,7 +9,6 @@ class PyGameDisplay(DisplayInterface):
         pygame.init()
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
-        self.window_close = Event()
 
     def clear(self) -> None:
         self._screen.fill(pygame.Color("white"))

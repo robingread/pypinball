@@ -9,7 +9,6 @@ from .audio import AudioInterface
 from .audio import Sounds
 from .controller import Controller
 from .display import DisplayInterface
-from .event import Event
 from .domain import Buttons
 from .game_config import GameConfig
 from .inputs import InputInterface
