@@ -20,14 +20,44 @@ class GameEvents(enum.Enum):
 
 # TODO: Add unit-tests for this class.
 class MockEventHandler:
+    """
+    Mock Event Handler class mainly intended for testing purposes. Internally
+    this class keeps a record of all the events that have been received.
+    """
+
     def __init__(self):
         self._events = list()
 
     @property
     def events(self) -> typing.List[GameEvents]:
+        """
+        Get the list of received events.
+
+        Returns:
+            list: Events.
+        """
         return self._events
 
+    def clear(self) -> None:
+        """
+        Clear the list of recorded events.
+
+        Returns:
+            None
+        """
+        self._events.clear()
+
     def handle_event(self, event: GameEvents) -> None:
+        """
+        Handle an event. This method will append the event to the internal
+        list.
+
+        Args:
+            event (GameEvents): Event.
+
+        Returns:
+            None
+        """
         self._events.append(event)
 
 
@@ -41,6 +71,12 @@ class GameEventPublisher:
 
     @property
     def num_subs(self) -> int:
+        """
+        Get the number of subscribed callback functions.
+
+        Returns:
+            int: Number of callbacks.
+        """
         return len(self._callbacks)
 
     def emit(self, event: GameEvents) -> None:
