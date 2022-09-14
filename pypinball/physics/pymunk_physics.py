@@ -213,21 +213,64 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
     return PymunkWall(id=wall.uid, segment_bodies=segments)
 
 
-class CollisionsHandler:
-    def __init__(self):
-        self._collisions = list()
+class CollisionHandler:
+    def __init__(
+        self,
+        event_pub: events.GameEventPublisher,
+        space: pymunk.Space,
+        balls: typing.Dict[int, PymunkEntity],
+        bumpers: typing.Dict[int, PymunkBumper],
+        flippers: typing.Dict[int, PymunkFlipper],
+        walls: typing.Dict[int, PymunkWall],
+    ):
+        self._balls = balls
+        self._bumpers = bumpers
+        self._flippers = flippers
+        self._walls = walls
 
-    @property
-    def collisions(self) -> typing.List[typing.Tuple[pymunk.Shape, pymunk.Shape]]:
-        return self._collisions
+        self._event_pub = event_pub
+        self._space = space
 
-    def clear(self) -> None:
-        self._collisions.clear()
+        handler = self._space.add_wildcard_collision_handler(
+            collision_type_a=CollisionEntity.BALL
+        )
+        handler.begin = self.handle_collision
 
     def handle_collision(
         self, arbiter: pymunk.Arbiter, space: pymunk.Space, data: dict
     ) -> bool:
-        self._collisions.append(arbiter.shapes)
+        other_shape = arbiter.shapes[1]
+
+        if other_shape.collision_type == CollisionEntity.WALL:
+            for uid, wall in self._walls.items():
+                for segment in wall.segment_bodies:
+                    if segment == other_shape:
+                        self._event_pub.emit(
+                            event=events.GameEvents.COLLISION_BALL_WALL
+                        )
+                        return True
+
+        elif other_shape.collision_type == CollisionEntity.BALL:
+            for uid, ball in self._balls.items():
+                if other_shape != ball.shape:
+                    continue
+                self._event_pub.emit(event=events.GameEvents.COLLISION_BALL_BALL)
+                return True
+
+        elif other_shape.collision_type == CollisionEntity.FLIPPER:
+            for uid, flipper in self._flippers.items():
+                if other_shape != flipper.flipper_shape:
+                    continue
+                self._event_pub.emit(event=events.GameEvents.COLLISION_BALL_FLIPPER)
+                return True
+
+        elif other_shape.collision_type == CollisionEntity.BUMPER:
+            for uid, bumper in self._bumpers.items():
+                if other_shape != bumper.shape:
+                    continue
+                self._event_pub.emit(event=events.GameEvents.COLLISION_BALL_BUMPER)
+                return True
+
         return True
 
 
@@ -239,16 +282,19 @@ class PymunkPhysics(PhysicsInterface):
         self._walls = dict()
         self._event_pub = event_pub
 
-        self._collision_handler = CollisionsHandler()
-
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
-        handler = self._space.add_wildcard_collision_handler(
-            collision_type_a=CollisionEntity.BALL
-        )
-        handler.begin = self._collision_handler.handle_collision
 
         self._draw_options = None
+
+        self._collision_handler = CollisionHandler(
+            event_pub=event_pub,
+            space=self._space,
+            balls=self._balls,
+            bumpers=self._bumpers,
+            flippers=self._flippers,
+            walls=self._walls,
+        )
 
     def actuate_flipper(self, uid: int) -> bool:
         try:
@@ -297,68 +343,6 @@ class PymunkPhysics(PhysicsInterface):
         self._walls[wall.uid] = entity
         return True
 
-    def get_collisions(self) -> typing.List[domain.Collision]:
-        ret = list()
-        ball_collisions = list()
-
-        for collision in self._collision_handler.collisions:
-            ball_shape = collision[0]
-            other_shape = collision[1]
-            collision_type = -1
-
-            ball_id = -1
-            other_id = -1
-
-            for uid, ball in self._balls.items():
-                if ball_shape == ball.shape:
-                    ball_id = uid
-
-            if collision[1].collision_type == CollisionEntity.WALL:
-                for uid, wall in self._walls.items():
-                    for segment in wall.segment_bodies:
-                        if segment == other_shape:
-                            other_id = uid
-                            collision_type = domain.CollisionType.BALL_AND_WALL
-
-            elif other_shape.collision_type == CollisionEntity.BALL:
-                for uid, ball in self._balls.items():
-                    if other_shape != ball.shape:
-                        continue
-                    o = uid
-                    t = {ball_id, o}
-                    if t in ball_collisions:
-                        continue
-                    other_id = uid
-                    ball_collisions.append(t)
-                    collision_type = domain.CollisionType.BALL_AND_BALL
-
-            elif other_shape.collision_type == CollisionEntity.FLIPPER:
-                for uid, flipper in self._flippers.items():
-                    if other_shape != flipper.flipper_shape:
-                        continue
-                    other_id = uid
-                    collision_type = domain.CollisionType.BALL_AND_FLIPPER
-
-            elif other_shape.collision_type == CollisionEntity.BUMPER:
-                for uid, bumper in self._bumpers.items():
-                    if other_shape != bumper.shape:
-                        continue
-                    other_id = uid
-                    collision_type = domain.CollisionType.BALL_AND_BUMPER
-
-            if ball_id == -1 or other_id == -1 or collision_type == -1:
-                continue
-
-            ret.append(
-                domain.Collision(
-                    type=collision_type,
-                    ball_id=ball_id,
-                    other_id=other_id,
-                )
-            )
-
-        return ret
-
     def get_ball_state(self, uid: int) -> domain.BallState:
         if uid not in self._balls.keys():
             raise KeyError(f"Unknown ball id: {uid}")
@@ -380,6 +364,7 @@ class PymunkPhysics(PhysicsInterface):
             logging.warning(msg)
             return False
         self._balls[uid].apply_impulse(direction=(0.0, -1.0))
+        self._event_pub.emit(event=events.GameEvents.BALL_LAUNCHED)
         return True
 
     def remove_ball(self, uid: int) -> bool:
@@ -401,7 +386,6 @@ class PymunkPhysics(PhysicsInterface):
 
     def update(self) -> None:
         logging.debug("Updating Pymunk Physics")
-        self._collision_handler.clear()
 
         if self._draw_options is not None:
             self._space.debug_draw(options=self._draw_options)

@@ -204,12 +204,16 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
         self.physics.add_ball(ball=self.ball)
         self.physics.add_wall(wall=self.wall)
 
+        self.event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=self.event_handler.handle_event)
+
+        for _ in range(100):
+            self.physics.update()
+
     def test_ball_has_moved_to_right_after_bounce(self):
         """
         Test that after hitting the wall, the wall bounces to the right.
         """
-        for _ in range(100):
-            self.physics.update()
         ball_state = self.physics.get_ball_state(uid=self.ball.uid)
 
         self.assertGreater(
@@ -228,21 +232,12 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
         Test that the PymunkPhysics call registers a collision between the
         ball and the wall.
         """
-        exp = [
-            pypinball.domain.Collision(
-                ball_id=self.ball.uid,
-                other_id=self.wall.uid,
-                type=pypinball.domain.CollisionType.BALL_AND_WALL,
-            )
-        ]
-
-        collisions = list()
-        for _ in range(100):
-            self.physics.update()
-            collisions += self.physics.get_collisions()
+        exp = [pypinball.events.GameEvents.COLLISION_BALL_WALL]
 
         self.assertListEqual(
-            collisions, exp, msg="No collisions reported between wall and ball"
+            self.event_handler.events,
+            exp,
+            msg="No collisions reported between wall and ball",
         )
 
 
@@ -254,15 +249,20 @@ class TestBallDropInEmptyScene(unittest.TestCase):
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.event_pub = pypinball.events.GameEventPublisher()
+
+        self.event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=self.event_handler.handle_event)
+
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
+
+        for _ in range(100):
+            self.physics.update()
 
     def test_ball_drop_downwards(self):
         """
         Test that after hitting the wall, the wall bounces to the right.
         """
-        for _ in range(100):
-            self.physics.update()
         ball_state = self.physics.get_ball_state(uid=self.ball.uid)
 
         self.assertAlmostEqual(
@@ -283,14 +283,10 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         no collisions.
         """
         exp = []
-
-        collisions = list()
-        for _ in range(100):
-            self.physics.update()
-            collisions += self.physics.get_collisions()
-
         self.assertListEqual(
-            collisions, exp, msg="No collisions reported between wall and ball"
+            self.event_handler.events,
+            exp,
+            msg="No collisions reported between wall and ball",
         )
 
 
@@ -304,31 +300,31 @@ class TestBallDropsOnLaunchedBall(unittest.TestCase):
         self.ball_1 = pypinball.domain.Ball(uid=0, position=(100.0, 100.0))
         self.ball_2 = pypinball.domain.Ball(uid=1, position=(100.0, 0.0))
         self.event_pub = pypinball.events.GameEventPublisher()
+
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball_1)
         self.physics.add_ball(ball=self.ball_2)
         self.physics.launch_ball(uid=self.ball_1.uid)
+
+        self.event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=self.event_handler.handle_event)
+
+        for _ in range(100):
+            self.physics.update()
 
     def test_physics_reports_collision_between_ball_and_ball(self):
         """
         Test that the PymunkPhysics call registers a collision between the
         two balls.
         """
+        # This is because we expect two collisions from two balls hitting each other.
         exp = [
-            pypinball.domain.Collision(
-                type=pypinball.domain.CollisionType.BALL_AND_BALL,
-                ball_id=self.ball_1.uid,
-                other_id=self.ball_2.uid,
-            )
+            pypinball.events.GameEvents.COLLISION_BALL_BALL,
+            pypinball.events.GameEvents.COLLISION_BALL_BALL,
         ]
 
-        collisions = list()
-        for _ in range(100):
-            self.physics.update()
-            collisions += self.physics.get_collisions()
-
         self.assertListEqual(
-            collisions, exp, msg="No collisions reported between balls"
+            self.event_handler.events, exp, msg="No collisions reported between balls"
         )
 
 
@@ -352,18 +348,22 @@ class TestBallDropsOnFlipper(unittest.TestCase):
             ),
         )
         self.event_pub = pypinball.events.GameEventPublisher()
+
+        self.event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=self.event_handler.handle_event)
+
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
         self.physics.add_flipper(flipper=self.flipper)
+
+        for _ in range(100):
+            self.physics.update()
 
     def test_ball_bounces_right_after_collision(self):
         """
         Test that the ball has fallen under gravity and that it has moved
         to the right after the collision with the flipper.
         """
-        for _ in range(100):
-            self.physics.update()
-
         state = self.physics.get_ball_state(uid=self.ball.uid)
 
         self.assertGreater(
@@ -383,21 +383,12 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         Test that the Physics interface registers a collision between the
         ball and the flipper.
         """
-        exp = [
-            pypinball.domain.Collision(
-                type=pypinball.domain.CollisionType.BALL_AND_FLIPPER,
-                ball_id=0,
-                other_id=1,
-            )
-        ]
-
-        collisions = list()
-        for _ in range(100):
-            self.physics.update()
-            collisions += self.physics.get_collisions()
+        exp = [pypinball.events.GameEvents.COLLISION_BALL_FLIPPER]
 
         self.assertListEqual(
-            collisions, exp, msg="No collisions reported between ball and flipper"
+            self.event_handler.events,
+            exp,
+            msg="No collision events reported between ball and flipper",
         )
 
 
@@ -406,18 +397,22 @@ class TestBallDroppedOnRoundBumper(unittest.TestCase):
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.bumper = pypinball.domain.RoundBumper(uid=1, radius=10, position=(90, 150))
         self.event_pub = pypinball.events.GameEventPublisher()
+
+        self.event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=self.event_handler.handle_event)
+
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
         self.physics.add_bumper(bumper=self.bumper)
+
+        for _ in range(100):
+            self.physics.update()
 
     def test_ball_bounces_right(self):
         """
         Test that when the ball is dropped on the bumper, it bounces off
         and moves to the right and continues to fall downwards
         """
-        for _ in range(100):
-            self.physics.update()
-
         state = self.physics.get_ball_state(uid=self.ball.uid)
 
         self.assertGreater(
@@ -433,21 +428,12 @@ class TestBallDroppedOnRoundBumper(unittest.TestCase):
         )
 
     def test_physics_reports_collision_between_ball_and_bumper(self):
-        exp = [
-            pypinball.domain.Collision(
-                type=pypinball.domain.CollisionType.BALL_AND_BUMPER,
-                ball_id=0,
-                other_id=1,
-            )
-        ]
-
-        collisions = list()
-        for _ in range(100):
-            self.physics.update()
-            collisions += self.physics.get_collisions()
+        exp = [pypinball.events.GameEvents.COLLISION_BALL_BUMPER]
 
         self.assertListEqual(
-            collisions, exp, msg="No collisions reported between ball and bummper"
+            self.event_handler.events,
+            exp,
+            msg="No collision events reported between ball and bummper",
         )
 
 
@@ -455,6 +441,10 @@ class TestBallDroppedOnRectangleBumper(unittest.TestCase):
     def setUp(self):
         self.ball = pypinball.domain.Ball(uid=0, position=(100.0, 0.0))
         self.event_pub = pypinball.events.GameEventPublisher()
+
+        self.event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=self.event_handler.handle_event)
+
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
 
@@ -518,21 +508,15 @@ class TestBallDroppedOnRectangleBumper(unittest.TestCase):
         )
         self.physics.add_bumper(bumper=self.bumper)
 
-        exp = [
-            pypinball.domain.Collision(
-                type=pypinball.domain.CollisionType.BALL_AND_BUMPER,
-                ball_id=0,
-                other_id=1,
-            )
-        ]
+        exp = [pypinball.events.GameEvents.COLLISION_BALL_BUMPER]
 
-        collisions = list()
         for _ in range(100):
             self.physics.update()
-            collisions += self.physics.get_collisions()
 
         self.assertListEqual(
-            collisions, exp, msg="No collisions reported between ball and bummper"
+            self.event_handler.events,
+            exp,
+            msg="No collisions events reported between ball and bummper",
         )
 
     def test_ball_does_not_hit_removed_bumper(self):
@@ -544,11 +528,11 @@ class TestBallDroppedOnRectangleBumper(unittest.TestCase):
 
         exp = []
 
-        collisions = list()
         for _ in range(100):
             self.physics.update()
-            collisions += self.physics.get_collisions()
 
         self.assertListEqual(
-            collisions, exp, msg="Unexpected collision between ball and bumper"
+            self.event_handler.events,
+            exp,
+            msg="Unexpected collision between ball and bumper",
         )

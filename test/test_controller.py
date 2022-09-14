@@ -13,6 +13,14 @@ MOC_SOUND_FILE_MAP = pypinball.GameConfig(
         pypinball.Sounds.COLLISION_BALL_WALL: "ball_wall_collision",
         pypinball.Sounds.FLIPPER_ACTIVATE: "flipper_activate",
     },
+    event_to_sounds={
+        pypinball.events.GameEvents.BALL_LOST: "ball_lost",
+        pypinball.events.GameEvents.COLLISION_BALL_BALL: "ball_ball_collision",
+        pypinball.events.GameEvents.COLLISION_BALL_BUMPER: "ball_bumper_collision",
+        pypinball.events.GameEvents.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
+        pypinball.events.GameEvents.COLLISION_BALL_WALL: "ball_wall_collision",
+        pypinball.events.GameEvents.FLIPPER_ACTIVATED: "flipper_activate",
+    },
 )
 
 
@@ -26,7 +34,11 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
-        self.events = pypinball.events.GameEventPublisher()
+
+        audio_event_handler = pypinball.audio.AudioGameEventHandler(
+            interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
+        )
+        self.event_pub.subscribe(callback=audio_event_handler.update)
 
         self.ball = pypinball.domain.Ball(uid=0, position=(20.0, 0.0))
         self.physics.add_ball(ball=self.ball)
@@ -37,7 +49,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             display_interface=moc_interfaces.MocDisplayInterface(),
             input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
-            event_publisher=self.events,
+            event_publisher=self.event_pub,
         )
 
     def test_no_audio_played(self):
@@ -102,7 +114,11 @@ class TestDropBallOnFlipper(unittest.TestCase):
         self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
-        self.events = pypinball.events.GameEventPublisher()
+
+        audio_event_handler = pypinball.audio.AudioGameEventHandler(
+            interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
+        )
+        self.event_pub.subscribe(callback=audio_event_handler.update)
 
         self.ball = pypinball.domain.Ball(uid=0, position=(20.0, 0.0))
         self.flipper = pypinball.domain.Flipper(
@@ -126,7 +142,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
             display_interface=moc_interfaces.MocDisplayInterface(),
             input_interface=self.input,
             physics_interface=self.physics,
-            event_publisher=self.events,
+            event_publisher=self.event_pub,
         )
 
     def test_audio_played_with_collision(self):
@@ -163,7 +179,11 @@ class TestDropBallOnWall(unittest.TestCase):
         self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
-        self.events = pypinball.events.GameEventPublisher()
+
+        audio_event_handler = pypinball.audio.AudioGameEventHandler(
+            interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
+        )
+        self.event_pub.subscribe(callback=audio_event_handler.update)
 
         self.ball = pypinball.domain.Ball(uid=0, position=(50, 50))
         self.physics.add_ball(ball=self.ball)
@@ -177,7 +197,7 @@ class TestDropBallOnWall(unittest.TestCase):
             display_interface=moc_interfaces.MocDisplayInterface(),
             input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
-            event_publisher=self.events,
+            event_publisher=self.event_pub,
         )
 
         self.controller.setup()
@@ -205,7 +225,11 @@ class TestDropBallOnBumper(unittest.TestCase):
         self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
-        self.events = pypinball.events.GameEventPublisher()
+
+        audio_event_handler = pypinball.audio.AudioGameEventHandler(
+            interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
+        )
+        self.event_pub.subscribe(callback=audio_event_handler.update)
 
         self.ball = pypinball.domain.Ball(uid=0, position=(50, 50))
         self.physics.add_ball(ball=self.ball)
@@ -219,7 +243,7 @@ class TestDropBallOnBumper(unittest.TestCase):
             display_interface=moc_interfaces.MocDisplayInterface(),
             input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
-            event_publisher=self.events,
+            event_publisher=self.event_pub,
         )
 
         self.controller.setup()
