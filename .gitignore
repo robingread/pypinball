@@ -2,6 +2,7 @@
 build/
 coverage/
 docs/build/*
+docs/source/apidoc/*
 venv/
 *.egg-info/
 

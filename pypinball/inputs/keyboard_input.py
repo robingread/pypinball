@@ -1,4 +1,5 @@
 import logging
+import typing
 from .input_interface import InputInterface
 from .. import domain
 
@@ -61,7 +62,7 @@ class KeyboardInput(InputInterface):
             logging.debug("Right button released")
             self._right_button_state = False
 
-    def get_input_state(self) -> dict:
+    def get_input_state(self) -> typing.Dict[domain.Buttons, bool]:
 
         ret = {
             domain.Buttons.CENTER: self._center_button_state,

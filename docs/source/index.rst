@@ -11,6 +11,7 @@ Welcome to pypinball's documentation!
    :caption: Contents:
 
    game-loop
+   apidoc/modules
 
 
 
