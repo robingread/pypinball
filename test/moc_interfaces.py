@@ -2,6 +2,7 @@ import pypinball
 import typing
 
 
+# TODO: Remove the need/use of the MocAudio class.
 class MocAudio(pypinball.AudioInterface):
     """
     Moc AudioInterface that stores the sounds which have been requested without
@@ -31,6 +32,7 @@ class MocDisplayInterface(pypinball.DisplayInterface):
         pass
 
 
+# TODO: Remove the need for the MocInputInterface class.
 class MocInputInterface(pypinball.InputInterface):
     """
     Moc input interface which allows users to specify the input state that

@@ -54,6 +54,21 @@ class Controller:
 
         self._should_quit = False
 
+    def handle_input_event(self, event: inputs.InputEvents) -> None:
+        if event in [
+            inputs.InputEvents.LEFT_BUTTON_PRESSED,
+            inputs.InputEvents.RIGHT_BUTTON_PRESSED,
+        ]:
+            # TODO: This should be a function that we can unit-test
+            for flipper in self._config.flippers:
+                if flipper.config.actuation_input != event:
+                    continue
+                self._physics.actuate_flipper(uid=flipper.uid)
+
+        elif event == inputs.InputEvents.CENTER_BUTTON_PRESSED:
+            # Launch a ball
+            pass
+
     def setup(self) -> bool:
         """
         Setup the controller to prepare before running/ticking. This method
