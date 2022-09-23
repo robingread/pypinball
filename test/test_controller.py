@@ -1,3 +1,4 @@
+import copy
 import pypinball
 import unittest
 from . import moc_interfaces
@@ -300,3 +301,75 @@ class TestControllerSetup(unittest.TestCase):
         """
         res = self.controller.setup()
         self.assertFalse(res)
+
+
+class TestLeftButtonPressed(unittest.TestCase):
+    """
+    Test the case where the left input button is pressed in a physics scene
+    with only a flipper.
+    """
+
+    def setUp(self) -> None:
+        flipper = pypinball.domain.Flipper(
+            uid=1,
+            config=pypinball.domain.FlipperConfig(
+                position=(0.0, 100.0),
+                angle=1.0,
+                length=50.0,
+                actuation_button=pypinball.domain.Buttons.LEFT,
+                actuation_direction=1,
+                actuation_angle=1.0,
+                actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
+            ),
+        )
+
+        self.config = copy.deepcopy(MOC_SOUND_FILE_MAP)
+        self.config.flippers.append(flipper)
+
+        self.input_pub = pypinball.inputs.InputEventPublisher()
+        self.event_pub = pypinball.events.GameEventPublisher()
+
+        self.mock_event_handler = pypinball.events.MockEventHandler()
+
+        self.audio_interface = pypinball.audio.MockAudioInterface()
+        self.audio_event_handler = pypinball.audio.AudioGameEventHandler(
+            interface=self.audio_interface, events_to_sound=self.config.event_to_sounds
+        )
+
+        self.event_pub.subscribe(callback=self.audio_event_handler.update)
+        self.event_pub.subscribe(callback=self.mock_event_handler.handle_event)
+
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+
+        self.controller = pypinball.Controller(
+            audio_interface=self.audio_interface,
+            config=self.config,
+            display_interface=moc_interfaces.MocDisplayInterface(),
+            event_publisher=self.event_pub,
+            input_interface=moc_interfaces.MocInputInterface(),
+            physics_interface=self.physics,
+        )
+        self.controller.setup()
+        self.input_pub.subscribe(callback=self.controller.handle_input_event)
+        self.input_pub.emit(event=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED)
+
+        for _ in range(10):
+            self.controller.tick()
+
+    def test_audio_played_for_left_button(self):
+        a = (
+            self.config.event_to_sounds[pypinball.events.GameEvents.FLIPPER_ACTIVATED]
+            in self.audio_interface.sounds
+        )
+        self.assertTrue(a, msg="Flipper actuated audio not played")
+        self.assertEqual(len(self.audio_interface.sounds), 1, msg="Sounds played != 1")
+
+    def test_event_emitted(self):
+        events = self.mock_event_handler.events
+        self.assertEqual(1, len(events), msg=f"Events emitted {events}")
+
+    def test_flipper_actuated_event_emitted(self):
+        self.assertTrue(
+            pypinball.events.GameEvents.FLIPPER_ACTIVATED
+            in self.mock_event_handler.events
+        )
