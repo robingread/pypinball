@@ -130,6 +130,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
                 actuation_button=pypinball.domain.Buttons.LEFT,
                 actuation_direction=1,
                 actuation_angle=1.0,
+                actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
             ),
         )
 

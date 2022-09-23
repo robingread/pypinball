@@ -2,6 +2,7 @@ import dataclasses
 import typing
 
 from .buttons import Buttons
+from ..inputs import InputEvents
 
 
 @dataclasses.dataclass(frozen=True)
@@ -21,8 +22,10 @@ class FlipperConfig:
     angle: float
     length: float
     actuation_angle: float
+    # TODO: Remove the actuation_button variable as it has been replaced with the actuation_input variable.
     actuation_button: Buttons
     actuation_direction: int
+    actuation_input: InputEvents
 
 
 class Flipper:

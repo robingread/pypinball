@@ -57,6 +57,7 @@ class TestPymunkFlipper(unittest.TestCase):
                 actuation_angle=-1.0,
                 actuation_button=pypinball.domain.Buttons.LEFT,
                 actuation_direction=1,
+                actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
             ),
         )
 
@@ -69,6 +70,7 @@ class TestPymunkFlipper(unittest.TestCase):
                 actuation_angle=1.0,
                 actuation_button=pypinball.domain.Buttons.RIGHT,
                 actuation_direction=-1,
+                actuation_input=pypinball.inputs.InputEvents.RIGHT_BUTTON_PRESSED,
             ),
         )
 
