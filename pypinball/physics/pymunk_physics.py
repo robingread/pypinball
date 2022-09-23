@@ -297,8 +297,10 @@ class PymunkPhysics(PhysicsInterface):
         )
 
     def actuate_flipper(self, uid: int) -> bool:
+        # TODO: Add a test to ensure that when we call this a flipper actuated event is emitted.
         try:
             self._flippers[uid].actuate()
+            self._event_pub.emit(event=events.GameEvents.FLIPPER_ACTIVATED)
             return True
         except KeyError:
             return False
