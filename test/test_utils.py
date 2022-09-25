@@ -44,46 +44,6 @@ class TestInputToAudioMapping(unittest.TestCase):
         self.audio.play_sound_file(file_path=path)
         self.assertListEqual(self.audio.commands, [path])
 
-    def test_single_input_audio_mapping(self):
-        """
-        Test that a single input button pressed maps to one audio Sound type to be played.
-        """
-        input_state = {
-            pypinball.domain.Buttons.LEFT: True,
-            pypinball.domain.Buttons.RIGHT: False,
-        }
-
-        button_sound_map = {
-            pypinball.domain.Buttons.LEFT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
-            pypinball.domain.Buttons.RIGHT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
-        }
-
-        exp = [pypinball.audio.Sounds.FLIPPER_ACTIVATE]
-        ret = pypinball.utils.map_button_state_to_sound_type(
-            input_state=input_state, sound_map=button_sound_map
-        )
-        self.assertListEqual(ret, exp)
-
-    def test_double_input_audio_mapping(self):
-        """
-        Test that two input buttons pressed maps to two audio Sound types to be played.
-        """
-        input_state = {
-            pypinball.domain.Buttons.LEFT: True,
-            pypinball.domain.Buttons.RIGHT: True,
-        }
-
-        button_sound_map = {
-            pypinball.domain.Buttons.LEFT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
-            pypinball.domain.Buttons.RIGHT: pypinball.audio.Sounds.FLIPPER_ACTIVATE,
-        }
-
-        exp = [pypinball.audio.Sounds.FLIPPER_ACTIVATE] * 2
-        ret = pypinball.utils.map_button_state_to_sound_type(
-            input_state=input_state, sound_map=button_sound_map
-        )
-        self.assertListEqual(ret, exp)
-
 
 class TestBallWithinAreaFunction(unittest.TestCase):
     """
@@ -152,69 +112,6 @@ class TestBallWithinAreaFunction(unittest.TestCase):
                 ball_position=position, width=self.width, height=self.height
             )
         )
-
-
-class TestHandleInputButtonAudio(unittest.TestCase):
-    """
-    Test the utils.handle_input_button_audio() method.
-    """
-
-    def setUp(self) -> None:
-        self.audio = MocAudioInterface()
-
-        self.input_state = {
-            pypinball.domain.Buttons.RIGHT: True,
-            pypinball.domain.Buttons.LEFT: False,
-            pypinball.domain.Buttons.CENTER: False,
-        }
-
-        self.button_to_sounds = {
-            pypinball.domain.Buttons.LEFT: pypinball.audio.Sounds.GAME_START,
-            pypinball.domain.Buttons.RIGHT: pypinball.audio.Sounds.GAME_OVER,
-        }
-
-        self.sounds_to_file = {
-            pypinball.audio.Sounds.GAME_START: pypinball.resources.get_audio_resource_path(
-                filename="Bounce1.wav"
-            ),
-            pypinball.audio.Sounds.GAME_OVER: pypinball.resources.get_audio_resource_path(
-                filename="Bounce4.wav"
-            ),
-        }
-
-    def test_button_with_mapped_sound(self):
-        input_state = {
-            pypinball.domain.Buttons.RIGHT: True,
-            pypinball.domain.Buttons.LEFT: False,
-            pypinball.domain.Buttons.CENTER: False,
-        }
-
-        pypinball.utils.handle_input_button_audio(
-            input_state=input_state,
-            audio_interface=self.audio,
-            button_to_sound_map=self.button_to_sounds,
-            sound_to_file_map=self.sounds_to_file,
-        )
-
-        exp = [pypinball.resources.get_audio_resource_path(filename="Bounce4.wav")]
-        self.assertListEqual(self.audio.commands, exp)
-
-    def test_button_with_unmapped_sound(self):
-        input_state = {
-            pypinball.domain.Buttons.RIGHT: False,
-            pypinball.domain.Buttons.LEFT: False,
-            pypinball.domain.Buttons.CENTER: True,
-        }
-
-        pypinball.utils.handle_input_button_audio(
-            input_state=input_state,
-            audio_interface=self.audio,
-            button_to_sound_map=self.button_to_sounds,
-            sound_to_file_map=self.sounds_to_file,
-        )
-
-        exp = list()
-        self.assertListEqual(self.audio.commands, exp)
 
 
 class TestLaunchNewBall(unittest.TestCase):
