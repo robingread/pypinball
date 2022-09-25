@@ -146,3 +146,32 @@ class TestPymunkFlipper(unittest.TestCase):
         """
         ret = self.physics.actuate_flipper(uid=self.right_flipper.uid)
         self.assertFalse(ret)
+
+    def test_actuate_flipper_emits_event(self):
+        """
+        Test that the actuate_flipper() method also emits a FLIPPER_ACTIVATED
+        event via he GameEventPublisher.
+        """
+        event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=event_handler.handle_event)
+
+        self.physics.add_flipper(flipper=self.right_flipper)
+        self.physics.actuate_flipper(uid=self.right_flipper.uid)
+
+        for _ in range(100):
+            self.physics.update()
+
+        self.assertListEqual(
+            event_handler.events, [pypinball.events.GameEvents.FLIPPER_ACTIVATED]
+        )
+
+    def test_actuate_unregistered_flipper_does_not_emit_event(self):
+        """
+        Test that actuating a flipper that doesn't exist also doesn't emit a
+        FLIPPER_ACTIVATED game event.
+        """
+        event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=event_handler.handle_event)
+
+        self.physics.actuate_flipper(uid=self.right_flipper.uid)
+        self.assertListEqual(event_handler.events, [])
