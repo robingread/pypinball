@@ -344,7 +344,6 @@ class TestBallDropsOnFlipper(unittest.TestCase):
                 length=25,
                 actuation_angle=1.0,
                 actuation_direction=1,
-                actuation_button=pypinball.domain.Buttons.LEFT,
                 actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
             ),
         )
