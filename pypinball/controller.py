@@ -133,7 +133,6 @@ class Controller:
 
     def _handle_lost_balls(self) -> None:
         states = self._physics.get_ball_states()
-        sounds = set()
         for state in states:
             ball_in_area = utils.check_ball_is_within_area(
                 ball_position=state.position,
@@ -144,10 +143,8 @@ class Controller:
             if ball_in_area:
                 continue
 
-            sounds.add(audio.Sounds.BALL_LOST)
             self._physics.remove_ball(uid=state.uid)
-
-        self._handle_sounds(sounds=list(sounds))
+            self._event_publisher.emit(event=events.GameEvents.BALL_LOST)
 
     def _handle_game_events(self, event: events.GameEvents) -> None:
         if event in [events.GameEvents.QUIT]:
