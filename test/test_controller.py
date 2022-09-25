@@ -45,7 +45,6 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         self.physics.add_ball(ball=self.ball)
 
         self.controller = pypinball.Controller(
-            audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
             physics_interface=self.physics,
@@ -137,7 +136,6 @@ class TestDropBallOnFlipper(unittest.TestCase):
         self.physics.add_flipper(flipper=self.flipper)
 
         self.controller = pypinball.Controller(
-            audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
             physics_interface=self.physics,
@@ -177,7 +175,6 @@ class TestDropBallOnWall(unittest.TestCase):
         )
 
         self.controller = pypinball.Controller(
-            audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
             physics_interface=self.physics,
@@ -221,7 +218,6 @@ class TestDropBallOnBumper(unittest.TestCase):
         )
 
         self.controller = pypinball.Controller(
-            audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
             physics_interface=self.physics,
@@ -265,7 +261,6 @@ class TestControllerSetup(unittest.TestCase):
         self.events = pypinball.events.GameEventPublisher()
 
         self.controller = pypinball.Controller(
-            audio_interface=self.audio,
             display_interface=self.display,
             config=self.config,
             physics_interface=self.physics,
@@ -320,7 +315,6 @@ class TestLeftButtonPressed(unittest.TestCase):
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
         self.controller = pypinball.Controller(
-            audio_interface=self.audio_interface,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
             event_publisher=self.event_pub,
