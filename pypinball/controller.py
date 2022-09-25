@@ -112,13 +112,6 @@ class Controller:
 
         input_state = self._input.get_input_state()
 
-        # Handle inputs to update Physics
-        utils.actuate_flippers(
-            input_state=input_state,
-            flippers=self._config.flippers,
-            physics=self._physics,
-        )
-
         if input_state[domain.Buttons.CENTER]:
             uid = self._id_generator.generate_id()
             ball = domain.Ball(uid=uid, position=(400, 500))
@@ -129,12 +122,6 @@ class Controller:
         self._physics.update()
         self._display.update()
 
-        # Handle audio
-        sounds = list()
-        sounds += utils.map_button_state_to_sound_type(
-            input_state=input_state, sound_map=BUTTON_AUDIO_MAP
-        )
-        self._handle_sounds(sounds=sounds)
         self._handle_lost_balls()
 
     def _handle_sounds(self, sounds: typing.List[audio.Sounds]) -> None:
