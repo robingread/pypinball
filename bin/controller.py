@@ -13,6 +13,7 @@ GAME_CONFIG = pypinball.GameConfig(
                 actuation_angle=-1.0,
                 actuation_button=pypinball.Buttons.LEFT,
                 actuation_direction=1,
+                actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
             ),
         ),
         pypinball.domain.Flipper(
@@ -24,6 +25,7 @@ GAME_CONFIG = pypinball.GameConfig(
                 actuation_angle=1.0,
                 actuation_button=pypinball.Buttons.RIGHT,
                 actuation_direction=-1,
+                actuation_input=pypinball.inputs.InputEvents.RIGHT_BUTTON_PRESSED,
             ),
         ),
     ],
@@ -76,6 +78,7 @@ logger = logging.getLogger(name="pypinball")
 logger.setLevel(level=logging.DEBUG)
 logger.info("Starting game")
 
+input_pub = pypinball.inputs.InputEventPublisher()
 events_pub = pypinball.events.GameEventPublisher()
 
 audio_interface = pypinball.audio.SimpleAudio()
@@ -87,7 +90,7 @@ events_pub.subscribe(audio_event_handler.update)
 display_interface = pypinball.display.PyGameDisplay(
     width=450, height=650, game_events=events_pub
 )
-input_interface = pypinball.inputs.KeyboardInput()
+input_interface = pypinball.inputs.KeyboardInput(event_pub=input_pub)
 
 physics_interface = pypinball.physics.PymunkPhysics(event_pub=events_pub)
 physics_interface.set_debug_display(screen=display_interface._screen)
@@ -112,6 +115,9 @@ controller = pypinball.Controller(
     event_publisher=events_pub,
 )
 controller.setup()
+
+input_pub.subscribe(callback=controller.handle_input_event)
+
 controller.run()
 
 display_interface.close()
