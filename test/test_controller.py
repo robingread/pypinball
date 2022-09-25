@@ -6,14 +6,6 @@ from . import moc_interfaces
 
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
     playing_area=(450, 650),
-    sound_to_file_map={
-        pypinball.Sounds.BALL_LOST: "ball_lost",
-        pypinball.Sounds.COLLISION_BALL_BALL: "ball_ball_collision",
-        pypinball.Sounds.COLLISION_BALL_BUMPER: "ball_bumper_collision",
-        pypinball.Sounds.COLLISION_BALL_FLIPPER: "ball_flipper_collision",
-        pypinball.Sounds.COLLISION_BALL_WALL: "ball_wall_collision",
-        pypinball.Sounds.FLIPPER_ACTIVATE: "flipper_activate",
-    },
     event_to_sounds={
         pypinball.events.GameEvents.BALL_LOST: "ball_lost",
         pypinball.events.GameEvents.COLLISION_BALL_BALL: "ball_ball_collision",
@@ -253,7 +245,6 @@ class TestControllerSetup(unittest.TestCase):
         self.audio = pypinball.audio.MockAudioInterface()
         self.config = pypinball.GameConfig(
             playing_area=(10, 10),
-            sound_to_file_map=dict(),
             walls=[pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10, 10)])],
         )
         self.display = moc_interfaces.MocDisplayInterface()

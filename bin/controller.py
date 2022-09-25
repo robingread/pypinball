@@ -35,26 +35,6 @@ GAME_CONFIG = pypinball.GameConfig(
             points=[(0.0, 0.0), (450.0, 0.0), (450.0, 650.0), (0.0, 650.0), (0.0, 0.0)],
         )
     ],
-    sound_to_file_map={
-        pypinball.Sounds.COLLISION_BALL_BALL: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
-        ),
-        pypinball.Sounds.COLLISION_BALL_BUMPER: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
-        ),
-        pypinball.Sounds.COLLISION_BALL_FLIPPER: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
-        ),
-        pypinball.Sounds.COLLISION_BALL_WALL: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
-        ),
-        pypinball.Sounds.FLIPPER_ACTIVATE: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
-        ),
-        pypinball.Sounds.BALL_LAUNCH: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
-        ),
-    },
     event_to_sounds={
         pypinball.events.GameEvents.FLIPPER_ACTIVATED: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
