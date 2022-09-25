@@ -152,25 +152,3 @@ def map_collision_type_to_sound_type(
         except KeyError:
             pass
     return ret
-
-
-def play_sounds(
-    sounds: typing.List[Sounds], sounds_to_files: SOUND_FILE_MAP, audio: AudioInterface
-) -> None:
-    """
-    Play audio sounds.
-
-    Args:
-        sounds (list): List of ``Sound`` values.
-        sounds_to_files (dict): Dictionary mapping ``Sound`` types to file paths.
-        audio (AudioInterface): Audio interface.
-
-    Returns:
-        None
-    """
-    for s in sounds:
-        try:
-            f = sounds_to_files[s]
-            audio.play_sound_file(file_path=f)
-        except KeyError:
-            pass
