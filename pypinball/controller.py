@@ -1,5 +1,4 @@
 import logging
-import typing
 from . import audio
 from . import domain
 from . import display
@@ -8,21 +7,6 @@ from . import inputs
 from . import physics
 from . import utils
 from .game_config import GameConfig
-
-
-BUTTON_AUDIO_MAP = {
-    domain.Buttons.CENTER: audio.Sounds.BALL_LAUNCH,
-    domain.Buttons.LEFT: audio.Sounds.FLIPPER_ACTIVATE,
-    domain.Buttons.RIGHT: audio.Sounds.FLIPPER_ACTIVATE,
-}
-
-
-COLLISION_TO_AUDIO_MAP = {
-    domain.CollisionType.BALL_AND_BALL: audio.Sounds.COLLISION_BALL_BALL,
-    domain.CollisionType.BALL_AND_BUMPER: audio.Sounds.COLLISION_BALL_BUMPER,
-    domain.CollisionType.BALL_AND_FLIPPER: audio.Sounds.COLLISION_BALL_FLIPPER,
-    domain.CollisionType.BALL_AND_WALL: audio.Sounds.COLLISION_BALL_WALL,
-}
 
 
 class ObjectIdGenerator:
@@ -112,13 +96,6 @@ class Controller:
 
         input_state = self._input.get_input_state()
 
-        # Handle inputs to update Physics
-        utils.actuate_flippers(
-            input_state=input_state,
-            flippers=self._config.flippers,
-            physics=self._physics,
-        )
-
         if input_state[domain.Buttons.CENTER]:
             uid = self._id_generator.generate_id()
             ball = domain.Ball(uid=uid, position=(400, 500))
@@ -129,24 +106,10 @@ class Controller:
         self._physics.update()
         self._display.update()
 
-        # Handle audio
-        sounds = list()
-        sounds += utils.map_button_state_to_sound_type(
-            input_state=input_state, sound_map=BUTTON_AUDIO_MAP
-        )
-        self._handle_sounds(sounds=sounds)
         self._handle_lost_balls()
-
-    def _handle_sounds(self, sounds: typing.List[audio.Sounds]) -> None:
-        utils.play_sounds(
-            sounds=sounds,
-            sounds_to_files=self._config.sound_to_file_map,
-            audio=self._audio,
-        )
 
     def _handle_lost_balls(self) -> None:
         states = self._physics.get_ball_states()
-        sounds = set()
         for state in states:
             ball_in_area = utils.check_ball_is_within_area(
                 ball_position=state.position,
@@ -157,10 +120,8 @@ class Controller:
             if ball_in_area:
                 continue
 
-            sounds.add(audio.Sounds.BALL_LOST)
             self._physics.remove_ball(uid=state.uid)
-
-        self._handle_sounds(sounds=list(sounds))
+            self._event_publisher.emit(event=events.GameEvents.BALL_LOST)
 
     def _handle_game_events(self, event: events.GameEvents) -> None:
         if event in [events.GameEvents.QUIT]:

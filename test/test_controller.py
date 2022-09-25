@@ -155,19 +155,6 @@ class TestDropBallOnFlipper(unittest.TestCase):
             self.controller.tick()
         self.assertTrue("ball_flipper_collision" in self.audio.sounds)
 
-    def test_flipper_actuation_plays_sound(self):
-        """
-        Test that a sound is played when a flipper is actuated.
-        """
-        self.input.set_input_state(left=True, right=False, center=False)
-
-        for _ in range(10):
-            self.controller.tick()
-            self.input.set_input_state(left=False, right=False, center=False)
-
-        res = "flipper_activate" in self.audio.sounds
-        self.assertTrue(res)
-
 
 class TestDropBallOnWall(unittest.TestCase):
     """

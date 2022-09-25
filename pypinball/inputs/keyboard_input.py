@@ -1,5 +1,7 @@
 import logging
 import typing
+from .events import InputEvents
+from .events import InputEventPublisher
 from .input_interface import InputInterface
 from .. import domain
 
@@ -17,7 +19,9 @@ class KeyboardInput(InputInterface):
     to the right button and the "spacebar" to firing the center button. Under the hood it uses the ``pyunput`` package.
     """
 
-    def __init__(self):
+    def __init__(self, event_pub: InputEventPublisher):
+
+        self._event_pub = event_pub
 
         listener = pynput.keyboard.Listener(
             on_press=self._on_press, on_release=self._on_release
@@ -36,14 +40,17 @@ class KeyboardInput(InputInterface):
         if not self._center_button_state and key == pynput.keyboard.Key.space:
             logging.debug("Center button pressed")
             self._center_button_state = True
+            self._event_pub.emit(event=InputEvents.CENTER_BUTTON_PRESSED)
 
         if not self._left_button_state and key == key_bode.from_char("f"):
             logging.debug("Left button pressed")
             self._left_button_state = True
+            self._event_pub.emit(event=InputEvents.LEFT_BUTTON_PRESSED)
 
         if not self._right_button_state and key == key_bode.from_char("j"):
             logging.debug("Right button pressed")
             self._right_button_state = True
+            self._event_pub.emit(event=InputEvents.RIGHT_BUTTON_PRESSED)
 
     def _on_release(self, key) -> None:
         logging.debug(f"Key released: {key}")
