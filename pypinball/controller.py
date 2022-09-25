@@ -50,8 +50,11 @@ class Controller:
                 self._physics.actuate_flipper(uid=flipper.uid)
 
         elif event == inputs.InputEvents.CENTER_BUTTON_PRESSED:
-            # Launch a ball
-            pass
+            # TODO: Make this a unit-testable function
+            uid = self._id_generator.generate_id()
+            ball = domain.Ball(uid=uid, position=(400, 500))
+            self._physics.add_ball(ball=ball)
+            self._physics.launch_ball(uid=ball.uid)
 
     def setup(self) -> bool:
         """
@@ -93,14 +96,6 @@ class Controller:
 
     def tick(self) -> None:
         logging.debug("Ticking controller")
-
-        input_state = self._input.get_input_state()
-
-        if input_state[domain.Buttons.CENTER]:
-            uid = self._id_generator.generate_id()
-            ball = domain.Ball(uid=uid, position=(400, 500))
-            self._physics.add_ball(ball=ball)
-            self._physics.launch_ball(uid=ball.uid)
 
         self._display.clear()
         self._physics.update()
