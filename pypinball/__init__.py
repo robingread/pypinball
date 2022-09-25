@@ -6,7 +6,6 @@ from . import inputs
 from . import physics
 from . import resources
 from .audio import AudioInterface
-from .audio import Sounds
 from .controller import Controller
 from .display import DisplayInterface
 from .domain import Buttons
