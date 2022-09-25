@@ -1,13 +1,4 @@
-import logging
 import typing
-from .audio import AudioInterface, Sounds
-from .domain import Buttons, Flipper, Collision, CollisionType
-from .physics import PhysicsInterface
-
-
-INPUT_STATE = typing.Dict[Buttons, bool]
-BUTTON_SOUND_MAP = typing.Dict[Buttons, Sounds]
-SOUND_FILE_MAP = typing.Dict[Sounds, str]
 
 
 def check_ball_is_within_area(

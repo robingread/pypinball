@@ -1,5 +1,4 @@
 import logging
-import typing
 from . import audio
 from . import domain
 from . import display
@@ -8,21 +7,6 @@ from . import inputs
 from . import physics
 from . import utils
 from .game_config import GameConfig
-
-
-BUTTON_AUDIO_MAP = {
-    domain.Buttons.CENTER: audio.Sounds.BALL_LAUNCH,
-    domain.Buttons.LEFT: audio.Sounds.FLIPPER_ACTIVATE,
-    domain.Buttons.RIGHT: audio.Sounds.FLIPPER_ACTIVATE,
-}
-
-
-COLLISION_TO_AUDIO_MAP = {
-    domain.CollisionType.BALL_AND_BALL: audio.Sounds.COLLISION_BALL_BALL,
-    domain.CollisionType.BALL_AND_BUMPER: audio.Sounds.COLLISION_BALL_BUMPER,
-    domain.CollisionType.BALL_AND_FLIPPER: audio.Sounds.COLLISION_BALL_FLIPPER,
-    domain.CollisionType.BALL_AND_WALL: audio.Sounds.COLLISION_BALL_WALL,
-}
 
 
 class ObjectIdGenerator:
