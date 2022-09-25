@@ -24,14 +24,12 @@ class Controller:
         audio_interface: audio.AudioInterface,
         display_interface: display.DisplayInterface,
         config: GameConfig,
-        input_interface: inputs.InputInterface,
         physics_interface: physics.PhysicsInterface,
         event_publisher: events.GameEventPublisher,
     ):
         self._audio = audio_interface
         self._display = display_interface
         self._config = config
-        self._input = input_interface
         self._physics = physics_interface
         self._id_generator = ObjectIdGenerator()
         self._event_publisher = event_publisher
@@ -50,8 +48,11 @@ class Controller:
                 self._physics.actuate_flipper(uid=flipper.uid)
 
         elif event == inputs.InputEvents.CENTER_BUTTON_PRESSED:
-            # Launch a ball
-            pass
+            # TODO: Make this a unit-testable function
+            uid = self._id_generator.generate_id()
+            ball = domain.Ball(uid=uid, position=(400, 500))
+            self._physics.add_ball(ball=ball)
+            self._physics.launch_ball(uid=ball.uid)
 
     def setup(self) -> bool:
         """
@@ -93,14 +94,6 @@ class Controller:
 
     def tick(self) -> None:
         logging.debug("Ticking controller")
-
-        input_state = self._input.get_input_state()
-
-        if input_state[domain.Buttons.CENTER]:
-            uid = self._id_generator.generate_id()
-            ball = domain.Ball(uid=uid, position=(400, 500))
-            self._physics.add_ball(ball=ball)
-            self._physics.launch_ball(uid=ball.uid)
 
         self._display.clear()
         self._physics.update()
