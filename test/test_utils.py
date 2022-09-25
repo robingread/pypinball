@@ -154,59 +154,6 @@ class TestBallWithinAreaFunction(unittest.TestCase):
         )
 
 
-class TestCollisionToSoundMapping(unittest.TestCase):
-    """
-    Test the map_collision_type_to_sound_type() method in the ``utils`` module.
-    """
-
-    def test_successful_collision_to_sound_mapping(self):
-        """
-        Test that collision with a mapped sound type do ensure that the correct
-        sound type is marked to be played.
-        """
-        collisions = [
-            pypinball.domain.Collision(
-                type=pypinball.domain.CollisionType.BALL_AND_BALL, ball_id=0, other_id=1
-            )
-        ]
-        collision_sound_map = {
-            pypinball.domain.CollisionType.BALL_AND_BALL: pypinball.Sounds.COLLISION_BALL_BALL,
-            pypinball.domain.CollisionType.BALL_AND_WALL: pypinball.Sounds.COLLISION_BALL_WALL,
-        }
-        exp = [pypinball.Sounds.COLLISION_BALL_BALL]
-        ret = pypinball.utils.map_collision_type_to_sound_type(
-            collisions=collisions, sound_map=collision_sound_map
-        )
-        self.assertListEqual(exp, ret)
-
-    def test_empty_collision_list(self):
-        """
-        Test that no collisions ensures that no sounds are to be played.
-        """
-        collisions = list()
-        collision_sound_map = dict()
-        ret = pypinball.utils.map_collision_type_to_sound_type(
-            collisions=collisions, sound_map=collision_sound_map
-        )
-        self.assertListEqual([], ret)
-
-    def test_unmapped_collision_type(self):
-        """
-        Test that collision which do not have a registered sound mapping ensures
-        that no sounds are to played.
-        """
-        collisions = [
-            pypinball.domain.Collision(
-                type=pypinball.domain.CollisionType.BALL_AND_BALL, ball_id=0, other_id=1
-            )
-        ]
-        collision_sound_map = dict()
-        ret = pypinball.utils.map_collision_type_to_sound_type(
-            collisions=collisions, sound_map=collision_sound_map
-        )
-        self.assertListEqual([], ret)
-
-
 class TestHandleInputButtonAudio(unittest.TestCase):
     """
     Test the utils.handle_input_button_audio() method.
