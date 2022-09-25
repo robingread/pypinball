@@ -124,13 +124,6 @@ class Controller:
 
         self._handle_lost_balls()
 
-    def _handle_sounds(self, sounds: typing.List[audio.Sounds]) -> None:
-        utils.play_sounds(
-            sounds=sounds,
-            sounds_to_files=self._config.sound_to_file_map,
-            audio=self._audio,
-        )
-
     def _handle_lost_balls(self) -> None:
         states = self._physics.get_ball_states()
         for state in states:
