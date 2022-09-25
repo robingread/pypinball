@@ -31,7 +31,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = moc_interfaces.MocAudio()
+        self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
@@ -61,8 +61,8 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         for _ in range(5):
             self.controller.tick()
 
-        exp = set()
-        self.assertSetEqual(exp, self.audio.sounds)
+        exp = list()
+        self.assertListEqual(exp, self.audio.sounds)
 
     def test_ball_lost_sounds_played(self):
         """
@@ -73,8 +73,8 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         for _ in range(500):
             self.controller.tick()
 
-        exp = {"ball_lost"}
-        self.assertSetEqual(exp, self.audio.sounds)
+        exp = ["ball_lost"]
+        self.assertListEqual(exp, self.audio.sounds)
 
     def test_lost_ball_is_removed_from_physics(self):
         """
@@ -110,7 +110,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = moc_interfaces.MocAudio()
+        self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
         self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
@@ -175,7 +175,7 @@ class TestDropBallOnWall(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = moc_interfaces.MocAudio()
+        self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.input = moc_interfaces.MocInputInterface()
@@ -221,7 +221,7 @@ class TestDropBallOnBumper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = moc_interfaces.MocAudio()
+        self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.input = moc_interfaces.MocInputInterface()
@@ -274,7 +274,7 @@ class TestControllerSetup(unittest.TestCase):
             def add_wall(self, *args, **kwargs) -> bool:
                 return False
 
-        self.audio = moc_interfaces.MocAudio()
+        self.audio = pypinball.audio.MockAudioInterface()
         self.config = pypinball.GameConfig(
             playing_area=(10, 10),
             sound_to_file_map=dict(),
