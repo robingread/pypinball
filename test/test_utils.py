@@ -1,9 +1,5 @@
 import unittest
 import pypinball
-import pypinball.audio
-import pypinball.inputs
-import pypinball.physics
-import pypinball.utils
 
 
 class TestBallWithinAreaFunction(unittest.TestCase):
