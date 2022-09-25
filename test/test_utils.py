@@ -6,19 +6,6 @@ import pypinball.physics
 import pypinball.utils
 
 
-class MocAudioInterface(pypinball.audio.AudioInterface):
-    """
-    Define a Fake Audio Interface for testing purposes.
-    """
-
-    def __init__(self):
-        self.commands = list()
-
-    def play_sound_file(self, file_path: str) -> bool:
-        self.commands.append(file_path)
-        return True
-
-
 class FakePhysicsInterface(pypinball.physics.PhysicsInterface):
     def __init__(self):
         self.actuation_commands = list()
@@ -26,23 +13,6 @@ class FakePhysicsInterface(pypinball.physics.PhysicsInterface):
     def actuate_flipper(self, uid: int) -> bool:
         self.actuation_commands.append(uid)
         return True
-
-
-class TestInputToAudioMapping(unittest.TestCase):
-    """
-    Test the until methods for mapping input button states to Sound enums.
-    """
-
-    def setUp(self) -> None:
-        self.audio = MocAudioInterface()
-
-    def test_fake_audio_interface_play_audio_file(self):
-        """
-        Test the FakeAudioInterface.
-        """
-        path = "/test/path.wav"
-        self.audio.play_sound_file(file_path=path)
-        self.assertListEqual(self.audio.commands, [path])
 
 
 class TestBallWithinAreaFunction(unittest.TestCase):
