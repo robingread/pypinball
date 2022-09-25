@@ -24,6 +24,6 @@ pip install \
     pytest \
     numpy \
     simpleaudio \
-    sphinx \
+    sphinx==5.1.1 \
     sphinxcontrib-mermaid \
     sphinx_rtd_theme
