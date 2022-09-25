@@ -25,5 +25,5 @@ pip install \
     numpy \
     simpleaudio \
     sphinx==5.1.1 \
-    sphinxcontrib-mermaid \
+    sphinxcontrib-mermaid==0.7.1 \
     sphinx_rtd_theme==1.0.0
