@@ -2,7 +2,6 @@ import typing
 from .audio_interface import AudioInterface
 
 
-# TODO: Unit test the MockAudioInterface class
 class MockAudioInterface(AudioInterface):
     """
     The ``MockAudioInterface`` is an implementation of the ``AudioInterface``
