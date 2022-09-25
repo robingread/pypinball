@@ -24,14 +24,12 @@ class Controller:
         audio_interface: audio.AudioInterface,
         display_interface: display.DisplayInterface,
         config: GameConfig,
-        input_interface: inputs.InputInterface,
         physics_interface: physics.PhysicsInterface,
         event_publisher: events.GameEventPublisher,
     ):
         self._audio = audio_interface
         self._display = display_interface
         self._config = config
-        self._input = input_interface
         self._physics = physics_interface
         self._id_generator = ObjectIdGenerator()
         self._event_publisher = event_publisher

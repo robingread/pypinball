@@ -48,7 +48,6 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
-            input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -112,7 +111,6 @@ class TestDropBallOnFlipper(unittest.TestCase):
     def setUp(self) -> None:
         self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
-        self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
@@ -142,7 +140,6 @@ class TestDropBallOnFlipper(unittest.TestCase):
             audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
-            input_interface=self.input,
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -165,7 +162,6 @@ class TestDropBallOnWall(unittest.TestCase):
         self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
-        self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
@@ -184,7 +180,6 @@ class TestDropBallOnWall(unittest.TestCase):
             audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
-            input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -211,7 +206,6 @@ class TestDropBallOnBumper(unittest.TestCase):
         self.audio = pypinball.audio.MockAudioInterface()
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
-        self.input = moc_interfaces.MocInputInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
@@ -230,7 +224,6 @@ class TestDropBallOnBumper(unittest.TestCase):
             audio_interface=self.audio,
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
-            input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -268,7 +261,6 @@ class TestControllerSetup(unittest.TestCase):
             walls=[pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10, 10)])],
         )
         self.display = moc_interfaces.MocDisplayInterface()
-        self.input = moc_interfaces.MocInputInterface()
         self.physics = MocPhysics()
         self.events = pypinball.events.GameEventPublisher()
 
@@ -276,7 +268,6 @@ class TestControllerSetup(unittest.TestCase):
             audio_interface=self.audio,
             display_interface=self.display,
             config=self.config,
-            input_interface=self.input,
             physics_interface=self.physics,
             event_publisher=self.events,
         )
@@ -333,7 +324,6 @@ class TestLeftButtonPressed(unittest.TestCase):
             config=self.config,
             display_interface=moc_interfaces.MocDisplayInterface(),
             event_publisher=self.event_pub,
-            input_interface=moc_interfaces.MocInputInterface(),
             physics_interface=self.physics,
         )
         self.controller.setup()
