@@ -6,15 +6,6 @@ import pypinball.physics
 import pypinball.utils
 
 
-class FakePhysicsInterface(pypinball.physics.PhysicsInterface):
-    def __init__(self):
-        self.actuation_commands = list()
-
-    def actuate_flipper(self, uid: int) -> bool:
-        self.actuation_commands.append(uid)
-        return True
-
-
 class TestBallWithinAreaFunction(unittest.TestCase):
     """
     Test the utils.check_ball_is_within_area() method.
