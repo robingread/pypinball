@@ -84,42 +84,6 @@ class TestBallWithinAreaFunction(unittest.TestCase):
         )
 
 
-class TestLaunchNewBall(unittest.TestCase):
-    def setUp(self) -> None:
-        self.physics = None
-
-    def _get_input_state(self, center_button: bool) -> dict:
-        return {
-            pypinball.domain.Buttons.CENTER: center_button,
-            pypinball.domain.Buttons.LEFT: False,
-            pypinball.domain.Buttons.RIGHT: False,
-        }
-
-    def test_launch_with_extra_lives(self):
-        input = self._get_input_state(True)
-        lives = 1
-        res = pypinball.utils.launch_new_ball(
-            input_state=input, lives=lives, physics=self.physics
-        )
-        self.assertTrue(res)
-
-    def test_launch_without_extra_lives(self):
-        input = self._get_input_state(True)
-        lives = 0
-        res = pypinball.utils.launch_new_ball(
-            input_state=input, lives=lives, physics=self.physics
-        )
-        self.assertFalse(res)
-
-    def test_launch_without_enter_button(self):
-        input = self._get_input_state(False)
-        lives = 1
-        res = pypinball.utils.launch_new_ball(
-            input_state=input, lives=lives, physics=self.physics
-        )
-        self.assertFalse(res)
-
-
 class TestActuateFlippers(unittest.TestCase):
     def setUp(self) -> None:
         self.physics = FakePhysicsInterface()

@@ -50,25 +50,3 @@ def check_ball_is_within_area(
     a = 0.0 <= ball_position[0] <= width
     b = 0.0 <= ball_position[1] <= height
     return all([a, b])
-
-
-def launch_new_ball(
-    input_state: INPUT_STATE, lives: int, physics: PhysicsInterface
-) -> bool:
-    """
-    Launch a new ball, but only if there are enough lives and the center
-    button has been pressed.
-
-    Args:
-        input_state (dict): Dictionary where keys are ``Button`` enums and the value is a ``bool``.
-        lives (int): Number of lives left.
-        physics (PhysicsInterface): Concrete physics interface.
-
-    Returns:
-        bool: Whether a new ball has been launched.
-    """
-    if lives == 0:
-        return False
-    elif not input_state[Buttons.CENTER]:
-        return False
-    return True
