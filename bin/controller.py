@@ -107,10 +107,8 @@ physics_interface.add_bumper(
 )
 
 controller = pypinball.Controller(
-    audio_interface=audio_interface,
     config=GAME_CONFIG,
     display_interface=display_interface,
-    input_interface=input_interface,
     physics_interface=physics_interface,
     event_publisher=events_pub,
 )

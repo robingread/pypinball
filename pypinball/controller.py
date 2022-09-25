@@ -1,5 +1,4 @@
 import logging
-from . import audio
 from . import domain
 from . import display
 from . import events
@@ -21,13 +20,11 @@ class ObjectIdGenerator:
 class Controller:
     def __init__(
         self,
-        audio_interface: audio.AudioInterface,
         display_interface: display.DisplayInterface,
         config: GameConfig,
         physics_interface: physics.PhysicsInterface,
         event_publisher: events.GameEventPublisher,
     ):
-        self._audio = audio_interface
         self._display = display_interface
         self._config = config
         self._physics = physics_interface
