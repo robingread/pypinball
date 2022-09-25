@@ -2,25 +2,6 @@ import pypinball
 import typing
 
 
-# TODO: Remove the need/use of the MocAudio class.
-class MocAudio(pypinball.AudioInterface):
-    """
-    Moc AudioInterface that stores the sounds which have been requested without
-    actually playing any audio.
-    """
-
-    def __init__(self):
-        self._sounds = list()
-
-    @property
-    def sounds(self) -> set:
-        return set(self._sounds)
-
-    def play_sound_file(self, file_path: str) -> bool:
-        self._sounds.append(file_path)
-        return True
-
-
 class MocDisplayInterface(pypinball.DisplayInterface):
     def clear(self) -> None:
         pass
