@@ -26,4 +26,4 @@ pip install \
     simpleaudio \
     sphinx==5.1.1 \
     sphinxcontrib-mermaid \
-    sphinx_rtd_theme
+    sphinx_rtd_theme==1.0.0
