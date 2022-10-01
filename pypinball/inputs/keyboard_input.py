@@ -1,14 +1,17 @@
-import logging
 import typing
 from .events import InputEvents
 from .events import InputEventPublisher
 from .input_interface import InputInterface
 from .. import domain
+from .. import log
+
+
+logger = log.get_logger(name=__name__)
 
 try:
     import pynput
 except ImportError:
-    logging.error(
+    logger.error(
         "Unable to import the pynput module. Beware, things may not work properly when it comes to reading keyboard input!"
     )
 
@@ -33,40 +36,40 @@ class KeyboardInput(InputInterface):
         self._right_button_state = False
 
     def _on_press(self, key) -> None:
-        logging.debug(f"Key pressed: {type(key)}")
+        logger.debug(f"Key pressed: {type(key)}")
 
         key_bode = pynput.keyboard.KeyCode()
 
         if not self._center_button_state and key == pynput.keyboard.Key.space:
-            logging.debug("Center button pressed")
+            logger.debug("Center button pressed")
             self._center_button_state = True
             self._event_pub.emit(event=InputEvents.CENTER_BUTTON_PRESSED)
 
         if not self._left_button_state and key == key_bode.from_char("f"):
-            logging.debug("Left button pressed")
+            logger.debug("Left button pressed")
             self._left_button_state = True
             self._event_pub.emit(event=InputEvents.LEFT_BUTTON_PRESSED)
 
         if not self._right_button_state and key == key_bode.from_char("j"):
-            logging.debug("Right button pressed")
+            logger.debug("Right button pressed")
             self._right_button_state = True
             self._event_pub.emit(event=InputEvents.RIGHT_BUTTON_PRESSED)
 
     def _on_release(self, key) -> None:
-        logging.debug(f"Key released: {key}")
+        logger.debug(f"Key released: {key}")
 
         key_bode = pynput.keyboard.KeyCode()
 
         if self._center_button_state and key == pynput.keyboard.Key.space:
-            logging.debug("Center button released")
+            logger.debug("Center button released")
             self._center_button_state = False
 
         if self._left_button_state and key == key_bode.from_char("f"):
-            logging.debug("Left button released")
+            logger.debug("Left button released")
             self._left_button_state = False
 
         if self._right_button_state and key == key_bode.from_char("j"):
-            logging.debug("Right button released")
+            logger.debug("Right button released")
             self._right_button_state = False
 
     def get_input_state(self) -> typing.Dict[domain.Buttons, bool]:
