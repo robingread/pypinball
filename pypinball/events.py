@@ -1,6 +1,8 @@
 import enum
-import logging
 import typing
+from . import log
+
+logger = log.get_logger(name=__name__)
 
 
 class GameEvents(enum.Enum):
@@ -87,7 +89,7 @@ class GameEventPublisher:
         Returns:
             None
         """
-        logging.debug(f"Emitting event: {event}")
+        logger.debug(f"Emitting event: {event}")
         for cb in self._callbacks:
             cb(event)
 
@@ -105,7 +107,7 @@ class GameEventPublisher:
         """
         if callback in self._callbacks:
             return False
-        logging.info(f"Added event callback: {callback}")
+        logger.info(f"Added event callback: {callback}")
         self._callbacks.add(callback)
         return True
 
@@ -122,6 +124,6 @@ class GameEventPublisher:
         """
         if callback not in self._callbacks:
             return False
-        logging.info(f"Removing event callback: {callback}")
+        logger.info(f"Removing event callback: {callback}")
         self._callbacks.remove(callback)
         return True

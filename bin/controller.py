@@ -1,4 +1,3 @@
-import logging
 import pypinball
 
 GAME_CONFIG = pypinball.GameConfig(
@@ -29,9 +28,9 @@ GAME_CONFIG = pypinball.GameConfig(
     ],
     walls=[
         pypinball.domain.Wall(
-            uid=0,
-            points=[(0.0, 0.0), (450.0, 0.0), (450.0, 650.0), (0.0, 650.0), (0.0, 0.0)],
-        )
+            uid=10,
+            points=[(0.0, 650.0), (0.0, 0.0), (450.0, 0.0), (450.0, 650.0)],
+        ),
     ],
     event_to_sounds={
         pypinball.events.GameEvents.FLIPPER_ACTIVATED: pypinball.resources.get_audio_resource_path(
@@ -40,11 +39,14 @@ GAME_CONFIG = pypinball.GameConfig(
         pypinball.events.GameEvents.BALL_LAUNCHED: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
         ),
+        pypinball.events.GameEvents.BALL_LOST: pypinball.resources.get_audio_resource_path(
+            filename="Bounce1.wav"
+        ),
         pypinball.events.GameEvents.COLLISION_BALL_BALL: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
         ),
         pypinball.events.GameEvents.COLLISION_BALL_BUMPER: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
+            filename="redPowerup3.wav"
         ),
         pypinball.events.GameEvents.COLLISION_BALL_FLIPPER: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
@@ -54,10 +56,6 @@ GAME_CONFIG = pypinball.GameConfig(
         ),
     },
 )
-
-logger = logging.getLogger(name="pypinball")
-logger.setLevel(level=logging.DEBUG)
-logger.info("Starting game")
 
 input_pub = pypinball.inputs.InputEventPublisher()
 events_pub = pypinball.events.GameEventPublisher()

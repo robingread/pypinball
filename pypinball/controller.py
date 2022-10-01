@@ -1,11 +1,14 @@
-import logging
 from . import domain
 from . import display
 from . import events
 from . import inputs
+from . import log
 from . import physics
 from . import utils
 from .game_config import GameConfig
+
+
+logger = log.get_logger(__name__)
 
 
 class ObjectIdGenerator:
@@ -34,6 +37,8 @@ class Controller:
         self._should_quit = False
 
     def handle_input_event(self, event: inputs.InputEvents) -> None:
+        logger.debug(f"Handling input event: {event}")
+
         if event in [
             inputs.InputEvents.LEFT_BUTTON_PRESSED,
             inputs.InputEvents.RIGHT_BUTTON_PRESSED,
@@ -59,7 +64,7 @@ class Controller:
         Returns:
             bool: Whether the setup was fully successful.
         """
-        logging.debug("Setting up controller")
+        logger.debug("Setting up controller")
 
         self._should_quit = False
         ret = list()
@@ -75,7 +80,7 @@ class Controller:
         Returns:
             None
         """
-        logging.info("Stopping the controller main loop")
+        logger.info("Stopping the controller main loop")
         self._should_quit = True
 
     def run(self) -> None:
@@ -85,13 +90,11 @@ class Controller:
         Returns:
             None
         """
-        logging.info("Starting main loop")
+        logger.info("Starting main loop")
         while not self._should_quit:
             self.tick()
 
     def tick(self) -> None:
-        logging.debug("Ticking controller")
-
         self._display.clear()
         self._physics.update()
         self._display.update()
@@ -110,6 +113,7 @@ class Controller:
             if ball_in_area:
                 continue
 
+            logger.info("Ball lost")
             self._physics.remove_ball(uid=state.uid)
             self._event_publisher.emit(event=events.GameEvents.BALL_LOST)
 

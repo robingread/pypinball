@@ -1,5 +1,7 @@
-import logging
 import importlib.resources
+from .. import log
+
+logger = log.get_logger(name=__name__)
 
 
 def get_python_pkg_resource_path(prefix: str, resource: str) -> str:
@@ -14,7 +16,7 @@ def get_python_pkg_resource_path(prefix: str, resource: str) -> str:
     Returns:
         str: Full system path of a resource.
     """
-    logging.debug(f"Loading resource path, prefix: {prefix}, resource: {resource}")
+    logger.debug(f"Loading resource path, prefix: {prefix}, resource: {resource}")
     with importlib.resources.path(package=prefix, resource=resource) as p:
         return str(p)
 
