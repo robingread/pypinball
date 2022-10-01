@@ -1,6 +1,5 @@
 import dataclasses
 import enum
-import logging
 import typing
 import pymunk
 import pymunk.pygame_util
@@ -8,6 +7,10 @@ import random
 from .physics_interface import PhysicsInterface
 from .. import domain
 from .. import events
+from .. import log
+
+
+logger = log.get_logger(name=__name__)
 
 
 class CollisionEntity(enum.IntEnum):
@@ -306,7 +309,7 @@ class PymunkPhysics(PhysicsInterface):
 
     def add_ball(self, ball: domain.Ball) -> bool:
         if ball.uid in self._balls.keys():
-            logging.warning(f"Unable to add ball. ID is already registered: {ball.uid}")
+            logger.warning(f"Unable to add ball. ID is already registered: {ball.uid}")
             return False
         entity = create_pymunk_ball(ball=ball)
         entity.add_to_space(space=self._space)
@@ -326,7 +329,7 @@ class PymunkPhysics(PhysicsInterface):
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
         if flipper.uid in self._flippers.keys():
-            logging.warning(
+            logger.warning(
                 f"Unable to add flipper. ID is already registered: {flipper.uid}"
             )
             return False
@@ -337,7 +340,7 @@ class PymunkPhysics(PhysicsInterface):
 
     def add_wall(self, wall: domain.Wall) -> bool:
         if wall.uid in self._walls.keys():
-            logging.warning(f"Unable to add wall. ID is already registered: {wall.uid}")
+            logger.warning(f"Unable to add wall. ID is already registered: {wall.uid}")
             return False
         entity = create_pymunk_wall(wall=wall, space=self._space)
         entity.add_to_space(space=self._space)
@@ -362,7 +365,7 @@ class PymunkPhysics(PhysicsInterface):
     def launch_ball(self, uid: int) -> bool:
         if uid not in self._balls.keys():
             msg = f"Failed to launch ball with UID {uid}. This ID is not registred in the Physics implementaion."
-            logging.warning(msg)
+            logger.warning(msg)
             return False
         self._balls[uid].apply_impulse(direction=(0.0, -1.0))
         self._event_pub.emit(event=events.GameEvents.BALL_LAUNCHED)
@@ -386,7 +389,7 @@ class PymunkPhysics(PhysicsInterface):
         self._draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     def update(self) -> None:
-        logging.debug("Updating Pymunk Physics")
+        logger.debug("Updating Pymunk Physics")
 
         if self._draw_options is not None:
             self._space.debug_draw(options=self._draw_options)
