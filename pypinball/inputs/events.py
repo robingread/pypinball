@@ -1,5 +1,8 @@
 import enum
 import typing
+from .. import log
+
+logger = log.get_logger(name=__name__)
 
 
 class InputEvents(enum.Enum):
@@ -61,6 +64,7 @@ class InputEventPublisher:
         Returns:
             None
         """
+        logger.debug(f"Emitting event: {event}")
         for c in self._callbacks:
             c(event)
 
@@ -76,6 +80,7 @@ class InputEventPublisher:
         """
         if callback in self._callbacks:
             return False
+        logger.info(f"Added event callback: {callback}")
         self._callbacks.add(callback)
         return True
 
@@ -91,5 +96,6 @@ class InputEventPublisher:
         """
         if callback not in self._callbacks:
             return False
+        logger.info(f"Removing event callback: {callback}")
         self._callbacks.remove(callback)
         return True
