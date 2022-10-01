@@ -1,7 +1,10 @@
-import logging
 import typing
 from .audio_interface import AudioInterface
 from .. import events
+from .. import log
+
+
+logger = log.get_logger(name=__name__)
 
 
 class AudioGameEventHandler:
@@ -53,6 +56,6 @@ class AudioGameEventHandler:
         try:
             self._interface.play_sound_file(file_path=self._events_to_sounds[event])
         except KeyError:
-            logging.warning(
+            logger.warning(
                 f"Unmapped GameEvent enum: {event.name}. No audio will be played!"
             )
