@@ -1,4 +1,3 @@
-import logging
 import pypinball
 
 GAME_CONFIG = pypinball.GameConfig(
@@ -54,10 +53,6 @@ GAME_CONFIG = pypinball.GameConfig(
         ),
     },
 )
-
-logger = logging.getLogger(name="pypinball")
-logger.setLevel(level=logging.DEBUG)
-logger.info("Starting game")
 
 input_pub = pypinball.inputs.InputEventPublisher()
 events_pub = pypinball.events.GameEventPublisher()
