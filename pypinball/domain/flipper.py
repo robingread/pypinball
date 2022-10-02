@@ -1,8 +1,8 @@
 import dataclasses
 import typing
 
-from .buttons import Buttons
 from ..inputs import InputEvents
+from .buttons import Buttons
 
 
 @dataclasses.dataclass(frozen=True)

@@ -1,12 +1,5 @@
-from . import domain
-from . import display
-from . import events
-from . import inputs
-from . import log
-from . import physics
-from . import utils
+from . import display, domain, events, inputs, log, physics, utils
 from .game_config import GameConfig
-
 
 logger = log.get_logger(__name__)
 

@@ -1,6 +1,6 @@
-import pypinball
 import pytest
 
+import pypinball
 
 EVENTS_TO_SOUND_PATHS = {
     pypinball.events.GameEvents.GAME_STARTED: "game_started_sound",

@@ -1,7 +1,9 @@
 import os
+
 import simpleaudio
-from .audio_interface import AudioInterface
+
 from .. import log
+from .audio_interface import AudioInterface
 
 logger = log.get_logger(name=__name__)
 

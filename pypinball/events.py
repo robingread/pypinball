@@ -1,5 +1,6 @@
 import enum
 import typing
+
 from . import log
 
 logger = log.get_logger(name=__name__)

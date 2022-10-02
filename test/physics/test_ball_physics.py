@@ -1,6 +1,8 @@
-import numpy
-import pypinball
 import unittest
+
+import numpy
+
+import pypinball
 
 
 class TestBallGeneration(unittest.TestCase):

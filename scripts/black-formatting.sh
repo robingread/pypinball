@@ -16,9 +16,13 @@ TEST_DIR=test/
 
 if [ "$RUN_CHECK" = true ]
 then
+  echo "Running isort check..."
+  isort --check $BIN_DIR $SRC_DIR $TEST_DIR
   echo "Running black formatter check..."
   black --check $BIN_DIR $SRC_DIR $TEST_DIR
 else
+  echo "Running isort..."
+  isort $BIN_DIR $SRC_DIR $TEST_DIR
   echo "Running black formatter..."
   black $BIN_DIR $SRC_DIR $TEST_DIR
 fi

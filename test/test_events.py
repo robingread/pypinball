@@ -2,8 +2,9 @@
 Test the events.py module.
 """
 
-import pypinball
 import pytest
+
+import pypinball
 
 
 @pytest.fixture

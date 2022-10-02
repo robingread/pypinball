@@ -1,4 +1,5 @@
 import typing
+
 from .audio_interface import AudioInterface
 
 

@@ -1,6 +1,7 @@
 import math
-import pypinball
 import unittest
+
+import pypinball
 
 
 class AngleTracker:

@@ -1,7 +1,7 @@
 import dataclasses
 import typing
-from . import domain
-from . import events
+
+from . import domain, events
 
 
 @dataclasses.dataclass

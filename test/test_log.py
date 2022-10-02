@@ -1,8 +1,9 @@
 import logging
 import os
-import pypinball
 import random
 import unittest
+
+import pypinball
 
 
 class TestGetLoggerInit(unittest.TestCase):
