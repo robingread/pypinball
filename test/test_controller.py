@@ -1,8 +1,9 @@
 import copy
-import pypinball
 import unittest
-from . import moc_interfaces
 
+import pypinball
+
+from . import moc_interfaces
 
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
     playing_area=(450, 650),

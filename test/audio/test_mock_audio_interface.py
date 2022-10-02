@@ -1,5 +1,6 @@
-import pypinball
 import pytest
+
+import pypinball
 
 
 @pytest.fixture()

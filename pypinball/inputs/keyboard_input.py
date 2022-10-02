@@ -1,10 +1,8 @@
 import typing
-from .events import InputEvents
-from .events import InputEventPublisher
-from .input_interface import InputInterface
-from .. import domain
-from .. import log
 
+from .. import domain, log
+from .events import InputEventPublisher, InputEvents
+from .input_interface import InputInterface
 
 logger = log.get_logger(name=__name__)
 

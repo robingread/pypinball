@@ -1,14 +1,13 @@
 import dataclasses
 import enum
+import random
 import typing
+
 import pymunk
 import pymunk.pygame_util
-import random
-from .physics_interface import PhysicsInterface
-from .. import domain
-from .. import events
-from .. import log
 
+from .. import domain, events, log
+from .physics_interface import PhysicsInterface
 
 logger = log.get_logger(name=__name__)
 

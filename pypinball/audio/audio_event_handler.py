@@ -1,8 +1,7 @@
 import typing
-from .audio_interface import AudioInterface
-from .. import events
-from .. import log
 
+from .. import events, log
+from .audio_interface import AudioInterface
 
 logger = log.get_logger(name=__name__)
 

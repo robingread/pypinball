@@ -1,5 +1,6 @@
-import pypinball
 import unittest
+
+import pypinball
 
 
 class TestBumper(unittest.TestCase):

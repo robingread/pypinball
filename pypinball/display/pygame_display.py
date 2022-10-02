@@ -1,6 +1,7 @@
 import pygame
-from .display_interface import DisplayInterface
+
 from .. import events
+from .display_interface import DisplayInterface
 
 
 class PyGameDisplay(DisplayInterface):
