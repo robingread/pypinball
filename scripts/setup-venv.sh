@@ -18,6 +18,7 @@ pip install --upgrade pip
 pip install \
     black \
     coverage \
+    isort \
     pygame \
     pymunk \
     pynput \
