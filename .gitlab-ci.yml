@@ -23,7 +23,6 @@ run unit tests:
   image: $CI_REGISTRY_IMAGE
   script:
     - ./scripts/setup-venv.sh
-    - source venv/bin/activate
     - ./scripts/ci-test.sh
   coverage: '/TOTAL.*\s([.\d]+)%/'
   artifacts:
@@ -41,7 +40,6 @@ pages:
   image: $CI_REGISTRY_IMAGE
   script:
     - ./scripts/setup-venv.sh
-    - source venv/bin/activate
     - ./scripts/build-docs.sh
     - cp -r docs/build/public/ public
   artifacts:
