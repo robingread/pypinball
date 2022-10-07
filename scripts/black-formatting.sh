@@ -2,6 +2,8 @@
 
 set -e
 
+source venv/bin/activate
+
 while getopts c flag
 do
   case "${flag}" in
