@@ -2,6 +2,8 @@
 
 set -e
 
+source venv/bin/activate
+
 echo "Running Python unittests & calculating code coverage..."
 
 DATA_DIR=coverage

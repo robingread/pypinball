@@ -2,6 +2,8 @@
 
 set -e
 
+source venv/bin/activate
+
 if [ -d build/ ]; then
   echo "Removing build/ directory"
   rm -rf build/
