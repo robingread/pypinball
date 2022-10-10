@@ -54,7 +54,7 @@ class TestPymunkFlipper(unittest.TestCase):
             config=pypinball.domain.FlipperConfig(
                 position=(50, 400),
                 angle=0,
-                length=15,
+                length=150,
                 actuation_angle=-1.0,
                 actuation_direction=1,
                 actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
@@ -118,7 +118,12 @@ class TestPymunkFlipper(unittest.TestCase):
         target_angle = (
             self.left_flipper.config.angle + self.left_flipper.config.actuation_angle
         )
-        self.assertAlmostEqual(tracker.absolute_angle, target_angle, delta=0.1)
+        self.assertAlmostEqual(
+            tracker.absolute_angle,
+            target_angle,
+            delta=0.1,
+            msg="Actual angle of left flipper is not equal to target configuation angle",
+        )
 
     def test_actuate_right_flipper(self):
         """
