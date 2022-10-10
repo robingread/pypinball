@@ -20,6 +20,7 @@ pip install \
     coverage \
     isort \
     pygame \
+    pylint \
     pymunk \
     pynput \
     pytest \
