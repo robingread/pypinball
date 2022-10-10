@@ -8,7 +8,7 @@ GAME_CONFIG = pypinball.GameConfig(
             config=pypinball.domain.FlipperConfig(
                 position=(50, 600),
                 angle=0.0,
-                length=25,
+                length=140,
                 actuation_angle=-1.0,
                 actuation_direction=1,
                 actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
@@ -19,7 +19,7 @@ GAME_CONFIG = pypinball.GameConfig(
             config=pypinball.domain.FlipperConfig(
                 position=(400, 600),
                 angle=3.141,
-                length=25,
+                length=140,
                 actuation_angle=1.0,
                 actuation_direction=-1,
                 actuation_input=pypinball.inputs.InputEvents.RIGHT_BUTTON_PRESSED,
@@ -29,7 +29,14 @@ GAME_CONFIG = pypinball.GameConfig(
     walls=[
         pypinball.domain.Wall(
             uid=10,
-            points=[(0.0, 650.0), (0.0, 0.0), (450.0, 0.0), (450.0, 650.0)],
+            points=[
+                (0.0, 650.0),
+                (0.0, 50.0),
+                (75.0, 0.0),
+                (375.0, 0.0),
+                (450.0, 50.0),
+                (450.0, 650.0),
+            ],
         ),
     ],
     event_to_sounds={
