@@ -15,5 +15,6 @@
             "source.organizeImports": true
         }
     },
-    "terminal.integrated.tabs.enabled": true
+    "terminal.integrated.tabs.enabled": true,
+    "workbench.tree.indent": 25
 }
