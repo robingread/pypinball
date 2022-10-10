@@ -1,7 +1,9 @@
 import pygame
 
-from .. import events
+from .. import events, log
 from .display_interface import DisplayInterface
+
+logger = log.get_logger(name=__name__)
 
 
 class PyGameDisplay(DisplayInterface):
@@ -30,5 +32,6 @@ class PyGameDisplay(DisplayInterface):
 
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
+                logger.info("Closing display window")
                 self._game_events.emit(event=events.GameEvents.QUIT)
                 break
