@@ -1,6 +1,10 @@
 {
     "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
     "python.formatting.provider": "black",
+    "python.linting.lintOnSave": true,
+    "python.linting.pylintEnabled": true,
     "python.sortImports.args": [
         "--profile",
         "black"
@@ -15,5 +19,6 @@
             "source.organizeImports": true
         }
     },
-    "terminal.integrated.tabs.enabled": true
+    "terminal.integrated.tabs.enabled": true,
+    "workbench.tree.indent": 25
 }
