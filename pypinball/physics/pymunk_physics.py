@@ -151,8 +151,14 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
 
 
 def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
-    fp = [(-20, -20), (-20, 20), (120, 10), (120, -10)]
-    mass = 10
+    fp = [
+        (-20, -20),
+        (-20, 20),
+        (flipper.config.length, 10),
+        (flipper.config.length, -10),
+    ]
+    # TODO: This seems to be a very carefully coded value! It can easily break tests!
+    mass = 8
     moment = pymunk.moment_for_poly(mass, fp)
 
     flipper_body = pymunk.Body(mass, moment)
