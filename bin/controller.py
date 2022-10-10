@@ -29,7 +29,14 @@ GAME_CONFIG = pypinball.GameConfig(
     walls=[
         pypinball.domain.Wall(
             uid=10,
-            points=[(0.0, 650.0), (0.0, 0.0), (450.0, 0.0), (450.0, 650.0)],
+            points=[
+                (0.0, 650.0),
+                (0.0, 50.0),
+                (75.0, 0.0),
+                (375.0, 0.0),
+                (450.0, 50.0),
+                (450.0, 650.0),
+            ],
         ),
     ],
     event_to_sounds={
