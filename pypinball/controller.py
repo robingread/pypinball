@@ -5,12 +5,26 @@ logger = log.get_logger(__name__)
 
 
 class ObjectIdGenerator:
+    """
+    The object ID generator is used to create unique ID for objects
+    as needed throughout a game.
+    """
+
     def __init__(self):
         self._count = -1
 
     def generate_id(self) -> int:
+        """
+        Generate a new ID from the internal counter.
+        """
         self._count += 1
         return self._count
+
+    def reset(self) -> None:
+        """
+        Reset the internal counter.
+        """
+        self._count = -1
 
 
 class Controller:
@@ -29,7 +43,17 @@ class Controller:
 
         self._should_quit = False
 
+    ##################
+    # Public Methods #
+    ##################
     def handle_input_event(self, event: inputs.InputEvents) -> None:
+        """
+        Input device event handler class. This method is used to react to input
+        events and should be registred as a callback with a ``InputEventPublisher`` instance.
+
+        Args:
+            event (InputEvents): Input device event.
+        """
         logger.debug(f"Handling input event: {event}")
 
         if event in [
@@ -69,9 +93,6 @@ class Controller:
     def stop(self) -> None:
         """
         Stop running the controller.
-
-        Returns:
-            None
         """
         logger.info("Stopping the controller main loop")
         self._should_quit = True
@@ -79,21 +100,25 @@ class Controller:
     def run(self) -> None:
         """
         Start running the controller main loop.
-
-        Returns:
-            None
         """
         logger.info("Starting main loop")
         while not self._should_quit:
             self.tick()
 
     def tick(self) -> None:
+        """
+        Tick the controller. This will update the PhysicsInterface as well as the DisplayInterface
+        implementations.
+        """
         self._display.clear()
         self._physics.update()
         self._display.update()
 
         self._handle_lost_balls()
 
+    ###################
+    # Private Methods #
+    ###################
     def _handle_lost_balls(self) -> None:
         states = self._physics.get_ball_states()
         for state in states:

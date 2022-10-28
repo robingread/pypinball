@@ -18,8 +18,8 @@ def get_python_pkg_resource_path(prefix: str, resource: str) -> str:
         str: Full system path of a resource.
     """
     logger.debug(f"Loading resource path, prefix: {prefix}, resource: {resource}")
-    with importlib.resources.path(package=prefix, resource=resource) as p:
-        return str(p)
+    with importlib.resources.path(package=prefix, resource=resource) as path:
+        return str(path)
 
 
 def get_audio_resource_path(filename: str) -> str:

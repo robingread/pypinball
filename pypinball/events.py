@@ -7,6 +7,10 @@ logger = log.get_logger(name=__name__)
 
 
 class GameEvents(enum.Enum):
+    """
+    Game realted event types. Thes should all be self explanatory.
+    """
+
     BALL_LAUNCHED = enum.auto()
     BALL_LOST = enum.auto()
     COLLISION_BALL_BALL = enum.auto()
@@ -42,9 +46,6 @@ class MockEventHandler:
     def clear(self) -> None:
         """
         Clear the list of recorded events.
-
-        Returns:
-            None
         """
         self._events.clear()
 
@@ -55,9 +56,6 @@ class MockEventHandler:
 
         Args:
             event (GameEvents): Event.
-
-        Returns:
-            None
         """
         self._events.append(event)
 
@@ -86,13 +84,10 @@ class GameEventPublisher:
 
         Args:
             event: Event to emit.
-
-        Returns:
-            None
         """
         logger.debug(f"Emitting event: {event}")
-        for cb in self._callbacks:
-            cb(event)
+        for callback in self._callbacks:
+            callback(event)
 
     def subscribe(self, callback: typing.Callable[[GameEvents], None]) -> bool:
         """

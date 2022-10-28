@@ -36,10 +36,20 @@
             "label": "Play Game",
             "type": "shell",
             "command": "python bin/controller.py",
-            "group": "play",
+            "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}"
             }
+        },
+        {
+            "label": "Run PyLint",
+            "type": "shell",
+            "command": "./scripts/linting.sh",
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
         },
         {
             "label": "Run Unit Tests",

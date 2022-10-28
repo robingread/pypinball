@@ -65,14 +65,6 @@ class PhysicsInterface(typing.Protocol):
             bool: ``True`` if the wall was added successfully, else ``False``.
         """
 
-    def get_collisions(self) -> typing.List[domain.Collision]:
-        """
-        Get a list of collisions that have taken place in the last update.
-
-        Returns:
-            list: List of collisions.
-        """
-
     def get_ball_state(self, uid: int) -> domain.BallState:
         """
         Get the state of a ball.

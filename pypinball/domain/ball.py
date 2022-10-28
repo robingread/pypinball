@@ -17,6 +17,12 @@ class Ball:
 
     @property
     def uid(self) -> int:
+        """
+        Get the unique ID of the ball object.
+
+        Returns:
+            int: Unique ID.
+        """
         return self._uid
 
     @property
@@ -47,9 +53,6 @@ class Ball:
 
         Args:
             position (tuple): Position in the format (x, y).
-
-        Returns:
-            None
         """
         self._position_history.insert(0, self._position)
         if len(self._position_history) > self._history:

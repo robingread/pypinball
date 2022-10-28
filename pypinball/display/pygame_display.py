@@ -7,6 +7,9 @@ logger = log.get_logger(name=__name__)
 
 
 class PyGameDisplay(DisplayInterface):
+    """Implementation of a DisplayInterface class that uses
+    PyGame as the underling Graphics engine/manager."""
+
     def __init__(self, width: int, height: int, game_events: events.GameEventPublisher):
         self._game_events = game_events
         pygame.init()

@@ -27,9 +27,6 @@ class MockAudioInterface(AudioInterface):
     def clear(self) -> None:
         """
         Clear the list of played sound files.
-
-        Returns:
-            None
         """
         self._sounds.clear()
 
