@@ -32,3 +32,13 @@ disable=
     missing-module-docstring,
     use-dict-literal,
     use-list-literal,
+
+[BASIC]
+
+class-naming-style=PascalCase
+const-naming-style=UPPER_CASE
+function-naming-style=snake_case
+method-naming-style=snake_case
+module-naming-style=snake_case
+
+good-names=a, b, c, i, j, k, x, y
