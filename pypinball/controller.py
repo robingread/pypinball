@@ -20,6 +20,12 @@ class ObjectIdGenerator:
         self._count += 1
         return self._count
 
+    def reset(self) -> None:
+        """
+        Reset the internal counter.
+        """
+        self._count = -1
+
 
 class Controller:
     def __init__(
