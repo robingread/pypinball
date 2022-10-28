@@ -1,6 +1,4 @@
-import typing
-
-from .. import domain, log
+from .. import log
 from .events import InputEventPublisher, InputEvents
 from .input_interface import InputInterface
 
@@ -69,17 +67,3 @@ class KeyboardInput(InputInterface):
         if self._right_button_state and key == key_bode.from_char("j"):
             logger.debug("Right button released")
             self._right_button_state = False
-
-    def get_input_state(self) -> typing.Dict[domain.Buttons, bool]:
-
-        ret = {
-            domain.Buttons.CENTER: self._center_button_state,
-            domain.Buttons.LEFT: self._left_button_state,
-            domain.Buttons.RIGHT: self._right_button_state,
-        }
-
-        self._center_button_state = False
-        self._left_button_state = False
-        self._right_button_state = False
-
-        return ret
