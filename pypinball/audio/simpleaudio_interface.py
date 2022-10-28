@@ -8,7 +8,7 @@ from .audio_interface import AudioInterface
 logger = log.get_logger(name=__name__)
 
 
-class SimpleAudio(AudioInterface):
+class SimpleAudio(AudioInterface):  # pylint: disable=too-few-public-methods
     def __init__(self, blocking=False):
         self._blocking = blocking
 

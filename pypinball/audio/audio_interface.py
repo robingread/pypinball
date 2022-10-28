@@ -1,7 +1,7 @@
 import typing
 
 
-class AudioInterface(typing.Protocol):
+class AudioInterface(typing.Protocol):  # pylint: disable=too-few-public-methods
     """
     Audio Interface protocol definition. This is an interface class and does
     not implement any actual behaviour. Concrete implementations of audio

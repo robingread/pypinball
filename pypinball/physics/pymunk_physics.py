@@ -221,7 +221,7 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
     return PymunkWall(id=wall.uid, segment_bodies=segments)
 
 
-class CollisionHandler:
+class CollisionHandler:  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         event_pub: events.GameEventPublisher,
