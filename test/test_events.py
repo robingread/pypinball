@@ -33,29 +33,29 @@ def game_event_pub():
 
 
 def test_new_game_event_pub(game_event_pub):
-    assert game_event_pub.num_subs == 0
+    assert game_event_pub.num_subscribers == 0
 
 
 def test_register_new_callback(mock_sub, game_event_pub):
     assert game_event_pub.subscribe(callback=mock_sub.handle_event) is True
-    assert game_event_pub.num_subs == 1
+    assert game_event_pub.num_subscribers == 1
 
 
 def test_register_same_callback_twice(game_event_pub, mock_sub):
     game_event_pub.subscribe(callback=mock_sub.handle_event)
     assert game_event_pub.subscribe(callback=mock_sub.handle_event) is False
-    assert game_event_pub.num_subs == 1
+    assert game_event_pub.num_subscribers == 1
 
 
 def test_unregister_known_callback(game_event_pub, mock_sub):
     game_event_pub.subscribe(callback=mock_sub.handle_event)
     assert game_event_pub.unsubscribe(callback=mock_sub.handle_event) is True
-    assert game_event_pub.num_subs == 0
+    assert game_event_pub.num_subscribers == 0
 
 
 def test_attempt_unregister_unknown_callback(game_event_pub, mock_sub):
     assert game_event_pub.unsubscribe(callback=mock_sub.handle_event) is False
-    assert game_event_pub.num_subs == 0
+    assert game_event_pub.num_subscribers == 0
 
 
 def test_emit_event_to_registered_callback(game_event_pub, mock_sub):
