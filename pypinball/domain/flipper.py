@@ -37,10 +37,22 @@ class Flipper:
 
     @property
     def config(self) -> FlipperConfig:
+        """
+        Get the flipper config.
+
+        Returns:
+            FlipperConfig: The flipper config data.
+        """
         return self._config
 
     @property
     def uid(self) -> int:
+        """
+        Get the flipper unique ID.
+
+        Returns:
+            int: Unique ID.
+        """
         return self._uid
 
 

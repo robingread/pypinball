@@ -17,6 +17,12 @@ class Ball:
 
     @property
     def uid(self) -> int:
+        """
+        Get the unique ID of the ball object.
+
+        Returns:
+            int: Unique ID.
+        """
         return self._uid
 
     @property

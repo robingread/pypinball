@@ -7,6 +7,10 @@ logger = log.get_logger(name=__name__)
 
 
 class GameEvents(enum.Enum):
+    """
+    Game realted event types. Thes should all be self explanatory.
+    """
+
     BALL_LAUNCHED = enum.auto()
     BALL_LOST = enum.auto()
     COLLISION_BALL_BALL = enum.auto()
