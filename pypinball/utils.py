@@ -15,6 +15,6 @@ def check_ball_is_within_area(
     Returns:
         bool: ``True`` if the ball is within the area else ``False``.
     """
-    a = 0.0 <= ball_position[0] <= width
-    b = 0.0 <= ball_position[1] <= height
-    return all([a, b])
+    ball_in_width = 0.0 <= ball_position[0] <= width
+    ball_in_height = 0.0 <= ball_position[1] <= height
+    return all([ball_in_width, ball_in_height])

@@ -86,8 +86,8 @@ class GameEventPublisher:
             event: Event to emit.
         """
         logger.debug(f"Emitting event: {event}")
-        for cb in self._callbacks:
-            cb(event)
+        for callback in self._callbacks:
+            callback(event)
 
     def subscribe(self, callback: typing.Callable[[GameEvents], None]) -> bool:
         """

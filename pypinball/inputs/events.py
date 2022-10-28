@@ -63,8 +63,8 @@ class InputEventPublisher:
             event (InputEvents): Event to emit.
         """
         logger.debug(f"Emitting event: {event}")
-        for c in self._callbacks:
-            c(event)
+        for callback in self._callbacks:
+            callback(event)
 
     def subscribe(self, callback: typing.Callable[[InputEvents], None]) -> bool:
         """
