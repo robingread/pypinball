@@ -26,6 +26,9 @@ enable=
 # multiple time (only on the command line, not in the configuration file where
 # it should appear only once).
 disable=
+    consider-iterating-dictionary,
     format,
     logging-fstring-interpolation,
-    missing-module-docstring
+    missing-module-docstring,
+    use-dict-literal,
+    use-list-literal,
