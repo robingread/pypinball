@@ -42,6 +42,16 @@
             }
         },
         {
+            "label": "Run PyLint",
+            "type": "shell",
+            "command": "./scripts/linting.sh",
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Run Unit Tests",
             "type": "shell",
             "command": "./scripts/run-tests.sh",
