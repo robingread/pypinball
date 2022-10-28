@@ -61,6 +61,9 @@ class RoundBumper(Bumper):
 
     The only extra member variable is the ``radius`` which is specified in
     pixels.
+
+    Args:
+        radius (float): Radius of the bumper.
     """
 
     def __init__(self, radius: float, *args, **kwargs):
@@ -89,6 +92,10 @@ class RectangleBumper(Bumper):
     the first element being the side length in the X axis of the bumper's
     local coordinate frame, and the second element being the length along
     the Y axis.
+
+    Args:
+        angle (float): Rotation angle in radians.
+        size (tuple): Bumper size in the format (width, height).
     """
 
     def __init__(self, angle: float, size: typing.Tuple[float, float], *args, **kwargs):
