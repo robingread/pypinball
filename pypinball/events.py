@@ -42,9 +42,6 @@ class MockEventHandler:
     def clear(self) -> None:
         """
         Clear the list of recorded events.
-
-        Returns:
-            None
         """
         self._events.clear()
 
@@ -55,9 +52,6 @@ class MockEventHandler:
 
         Args:
             event (GameEvents): Event.
-
-        Returns:
-            None
         """
         self._events.append(event)
 
@@ -86,9 +80,6 @@ class GameEventPublisher:
 
         Args:
             event: Event to emit.
-
-        Returns:
-            None
         """
         logger.debug(f"Emitting event: {event}")
         for cb in self._callbacks:

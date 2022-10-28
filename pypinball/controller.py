@@ -69,9 +69,6 @@ class Controller:
     def stop(self) -> None:
         """
         Stop running the controller.
-
-        Returns:
-            None
         """
         logger.info("Stopping the controller main loop")
         self._should_quit = True
@@ -79,9 +76,6 @@ class Controller:
     def run(self) -> None:
         """
         Start running the controller main loop.
-
-        Returns:
-            None
         """
         logger.info("Starting main loop")
         while not self._should_quit:

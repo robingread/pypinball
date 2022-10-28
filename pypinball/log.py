@@ -38,9 +38,6 @@ def make_log_file_path(filename: str) -> None:
 
     Args:
         filename (str): Path to log file (e.g. /tmp/logs/some.log).
-
-    Returns:
-        None
     """
     p = os.path.abspath(filename)
     p = os.path.splitext(p)[0]

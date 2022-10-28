@@ -61,9 +61,6 @@ class InputEventPublisher:
 
         Args:
             event (InputEvents): Event to emit.
-
-        Returns:
-            None
         """
         logger.debug(f"Emitting event: {event}")
         for c in self._callbacks:

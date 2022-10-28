@@ -47,9 +47,6 @@ class Ball:
 
         Args:
             position (tuple): Position in the format (x, y).
-
-        Returns:
-            None
         """
         self._position_history.insert(0, self._position)
         if len(self._position_history) > self._history:

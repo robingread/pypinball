@@ -48,9 +48,6 @@ class AudioGameEventHandler:
 
         Args:
             event: Event type.
-
-        Returns:
-            None
         """
         try:
             self._interface.play_sound_file(file_path=self._events_to_sounds[event])
