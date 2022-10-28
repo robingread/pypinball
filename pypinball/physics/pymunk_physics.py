@@ -324,7 +324,7 @@ class PymunkPhysics(PhysicsInterface):
     def add_bumper(self, bumper: domain.Bumper) -> bool:
         if bumper.uid in self._bumpers.keys():
             return False
-        if isinstance(bumper, domain.RoundBumper):
+        if bumper.type == domain.BumperType.ROUND:
             entity = create_round_bumper(bumper=bumper)
         else:
             entity = create_rectangle_bumper(bumper=bumper)
