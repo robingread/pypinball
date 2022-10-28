@@ -2,7 +2,6 @@ import dataclasses
 import typing
 
 from ..inputs import InputEvents
-from .buttons import Buttons
 
 
 @dataclasses.dataclass(frozen=True)
@@ -14,7 +13,6 @@ class FlipperConfig:
     - angle (float): Angle of the flipper in the world coordinates.
     - length (float): Length of the flipper arm.
     - actuation_angle (float):
-    - actuation_button (Buttons): Button that actuates the flipper.
     - actuation_direction (int): Direction the flipper actuates in. 1 corresponds to counter clockwise and -1 clockwise.
     """
 
