@@ -17,6 +17,8 @@ class GameConfig:
 
     playing_area: typing.Tuple[float, float]
 
+    bumpers: typing.List[domain.Bumper] = dataclasses.field(default_factory=list)
+
     flippers: typing.List[domain.Flipper] = dataclasses.field(default_factory=list)
 
     walls: typing.List[domain.Wall] = dataclasses.field(default_factory=list)

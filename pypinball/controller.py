@@ -86,6 +86,7 @@ class Controller:
         self._should_quit = False
         ret = list()
         ret += [self._event_publisher.subscribe(callback=self._handle_game_events)]
+        ret += [self._physics.add_bumper(f) for f in self._config.bumpers]
         ret += [self._physics.add_flipper(f) for f in self._config.flippers]
         ret += [self._physics.add_wall(w) for w in self._config.walls]
         return all(ret)
