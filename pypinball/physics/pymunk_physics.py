@@ -135,7 +135,7 @@ def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
 
 
 def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
-    w, h = bumper.size
+    width, height = bumper.size
     mass = 0.1
     inertia = pymunk.moment_for_box(mass=mass, size=bumper.size)
     body = pymunk.Body(mass=mass, moment=inertia, body_type=pymunk.Body.STATIC)
@@ -143,7 +143,12 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
     body.angle = bumper.angle
     shape = pymunk.Poly(
         body=body,
-        vertices=[(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)],
+        vertices=[
+            (-width / 2, -height / 2),
+            (width / 2, -height / 2),
+            (width / 2, height / 2),
+            (-width / 2, height / 2),
+        ],
     )
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
