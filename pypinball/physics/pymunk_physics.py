@@ -135,7 +135,7 @@ def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
 
 
 def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
-    w, h = bumper.size
+    width, height = bumper.size
     mass = 0.1
     inertia = pymunk.moment_for_box(mass=mass, size=bumper.size)
     body = pymunk.Body(mass=mass, moment=inertia, body_type=pymunk.Body.STATIC)
@@ -143,7 +143,12 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
     body.angle = bumper.angle
     shape = pymunk.Poly(
         body=body,
-        vertices=[(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)],
+        vertices=[
+            (-width / 2, -height / 2),
+            (width / 2, -height / 2),
+            (width / 2, height / 2),
+            (-width / 2, height / 2),
+        ],
     )
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
@@ -221,7 +226,7 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
     return PymunkWall(id=wall.uid, segment_bodies=segments)
 
 
-class CollisionHandler:
+class CollisionHandler:  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         event_pub: events.GameEventPublisher,
@@ -324,7 +329,7 @@ class PymunkPhysics(PhysicsInterface):
     def add_bumper(self, bumper: domain.Bumper) -> bool:
         if bumper.uid in self._bumpers.keys():
             return False
-        if isinstance(bumper, domain.RoundBumper):
+        if bumper.type == domain.BumperType.ROUND:
             entity = create_round_bumper(bumper=bumper)
         else:
             entity = create_rectangle_bumper(bumper=bumper)

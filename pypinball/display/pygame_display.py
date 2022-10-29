@@ -33,8 +33,8 @@ class PyGameDisplay(DisplayInterface):
         self._clock.tick(50)
         pygame.display.set_caption("fps: " + str(self._clock.get_fps()))
 
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 logger.info("Closing display window")
                 self._game_events.emit(event=events.GameEvents.QUIT)
                 break

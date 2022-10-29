@@ -2,6 +2,16 @@ import pypinball
 
 GAME_CONFIG = pypinball.GameConfig(
     playing_area=(600, 650),
+    bumpers=[
+        pypinball.domain.RectangleBumper(
+            uid=1000, position=(100, 100), size=(100, 25), angle=1
+        ),
+        pypinball.domain.RectangleBumper(
+            uid=1001, position=(350, 150), size=(100, 25), angle=-1
+        ),
+        pypinball.domain.RoundBumper(uid=1002, position=(200, 100), radius=15),
+        pypinball.domain.RoundBumper(uid=1003, position=(220, 250), radius=15),
+    ],
     flippers=[
         pypinball.domain.Flipper(
             uid=1,
@@ -30,12 +40,12 @@ GAME_CONFIG = pypinball.GameConfig(
         pypinball.domain.Wall(
             uid=10,
             points=[
-                (0.0, 650.0),
+                (30.0, 560.0),
                 (0.0, 50.0),
                 (75.0, 0.0),
                 (375.0, 0.0),
                 (450.0, 50.0),
-                (450.0, 650.0),
+                (420.0, 560.0),
             ],
         ),
     ],
@@ -80,17 +90,6 @@ input_interface = pypinball.inputs.KeyboardInput(event_pub=input_pub)
 
 physics_interface = pypinball.physics.PymunkPhysics(event_pub=events_pub)
 physics_interface.set_debug_display(screen=display_interface._screen)
-physics_interface.add_bumper(
-    bumper=pypinball.domain.RectangleBumper(
-        uid=1000, position=(100, 100), size=(100, 25), angle=1
-    )
-)
-physics_interface.add_bumper(
-    bumper=pypinball.domain.RoundBumper(uid=1001, position=(200, 100), radius=15)
-)
-physics_interface.add_bumper(
-    bumper=pypinball.domain.RoundBumper(uid=1002, position=(250, 250), radius=15)
-)
 
 controller = pypinball.Controller(
     config=GAME_CONFIG,

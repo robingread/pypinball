@@ -11,7 +11,7 @@ except ImportError:
     )
 
 
-class KeyboardInput:
+class KeyboardInput:  # pylint: disable=too-few-public-methods
     """
     Keyboard Input. This class reads the keyboard as inputs and maps the "f" key to the left button, the "j" key
     to the right button and the "spacebar" to firing the center button. Under the hood it uses the ``pyunput`` package.

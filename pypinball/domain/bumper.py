@@ -1,4 +1,14 @@
+import enum
 import typing
+
+
+class BumperType(enum.Enum):
+    """
+    Enums to specify the different types of Bumper that can exist.
+    """
+
+    ROUND = enum.auto()
+    RECTANGE = enum.auto()
 
 
 class Bumper:
@@ -6,9 +16,12 @@ class Bumper:
     Class containing configuration for a round bumper.
     """
 
-    def __init__(self, uid: int, position: typing.Tuple[float, float]):
+    def __init__(
+        self, uid: int, position: typing.Tuple[float, float], bumper_type: BumperType
+    ):
         self._uid = uid
         self._position = position
+        self._type = bumper_type
 
     @property
     def uid(self) -> int:
@@ -30,6 +43,16 @@ class Bumper:
         """
         return self._position
 
+    @property
+    def type(self) -> BumperType:
+        """
+        Get the BumperType.
+
+        Returns:
+            BumperType: Type.
+        """
+        return self._type
+
 
 class RoundBumper(Bumper):
     """
@@ -38,10 +61,13 @@ class RoundBumper(Bumper):
 
     The only extra member variable is the ``radius`` which is specified in
     pixels.
+
+    Args:
+        radius (float): Radius of the bumper.
     """
 
     def __init__(self, radius: float, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(bumper_type=BumperType.ROUND, *args, **kwargs)
         self._radius = radius
 
     @property
@@ -66,10 +92,14 @@ class RectangleBumper(Bumper):
     the first element being the side length in the X axis of the bumper's
     local coordinate frame, and the second element being the length along
     the Y axis.
+
+    Args:
+        angle (float): Rotation angle in radians.
+        size (tuple): Bumper size in the format (width, height).
     """
 
     def __init__(self, angle: float, size: typing.Tuple[float, float], *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(bumper_type=BumperType.RECTANGE, *args, **kwargs)
         self._angle = angle
         self._size = size
 
