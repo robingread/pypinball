@@ -15,17 +15,4 @@ virtualenv --clear --python /usr/bin/python3 $DST_DIR
 
 source $DST_DIR/bin/activate
 pip install --upgrade pip
-pip install \
-    black \
-    coverage \
-    isort \
-    pygame \
-    pylint \
-    pymunk \
-    pynput \
-    pytest \
-    numpy \
-    simpleaudio \
-    sphinx==5.1.1 \
-    sphinxcontrib-mermaid==0.7.1 \
-    sphinx_rtd_theme==1.0.0
+pip install -r requirements.txt
