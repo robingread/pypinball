@@ -1,6 +1,7 @@
 import dataclasses
 import enum
 import random
+import threading
 import typing
 
 import pymunk
@@ -294,6 +295,7 @@ class PymunkPhysics(PhysicsInterface):
         self._flippers = dict()
         self._walls = dict()
         self._event_pub = event_pub
+        self._threading_lock = threading.Lock()
 
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
@@ -310,52 +312,61 @@ class PymunkPhysics(PhysicsInterface):
         )
 
     def actuate_flipper(self, uid: int) -> bool:
-        try:
-            self._flippers[uid].actuate()
-            self._event_pub.emit(event=events.GameEvents.FLIPPER_ACTIVATED)
-            return True
-        except KeyError:
-            return False
+        with self._threading_lock:
+            try:
+                self._flippers[uid].actuate()
+                self._event_pub.emit(event=events.GameEvents.FLIPPER_ACTIVATED)
+                return True
+            except KeyError:
+                return False
 
     def add_ball(self, ball: domain.Ball) -> bool:
-        if ball.uid in self._balls.keys():
-            logger.warning(f"Unable to add ball. ID is already registered: {ball.uid}")
-            return False
-        entity = create_pymunk_ball(ball=ball)
-        entity.add_to_space(space=self._space)
-        self._balls[ball.uid] = entity
-        return True
+        with self._threading_lock:
+            if ball.uid in self._balls.keys():
+                logger.warning(
+                    f"Unable to add ball. ID is already registered: {ball.uid}"
+                )
+                return False
+            entity = create_pymunk_ball(ball=ball)
+            entity.add_to_space(space=self._space)
+            self._balls[ball.uid] = entity
+            return True
 
     def add_bumper(self, bumper: domain.Bumper) -> bool:
-        if bumper.uid in self._bumpers.keys():
-            return False
-        if bumper.type == domain.BumperType.ROUND:
-            entity = create_round_bumper(bumper=bumper)
-        else:
-            entity = create_rectangle_bumper(bumper=bumper)
-        entity.add_to_space(space=self._space)
-        self._bumpers[bumper.uid] = entity
-        return True
+        with self._threading_lock:
+            if bumper.uid in self._bumpers.keys():
+                return False
+            if bumper.type == domain.BumperType.ROUND:
+                entity = create_round_bumper(bumper=bumper)
+            else:
+                entity = create_rectangle_bumper(bumper=bumper)
+            entity.add_to_space(space=self._space)
+            self._bumpers[bumper.uid] = entity
+            return True
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
-        if flipper.uid in self._flippers.keys():
-            logger.warning(
-                f"Unable to add flipper. ID is already registered: {flipper.uid}"
-            )
-            return False
-        entity = create_pymunk_flipper(flipper=flipper)
-        entity.add_to_space(space=self._space)
-        self._flippers[flipper.uid] = entity
-        return True
+        with self._threading_lock:
+            if flipper.uid in self._flippers.keys():
+                logger.warning(
+                    f"Unable to add flipper. ID is already registered: {flipper.uid}"
+                )
+                return False
+            entity = create_pymunk_flipper(flipper=flipper)
+            entity.add_to_space(space=self._space)
+            self._flippers[flipper.uid] = entity
+            return True
 
     def add_wall(self, wall: domain.Wall) -> bool:
-        if wall.uid in self._walls.keys():
-            logger.warning(f"Unable to add wall. ID is already registered: {wall.uid}")
-            return False
-        entity = create_pymunk_wall(wall=wall, space=self._space)
-        entity.add_to_space(space=self._space)
-        self._walls[wall.uid] = entity
-        return True
+        with self._threading_lock:
+            if wall.uid in self._walls.keys():
+                logger.warning(
+                    f"Unable to add wall. ID is already registered: {wall.uid}"
+                )
+                return False
+            entity = create_pymunk_wall(wall=wall, space=self._space)
+            entity.add_to_space(space=self._space)
+            self._walls[wall.uid] = entity
+            return True
 
     def get_ball_state(self, uid: int) -> domain.BallState:
         if uid not in self._balls.keys():
@@ -373,13 +384,14 @@ class PymunkPhysics(PhysicsInterface):
         )
 
     def launch_ball(self, uid: int) -> bool:
-        if uid not in self._balls.keys():
-            msg = f"Failed to launch ball with UID {uid}. This ID is not registred in the Physics implementaion."
-            logger.warning(msg)
-            return False
-        self._balls[uid].apply_impulse(direction=(0.0, -1.0))
-        self._event_pub.emit(event=events.GameEvents.BALL_LAUNCHED)
-        return True
+        with self._threading_lock:
+            if uid not in self._balls.keys():
+                msg = f"Failed to launch ball with UID {uid}. This ID is not registred in the Physics implementaion."
+                logger.warning(msg)
+                return False
+            self._balls[uid].apply_impulse(direction=(0.0, -1.0))
+            self._event_pub.emit(event=events.GameEvents.BALL_LAUNCHED)
+            return True
 
     def remove_ball(self, uid: int) -> bool:
         if uid not in self._balls.keys():
@@ -399,11 +411,12 @@ class PymunkPhysics(PhysicsInterface):
         self._draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     def update(self) -> None:
-        logger.debug("Updating Pymunk Physics")
+        with self._threading_lock:
+            logger.debug("Updating Pymunk Physics")
 
-        if self._draw_options is not None:
-            self._space.debug_draw(options=self._draw_options)
+            if self._draw_options is not None:
+                self._space.debug_draw(options=self._draw_options)
 
-        delta_time = 1.0 / 60.0 / 5.0
-        for _ in range(5):
-            self._space.step(delta_time)
+            delta_time = 1.0 / 60.0 / 5.0
+            for _ in range(5):
+                self._space.step(delta_time)
