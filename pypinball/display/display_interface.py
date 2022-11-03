@@ -31,5 +31,20 @@ class DisplayInterface(typing.Protocol):
     def draw_flipper(self) -> None:
         """ """
 
+    def draw_round_bumper(
+        self,
+        pos: typing.Tuple[float, float],
+        diameter: float,
+        alpha: float,
+    ) -> None:
+        """
+        Helper function to draw a round bumper.
+
+        Args:
+            pos (tuple): Position in the format (x, y) both in pixel coordinates.
+            diameter (float): Diameter of the bumper in of the ball in pixels.
+            alpha (float): Alpha transparency. Values expected to be in the range [0, 1] where 1.0 means full opacity.
+        """
+
     def update(self) -> None:
         """ """
