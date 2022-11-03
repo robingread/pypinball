@@ -1,5 +1,9 @@
 import typing
 
+from .display import DisplayInterface
+from .domain import BallState
+from .physics import PhysicsInterface
+
 
 def check_ball_is_within_area(
     ball_position: typing.Tuple[float, float], width: float, height: float
@@ -18,3 +22,30 @@ def check_ball_is_within_area(
     ball_in_width = 0.0 <= ball_position[0] <= width
     ball_in_height = 0.0 <= ball_position[1] <= height
     return all([ball_in_width, ball_in_height])
+
+
+# TODO: Unit test this method.
+def render_physics_balls(
+    balls: typing.List[BallState], display: DisplayInterface
+) -> None:
+    """
+    Render/draw the current state of the Balls in the Phyics simulation.
+
+    Args:
+        balls (list): List of BallState values.
+        display (DisplayInterface): Display to draw the balls onto.
+    """
+    for ball in balls:
+        display.draw_ball(pos=ball.position, diameter=30, alpha=1.0)
+
+
+# TODO: Unit test this method.
+def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -> None:
+    """
+    Render the state of the Physics scene in the display.
+
+    Args:
+        physics (PhysicsInterface): Physics to get the state from.
+        display (DisplayInterface): Display to draw on.
+    """
+    render_physics_balls(balls=physics.get_ball_states(), display=display)
