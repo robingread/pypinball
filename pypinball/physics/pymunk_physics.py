@@ -414,9 +414,9 @@ class PymunkPhysics(PhysicsInterface):
         with self._threading_lock:
             logger.debug("Updating Pymunk Physics")
 
-            if self._draw_options is not None:
-                self._space.debug_draw(options=self._draw_options)
-
             delta_time = 1.0 / 60.0 / 5.0
             for _ in range(5):
                 self._space.step(delta_time)
+
+            if self._draw_options is not None:
+                self._space.debug_draw(options=self._draw_options)
