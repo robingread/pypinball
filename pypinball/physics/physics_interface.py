@@ -98,6 +98,14 @@ class PhysicsInterface(typing.Protocol):
             ``KeyError``: If the bumper UID is not known.
         """
 
+    def get_bumper_states(self) -> typing.List[domain.Bumper]:
+        """
+        Get the state of all the bumpers.
+
+        Returns:
+            list: List of ``Bumper`` instances.
+        """
+
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         """
         Get the state of a flipper.
