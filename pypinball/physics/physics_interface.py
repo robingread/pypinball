@@ -84,6 +84,20 @@ class PhysicsInterface(typing.Protocol):
             list: List of ``BallState`` instances.
         """
 
+    def get_bumper_state(self, uid: int) -> domain.Bumper:
+        """
+        Get the state of a bumper.
+
+        Args:
+            uid (``int``): Unique ID of the bumper.
+
+        Returns:
+            ``Bumper``: State of the bumper.
+
+        Raises:
+            ``KeyError``: If the bumper UID is not known.
+        """
+
     def get_flipper_state(self, uid: int) -> domain.FlipperState:
         """
         Get the state of a flipper.
