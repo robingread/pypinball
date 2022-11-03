@@ -5,6 +5,19 @@ from . import domain, events
 
 
 @dataclasses.dataclass
+class DisplayConfig:
+    """
+    Configuration data for the DisplayInterface. The parameters listed here are to provide
+    full system paths to the image assests that are to be used to render the various game
+    elements.
+    """
+
+    ball_image_path: str
+    round_bumper_image_path: str
+    rectangle_bumper_image_path: str
+
+
+@dataclasses.dataclass
 class GameConfig:
     """
     The GameConfig class is used to hold the configuration of a single instance of the game.
