@@ -1,7 +1,7 @@
 import typing
 
 from .display import DisplayInterface
-from .domain import BallState
+from .domain import BallState, Bumper, BumperType
 from .physics import PhysicsInterface
 
 
@@ -32,11 +32,21 @@ def render_physics_balls(
     Render/draw the current state of the Balls in the Phyics simulation.
 
     Args:
-        balls (list): List of BallState values.
+        balls (list): List of ``BallState`` values.
         display (DisplayInterface): Display to draw the balls onto.
     """
     for ball in balls:
         display.draw_ball(pos=ball.position, diameter=30, alpha=1.0)
+
+
+def render_physics_bumpers(
+    bumpers: typing.List[Bumper], display: DisplayInterface
+) -> None:
+    for bumper in bumpers:
+        if bumper.type == BumperType.ROUND:
+            display.draw_round_bumper(
+                pos=bumper.position, diameter=bumper.radius * 2.0, alpha=1.0
+            )
 
 
 # TODO: Unit test this method.
@@ -49,3 +59,4 @@ def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -
         display (DisplayInterface): Display to draw on.
     """
     render_physics_balls(balls=physics.get_ball_states(), display=display)
+    render_physics_bumpers(bumpers=physics.get_bumper_states(), display=display)
