@@ -42,3 +42,21 @@ def get_audio_resource_path(filename: str) -> str:
     """
     prefix = "pypinball.resources.audio"
     return get_python_pkg_resource_path(prefix=prefix, resource=filename)
+
+
+def get_image_resource_path(filename: str) -> str:
+    """
+    Get the full system path for an image resource stored within the pypinball
+    package under the ``pypinball.resources.images`` module.
+
+    Args:
+        filename (str): Name of the resource in the resources.images module.
+
+    Returns:
+        str: Full system path of the resource.
+
+    Raises:
+        FileNotFoundError: If the resource filename doesn't exist.
+    """
+    prefix = "pypinball.resources.images"
+    return get_python_pkg_resource_path(prefix=prefix, resource=filename)
