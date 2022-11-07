@@ -58,3 +58,28 @@ class TestBumper(unittest.TestCase):
         """
         ret = self.physics.remove_bumper(uid=100)
         self.assertFalse(ret)
+
+    def test_get_state_of_known_bumper(self) -> None:
+        bumper = pypinball.domain.RoundBumper(uid=0, position=(50, 100), radius=15.0)
+        self.physics.add_bumper(bumper=bumper)
+        res = self.physics.get_bumper_state(uid=bumper.uid)
+
+        self.assertIsInstance(res, pypinball.domain.Bumper)
+        self.assertEqual(res.type, pypinball.domain.BumperType.ROUND)
+
+    def test_get_bumper_states(self) -> None:
+        bumper = pypinball.domain.RoundBumper(uid=0, position=(50, 100), radius=15.0)
+        self.physics.add_bumper(bumper=bumper)
+        res = self.physics.get_bumper_states()
+        self.assertIsInstance(res, list)
+        self.assertEqual(len(res), 1)
+
+    def test_get_state_of_unknwon_bumper(self) -> None:
+        """
+        Test that looking up the state of an unknown bumper throws an exception.
+        """
+        with self.assertRaises(KeyError):
+            self.physics.get_bumper_state(uid=100)
+
+    def test_get_bumper_states_unknown(self) -> None:
+        self.assertEqual(len(self.physics.get_bumper_states()), 0)
