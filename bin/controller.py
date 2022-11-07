@@ -1,7 +1,15 @@
 import pypinball
 
+DISPLAY_CONFIG = pypinball.game_config.DisplayConfig(
+    ball_image_path=pypinball.resources.get_image_resource_path("ball.png"),
+    round_bumper_image_path=pypinball.resources.get_image_resource_path(
+        "round_bumper.png"
+    ),
+    rectangle_bumper_image_path="",
+)
+
 GAME_CONFIG = pypinball.GameConfig(
-    playing_area=(600, 650),
+    playing_area=(450, 650),
     bumpers=[
         pypinball.domain.RectangleBumper(
             uid=1000, position=(100, 100), size=(100, 25), angle=1
@@ -84,7 +92,10 @@ audio_event_handler = pypinball.audio.AudioGameEventHandler(
 events_pub.subscribe(audio_event_handler.update)
 
 display_interface = pypinball.display.PyGameDisplay(
-    width=450, height=650, game_events=events_pub
+    width=GAME_CONFIG.playing_area[0],
+    height=GAME_CONFIG.playing_area[1],
+    game_events=events_pub,
+    config=DISPLAY_CONFIG,
 )
 input_interface = pypinball.inputs.KeyboardInput(event_pub=input_pub)
 
