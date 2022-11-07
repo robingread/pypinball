@@ -5,6 +5,8 @@
     "editor.rulers": [
         88
     ],
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.variableTypes": false,
     "python.formatting.provider": "black",
     "python.linting.lintOnSave": true,
     "python.linting.pylintEnabled": true,
