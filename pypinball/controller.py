@@ -113,6 +113,7 @@ class Controller:
         """
         self._display.clear()
         self._physics.update()
+        utils.render_physics_state(physics=self._physics, display=self._display)
         self._display.update()
 
         self._handle_lost_balls()
