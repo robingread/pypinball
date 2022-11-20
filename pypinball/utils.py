@@ -24,7 +24,6 @@ def check_ball_is_within_area(
     return all([ball_in_width, ball_in_height])
 
 
-# TODO: Unit test this method.
 def render_physics_balls(
     balls: typing.List[BallState], display: DisplayInterface
 ) -> None:
