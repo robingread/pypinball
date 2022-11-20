@@ -4,6 +4,8 @@ set -e
 
 source venv/bin/activate
 
+python --version
+
 if [ -d build/ ]; then
   echo "Removing build/ directory"
   rm -rf build/

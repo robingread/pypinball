@@ -35,6 +35,32 @@ run unit tests:
         path: coverage/coverage.xml
       junit: coverage/test-report.xml
 
+Test Python 3.8:
+  stage: test
+  image: python:3.8
+  script:
+    - ./scripts/install-deps.sh
+    - ./scripts/setup-venv.sh
+    - ./scripts/ci-test.sh
+
+
+Test Python 3.9:
+  stage: test
+  image: python:3.9
+  script:
+    - ./scripts/install-deps.sh
+    - ./scripts/setup-venv.sh
+    - ./scripts/ci-test.sh
+
+
+Test Python 3.10:
+  stage: test
+  image: python:3.10
+  script:
+    - ./scripts/install-deps.sh
+    - ./scripts/setup-venv.sh
+    - ./scripts/ci-test.sh
+
 pages:
   stage: deploy
   image: $CI_REGISTRY_IMAGE

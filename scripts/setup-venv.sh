@@ -11,7 +11,13 @@ else
 fi
 
 DST_DIR=./venv
-virtualenv --clear --python /usr/bin/python3 $DST_DIR
+WHICH_PYTHON=`which python3`
+
+echo "Setting up Virtual Python environment"
+echo "Python path:" $WHICH_PYTHON
+echo "Destination dir:" $DST_DIR
+
+virtualenv --clear --python $WHICH_PYTHON $DST_DIR
 
 source $DST_DIR/bin/activate
 pip install --upgrade pip
