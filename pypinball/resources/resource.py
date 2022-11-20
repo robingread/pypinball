@@ -1,4 +1,5 @@
 import importlib.resources
+import os
 
 from .. import log
 
@@ -23,6 +24,8 @@ def get_python_pkg_resource_path(prefix: str, resource: str) -> str:
     """
     logger.debug(f"Loading resource path, prefix: {prefix}, resource: {resource}")
     with importlib.resources.path(package=prefix, resource=resource) as path:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Unable to find file: {path}")
         return str(path)
 
 
