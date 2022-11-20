@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 
-FORMATTER = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+FORMATTER = logging.Formatter("[%(asctime)s][%(name)s][%(levelname)s] - %(message)s")
 
 
 def get_console_handler() -> logging.Handler:
