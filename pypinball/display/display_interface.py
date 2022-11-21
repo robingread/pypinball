@@ -55,5 +55,21 @@ class DisplayInterface(typing.Protocol):
             alpha (float): Alpha transparency. Values expected to be in the range [0, 1] where 1.0 means full opacity.
         """
 
+    def draw_rectangle_bumper(
+        self,
+        pos: typing.Tuple[float, float],
+        size: typing.Tuple[float, float],
+        angle: float,
+        alpha: float,
+    ) -> None:
+        """
+        Args:
+            pos (tuple): Position in the format (x, y) both in pixel coordinates.
+            size (tuple): Size of the bumper in (width, height) format in pixel coordinates.
+            angle (float): Angle of the bumper.
+            alpha (float): Alpha transparency. Values expected to be in the range [0, 1] where 1.0 means full opacity.
+
+        """
+
     def update(self) -> None:
         """ """
