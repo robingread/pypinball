@@ -18,7 +18,7 @@ class PyGameDisplay(DisplayInterface):
         height: int,
         game_events: events.GameEventPublisher,
         config: game_config.DisplayConfig,
-    ):
+    ) -> None:
         self._game_events = game_events
         pygame.init()
         self._screen = pygame.display.set_mode(size=(width, height))
