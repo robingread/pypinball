@@ -27,6 +27,7 @@ enable=
 # it should appear only once).
 disable=
     consider-iterating-dictionary,
+    deprecated-typing-alias,
     format,
     logging-fstring-interpolation,
     missing-module-docstring,
