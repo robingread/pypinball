@@ -358,6 +358,9 @@ class PymunkPhysics(PhysicsInterface):
     def add_bumper(self, bumper: domain.Bumper) -> bool:
         with self._threading_lock:
             if bumper.uid in self._bumpers.keys():
+                logger.warning(
+                    f"Unable to add bumper. ID is already registered: {bumper.uid}"
+                )
                 return False
             if bumper.type == domain.BumperType.ROUND:
                 entity = create_round_bumper(bumper=bumper)
