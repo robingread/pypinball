@@ -60,7 +60,7 @@ class PyGameDisplay(DisplayInterface):
     def draw_round_bumper(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
-        img = pygame.transform.scale(self._round_bumper_img, (diameter, diameter))
+        img = pygame.transform.scale(self._round_bumper_img, size=(diameter, diameter))
         img.set_alpha(alpha * 255)
         x = pos[0] - (diameter * 0.5)
         y = pos[1] - (diameter * 0.5)
