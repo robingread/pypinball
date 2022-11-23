@@ -1,9 +1,11 @@
+import math
 import typing
 
 import pygame
 
 from .. import events, game_config, log
 from .display_interface import DisplayInterface
+from .utils import calculate_rotated_rectangle_bounding_box
 
 logger = log.get_logger(name=__name__)
 
@@ -64,6 +66,28 @@ class PyGameDisplay(DisplayInterface):
         img.set_alpha(alpha * 255)
         x = pos[0] - (diameter * 0.5)
         y = pos[1] - (diameter * 0.5)
+        self._screen.blit(img, (x, y))
+
+    def draw_rectangle_bumper(
+        self,
+        pos: typing.Tuple[float, float],
+        size: typing.Tuple[float, float],
+        angle: float,
+        alpha: float,
+    ) -> None:
+        padding = 10
+        width = size[0] + padding
+        height = size[1] + padding
+
+        bb_width, bb_height = calculate_rotated_rectangle_bounding_box(
+            width=width, height=height, angle=angle
+        )
+        x = pos[0] - (bb_width * 0.5)
+        y = pos[1] - (bb_height * 0.5)
+
+        img = pygame.transform.scale(self._rectable_bumper_img, size=(width, height))
+        img = pygame.transform.rotate(img, angle=math.degrees(-angle))
+        img.set_alpha(alpha * 255)
         self._screen.blit(img, (x, y))
 
     def update(self) -> None:
