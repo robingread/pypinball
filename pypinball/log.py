@@ -2,7 +2,36 @@ import logging
 import os
 import sys
 
-FORMATTER = logging.Formatter("[%(asctime)s][%(name)s][%(levelname)s] - %(message)s")
+
+class CustomFormatter(logging.Formatter):
+    """
+    Custom logging.Formatter class that provides colouing to the different log levels.
+    """
+
+    GRAY = "\x1b[38;20m"
+    YELLOW = "\x1b[33;20m"
+    RED = "\x1b[31;20m"
+    BOLD_RED = "\x1b[31;1m"
+    RESET = "\x1b[0m"
+    FORMAT = (
+        "[%(asctime)s][%(name)s][%(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"
+    )
+
+    FORMATS = {
+        logging.DEBUG: GRAY + FORMAT + RESET,
+        logging.INFO: GRAY + FORMAT + RESET,
+        logging.WARNING: YELLOW + FORMAT + RESET,
+        logging.ERROR: RED + FORMAT + RESET,
+        logging.CRITICAL: BOLD_RED + FORMAT + RESET,
+    }
+
+    def format(self, record: logging.LogRecord) -> str:
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+
+FORMATTER = CustomFormatter()
 
 
 def get_console_handler() -> logging.Handler:
