@@ -54,6 +54,7 @@ class PymunkBumper:
     body: pymunk.Body
     shape: pymunk.Shape
     type: domain.BumperType
+    config: typing.Union[domain.RoundBumper, domain.RectangleBumper]
 
     def add_to_space(self, space: pymunk.Space) -> None:
         space.add(self.body, self.shape)
@@ -134,7 +135,11 @@ def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
     return PymunkBumper(
-        uid=bumper.uid, body=body, shape=shape, type=domain.BumperType.ROUND
+        uid=bumper.uid,
+        body=body,
+        shape=shape,
+        type=domain.BumperType.ROUND,
+        config=bumper,
     )
 
 
@@ -157,7 +162,11 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
     return PymunkBumper(
-        uid=bumper.uid, body=body, shape=shape, type=domain.BumperType.RECTANGE
+        uid=bumper.uid,
+        body=body,
+        shape=shape,
+        type=domain.BumperType.RECTANGE,
+        config=bumper,
     )
 
 
@@ -230,24 +239,6 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
         segment.elasticity = 0.9
         segments.append(segment)
     return PymunkWall(id=wall.uid, segment_bodies=segments)
-
-
-# TODO: Unit-test this method.
-def convert_pymunk_bumper_to_domain(
-    bumper: PymunkBumper,
-) -> typing.Union[domain.RoundBumper, domain.RectangleBumper]:
-    if bumper.type == domain.BumperType.ROUND:
-        return domain.RoundBumper(
-            uid=bumper.uid,
-            position=bumper.body.position,
-            radius=bumper.shape.radius,
-        )
-    return domain.RectangleBumper(
-        uid=bumper.uid,
-        position=bumper.body.position,
-        angle=bumper.body.angle,
-        size=(0.0, 0.0),
-    )
 
 
 class CollisionHandler:  # pylint: disable=too-few-public-methods
@@ -405,7 +396,7 @@ class PymunkPhysics(PhysicsInterface):
     def get_bumper_state(self, uid: int) -> domain.Bumper:
         if uid not in self._bumpers.keys():
             raise KeyError(f"Unknown bumper id: {uid}")
-        return convert_pymunk_bumper_to_domain(self._bumpers[uid])
+        return self._bumpers[uid].config
 
     def get_bumper_states(self) -> typing.List[domain.Bumper]:
         return [self.get_bumper_state(uid=uid) for uid in self._bumpers.keys()]
