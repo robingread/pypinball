@@ -312,7 +312,7 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
 
 
 class PymunkPhysics(PhysicsInterface):
-    def __init__(self, event_pub: events.GameEventPublisher):
+    def __init__(self, event_pub: events.GameEventPublisher) -> None:
         self._balls = dict()
         self._bumpers = dict()
         self._flippers = dict()
