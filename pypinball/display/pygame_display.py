@@ -28,6 +28,9 @@ class PyGameDisplay(DisplayInterface):
         self._round_bumper_img = pygame.image.load(
             config.round_bumper_image_path
         ).convert_alpha()
+        self._rectable_bumper_img = pygame.image.load(
+            config.rectangle_bumper_image_path
+        ).convert_alpha()
 
     def clear(self) -> None:
         self._screen.fill(pygame.Color("white"))
