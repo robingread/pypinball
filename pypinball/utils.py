@@ -46,6 +46,10 @@ def render_physics_bumpers(
             display.draw_round_bumper(
                 pos=bumper.position, diameter=bumper.radius * 2.0, alpha=1.0
             )
+        elif bumper.type == BumperType.RECTANGE:
+            display.draw_rectangle_bumper(
+                pos=bumper.position, angle=bumper.angle, alpha=1.0, size=bumper.size
+            )
 
 
 # TODO: Unit test this method.
