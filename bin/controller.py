@@ -5,7 +5,9 @@ DISPLAY_CONFIG = pypinball.game_config.DisplayConfig(
     round_bumper_image_path=pypinball.resources.get_image_resource_path(
         "round_bumper.png"
     ),
-    rectangle_bumper_image_path="",
+    rectangle_bumper_image_path=pypinball.resources.get_image_resource_path(
+        "rectangle_bumper.png"
+    ),
 )
 
 GAME_CONFIG = pypinball.GameConfig(
