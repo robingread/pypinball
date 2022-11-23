@@ -126,11 +126,11 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
 
 def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
     mass = 0.1
-    radius = 15
+    radius = bumper.radius
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass=mass, moment=inertia, body_type=pymunk.Body.STATIC)
     body.position = bumper.position
-    shape = pymunk.Circle(body=body, radius=20)
+    shape = pymunk.Circle(body=body, radius=radius)
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
     return PymunkBumper(
