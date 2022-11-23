@@ -43,7 +43,6 @@ Test Python 3.8:
     - ./scripts/setup-venv.sh
     - ./scripts/ci-test.sh
 
-
 Test Python 3.9:
   stage: test
   image: python:3.9
@@ -51,7 +50,6 @@ Test Python 3.9:
     - ./scripts/install-deps.sh
     - ./scripts/setup-venv.sh
     - ./scripts/ci-test.sh
-
 
 Test Python 3.10:
   stage: test
