@@ -54,6 +54,7 @@ class PymunkBumper:
     body: pymunk.Body
     shape: pymunk.Shape
     type: domain.BumperType
+    config: typing.Union[domain.RoundBumper, domain.RectangleBumper]
 
     def add_to_space(self, space: pymunk.Space) -> None:
         space.add(self.body, self.shape)
@@ -126,15 +127,19 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
 
 def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
     mass = 0.1
-    radius = 15
+    radius = bumper.radius
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass=mass, moment=inertia, body_type=pymunk.Body.STATIC)
     body.position = bumper.position
-    shape = pymunk.Circle(body=body, radius=20)
+    shape = pymunk.Circle(body=body, radius=radius)
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
     return PymunkBumper(
-        uid=bumper.uid, body=body, shape=shape, type=domain.BumperType.ROUND
+        uid=bumper.uid,
+        body=body,
+        shape=shape,
+        type=domain.BumperType.ROUND,
+        config=bumper,
     )
 
 
@@ -157,7 +162,11 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
     shape.elasticity = 1.2
     shape.collision_type = CollisionEntity.BUMPER
     return PymunkBumper(
-        uid=bumper.uid, body=body, shape=shape, type=domain.BumperType.RECTANGE
+        uid=bumper.uid,
+        body=body,
+        shape=shape,
+        type=domain.BumperType.RECTANGE,
+        config=bumper,
     )
 
 
@@ -232,24 +241,6 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
     return PymunkWall(id=wall.uid, segment_bodies=segments)
 
 
-# TODO: Unit-test this method.
-def convert_pymunk_bumper_to_domain(
-    bumper: PymunkBumper,
-) -> typing.Union[domain.RoundBumper, domain.RectangleBumper]:
-    if bumper.type == domain.BumperType.ROUND:
-        return domain.RoundBumper(
-            uid=bumper.uid,
-            position=bumper.body.position,
-            radius=bumper.shape.radius,
-        )
-    return domain.RectangleBumper(
-        uid=bumper.uid,
-        position=bumper.body.position,
-        angle=bumper.body.angle,
-        size=(0.0, 0.0),
-    )
-
-
 class CollisionHandler:  # pylint: disable=too-few-public-methods
     def __init__(
         self,
@@ -312,7 +303,7 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
 
 
 class PymunkPhysics(PhysicsInterface):
-    def __init__(self, event_pub: events.GameEventPublisher):
+    def __init__(self, event_pub: events.GameEventPublisher) -> None:
         self._balls = dict()
         self._bumpers = dict()
         self._flippers = dict()
@@ -358,6 +349,9 @@ class PymunkPhysics(PhysicsInterface):
     def add_bumper(self, bumper: domain.Bumper) -> bool:
         with self._threading_lock:
             if bumper.uid in self._bumpers.keys():
+                logger.warning(
+                    f"Unable to add bumper. ID is already registered: {bumper.uid}"
+                )
                 return False
             if bumper.type == domain.BumperType.ROUND:
                 entity = create_round_bumper(bumper=bumper)
@@ -402,7 +396,7 @@ class PymunkPhysics(PhysicsInterface):
     def get_bumper_state(self, uid: int) -> domain.Bumper:
         if uid not in self._bumpers.keys():
             raise KeyError(f"Unknown bumper id: {uid}")
-        return convert_pymunk_bumper_to_domain(self._bumpers[uid])
+        return self._bumpers[uid].config
 
     def get_bumper_states(self) -> typing.List[domain.Bumper]:
         return [self.get_bumper_state(uid=uid) for uid in self._bumpers.keys()]
