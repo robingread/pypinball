@@ -18,6 +18,7 @@ fi
 
 pip uninstall -y -q pypinball
 ./scripts/black-formatting.sh -c
+./scripts/linting.sh
 ./scripts/run-tests.sh
 ./scripts/build-docs.sh
 
