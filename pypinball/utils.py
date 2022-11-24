@@ -41,6 +41,12 @@ def render_physics_balls(
 def render_physics_bumpers(
     bumpers: typing.List[Bumper], display: DisplayInterface
 ) -> None:
+    """Render a lsit fo Bumpers into the dislay.
+
+    Args:
+        bumpers (typing.List[Bumper]): List of bumpers to render.
+        display (DisplayInterface): Implementation of the display interface.
+    """
     for bumper in bumpers:
         if bumper.type == BumperType.ROUND:
             display.draw_round_bumper(
