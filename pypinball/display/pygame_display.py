@@ -40,16 +40,6 @@ class PyGameDisplay(DisplayInterface):
     def close(self) -> None:
         pygame.quit()
 
-    def display_image(
-        self, path: str, pos: typing.Tuple[float, float], size: float
-    ) -> None:
-        # img = pygame.image.load(path).convert_alpha()
-        img = pygame.transform.scale(self._ball_img, (size, size))
-        img.set_alpha(100)
-        x = pos[0] - (size * 0.5)
-        y = pos[1] - (size * 0.5)
-        self._screen.blit(img, (x, y))
-
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
