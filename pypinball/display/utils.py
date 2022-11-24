@@ -18,9 +18,9 @@ def calculate_rotated_rectangle_bounding_box(
     Returns:
         typing.Tuple[float, float]: Width and height of the bounding box.
     """
-    w = math.fabs(math.sin(angle) * height) + math.fabs(math.cos(angle) * width)
-    h = math.fabs(math.sin(angle) * width) + math.fabs(math.cos(angle) * height)
-    return (round(w, 4), round(h, 4))
+    _width = math.fabs(math.sin(angle) * height) + math.fabs(math.cos(angle) * width)
+    _height = math.fabs(math.sin(angle) * width) + math.fabs(math.cos(angle) * height)
+    return (round(_width, 4), round(_height, 4))
 
 
 def calculate_rectangle_bounding_box_image_coordinates(
@@ -38,4 +38,9 @@ def calculate_rectangle_bounding_box_image_coordinates(
     Returns:
         typing.Tuple[float, float]: Top-left, (x, y) pixel coordinates of the bounding box.
     """
-    return (0.0, 0.0)
+    width, height = calculate_rotated_rectangle_bounding_box(
+        width=size[0], height=size[1], angle=angle
+    )
+    x = pos[0] - (width * 0.5)
+    y = pos[1] - (height * 0.5)
+    return x, y

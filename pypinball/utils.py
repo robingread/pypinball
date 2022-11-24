@@ -35,12 +35,19 @@ def render_physics_balls(
         display (DisplayInterface): Display to draw the balls onto.
     """
     for ball in balls:
+        # TODO: Address this hard-coded diameter.
         display.draw_ball(pos=ball.position, diameter=30, alpha=1.0)
 
 
 def render_physics_bumpers(
     bumpers: typing.List[Bumper], display: DisplayInterface
 ) -> None:
+    """Render a lsit fo Bumpers into the dislay.
+
+    Args:
+        bumpers (typing.List[Bumper]): List of bumpers to render.
+        display (DisplayInterface): Implementation of the display interface.
+    """
     for bumper in bumpers:
         if bumper.type == BumperType.ROUND:
             display.draw_round_bumper(

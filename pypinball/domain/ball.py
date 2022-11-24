@@ -62,5 +62,9 @@ class Ball:
 
 @dataclasses.dataclass
 class BallState:
+    """
+    Dataclass to capture the state of a Ball in the Physics environment.
+    """
+
     uid: int
     position: typing.Tuple[float, float]

@@ -23,7 +23,12 @@ class DisplayInterface(typing.Protocol):
         """
 
     def display_image(self, path: str) -> None:
-        """ """
+        """
+        Display an image.
+
+        Args:
+            path (str): Absolute path to the image resource.
+        """
 
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
@@ -72,4 +77,6 @@ class DisplayInterface(typing.Protocol):
         """
 
     def update(self) -> None:
-        """ """
+        """
+        Update the display. This is something that should be called on each loop of the game.
+        """

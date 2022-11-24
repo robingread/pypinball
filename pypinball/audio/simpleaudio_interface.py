@@ -9,7 +9,12 @@ logger = log.get_logger(name=__name__)
 
 
 class SimpleAudio(AudioInterface):  # pylint: disable=too-few-public-methods
-    def __init__(self, blocking=False):
+    """
+    Implementation of the ``AudioInterface`` protocol that uses the ``simpleaudio``
+    package to handle playing audio under the hood.
+    """
+
+    def __init__(self, blocking=False) -> None:
         self._blocking = blocking
 
     def play_sound_file(self, file_path: str) -> bool:
