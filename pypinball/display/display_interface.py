@@ -77,4 +77,6 @@ class DisplayInterface(typing.Protocol):
         """
 
     def update(self) -> None:
-        """ """
+        """
+        Update the display. This is something that should be called on each loop of the game.
+        """
