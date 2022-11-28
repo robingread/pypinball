@@ -365,10 +365,10 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
 
 class PymunkPhysics(PhysicsInterface):
     def __init__(self, event_pub: events.GameEventPublisher) -> None:
-        self._balls = dict()
-        self._bumpers = dict()
-        self._flippers = dict()
-        self._walls = dict()
+        self._balls: typing.Dict[int, PymunkEntity] = dict()
+        self._bumpers: typing.Dict[int, PymunkBumper] = dict()
+        self._flippers: typing.Dict[int, PymunkFlipper] = dict()
+        self._walls: typing.Dict[int, PymunkWall] = dict()
         self._event_pub = event_pub
         self._threading_lock = threading.Lock()
 
