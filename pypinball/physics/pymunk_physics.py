@@ -33,18 +33,38 @@ class PymunkEntity:
 
     @property
     def position(self) -> typing.Tuple[float, float]:
+        """Get the position of the ball.
+
+        Returns:
+            typing.Tuple[float, float]: Position in the format (x, y).
+        """
         return self.body.position
 
     def add_to_space(self, space: pymunk.Space) -> None:
+        """Add the pymunk objects/data to the space.
+
+        Args:
+            space (pymunk.Space): Pymunk space.
+        """
         space.add(self.body, self.shape)
 
     def apply_impulse(self, direction: typing.Tuple[float, float]) -> None:
+        """Apply an impluse force to the ball in a given (unit vector) direction.
+
+        Args:
+            direction (typing.Tuple[float, float]): Direction unit vector.
+        """
         force = random.randint(75_000, 120_000)
         force_vec = pymunk.Vec2d(x=direction[0], y=direction[1]) * force
         position = self.body.position
         self.body.apply_force_at_world_point(force=force_vec, point=position)
 
     def remove_from_space(self, space: pymunk.Space) -> None:
+        """Remove the pymunk data/objects from a space.
+
+        Args:
+            space (pymunk.Space): _description_
+        """
         space.remove(self.body, self.shape)
 
 
@@ -114,6 +134,14 @@ class PymunkWall:
 
 
 def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
+    """Create a ball data structure from a domain specified ball.
+
+    Args:
+        ball (domain.Ball): Domain model of a Ball.
+
+    Returns:
+        PymunkEntity: Populated data structure.
+    """
     mass = 0.1
     radius = 15
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
@@ -126,6 +154,15 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
 
 
 def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
+    """Create a PymunkBumper data structure containing all the Pymunk specific objects
+    for a bumper.
+
+    Args:
+        bumper (domain.RoundBumper): Bumper configuration from the domain model.
+
+    Returns:
+        PymunkBumper: Pymunk specific data/objects.
+    """
     mass = 0.1
     radius = bumper.radius
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
@@ -144,6 +181,14 @@ def create_round_bumper(bumper: domain.RoundBumper) -> PymunkBumper:
 
 
 def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
+    """Create a PymunkBumper data structure for a rectangular bumper.
+
+    Args:
+        bumper (domain.RectangleBumper): Bumper configuration from the domain model.
+
+    Returns:
+        PymunkBumper: Pymunk specific data/objects.
+    """
     width, height = bumper.size
     mass = 0.1
     inertia = pymunk.moment_for_box(mass=mass, size=bumper.size)
@@ -171,7 +216,15 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
 
 
 def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
-    fp = [
+    """Create a PymunkBumper data structure for a flipper given a domain model configuration.
+
+    Args:
+        flipper (domain.Flipper): Flipper configuration from the domain model.
+
+    Returns:
+        PymunkFlipper: Pymunk specific data/objects.
+    """
+    vertices = [
         (-20, -20),
         (-20, 20),
         (flipper.config.length, 10),
@@ -179,11 +232,11 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
     ]
     # TODO: This seems to be a very carefully coded value! It can easily break tests!
     mass = 8
-    moment = pymunk.moment_for_poly(mass, fp)
+    moment = pymunk.moment_for_poly(mass, vertices=vertices)
 
     flipper_body = pymunk.Body(mass, moment)
     flipper_body.position = flipper.config.position
-    flipper_shape = pymunk.Poly(flipper_body, fp)
+    flipper_shape = pymunk.Poly(flipper_body, vertices=vertices)
 
     flipper_body.angle = flipper.config.angle
 
@@ -224,10 +277,18 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
 
 
 def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
-    n = len(wall.points) - 1
+    """Create a PymunkBumper data structure for a wall segment.
+
+    Args:
+        wall (domain.Wall): Wall segment configuration from the domain model.
+
+    Returns:
+        PymunkWall: Pymunk specific data/objects.
+    """
+    num_points = len(wall.points) - 1
     segment_radius = 1
     segments = list()
-    for i in range(n):
+    for i in range(num_points):
         j = i + 1
         segment = pymunk.Segment(
             body=space.static_body,
