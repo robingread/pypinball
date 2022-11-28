@@ -44,7 +44,7 @@ class PyGameDisplay(DisplayInterface):
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
         img = pygame.transform.scale(self._ball_img, (diameter, diameter))
-        img.set_alpha(alpha * 255)
+        img.set_alpha(int(alpha * 255))
         x = pos[0] - (diameter * 0.5)
         y = pos[1] - (diameter * 0.5)
         self._screen.blit(img, (x, y))
@@ -53,7 +53,7 @@ class PyGameDisplay(DisplayInterface):
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
         img = pygame.transform.scale(self._round_bumper_img, size=(diameter, diameter))
-        img.set_alpha(alpha * 255)
+        img.set_alpha(int(alpha * 255))
         x = pos[0] - (diameter * 0.5)
         y = pos[1] - (diameter * 0.5)
         self._screen.blit(img, (x, y))
@@ -75,7 +75,7 @@ class PyGameDisplay(DisplayInterface):
 
         img = pygame.transform.scale(self._rectable_bumper_img, size=(width, height))
         img = pygame.transform.rotate(img, angle=math.degrees(-angle))
-        img.set_alpha(alpha * 255)
+        img.set_alpha(int(alpha * 255))
         self._screen.blit(img, (x, y))
 
     def update(self) -> None:
