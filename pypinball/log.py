@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+import typing
 
 
 class CustomFormatter(logging.Formatter):
@@ -75,7 +76,7 @@ def make_log_file_path(filename: str) -> None:
 
 
 def get_logger(
-    name: str, filename: str = None, level: int = logging.INFO
+    name: str, filename: typing.Optional[str] = None, level: int = logging.INFO
 ) -> logging.Logger:
     """
     Get a logging.Logger instance.
