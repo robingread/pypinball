@@ -2,6 +2,14 @@
 
 set -e
 
+print_header()
+{
+  echo -e "\n"
+  echo "##########################"
+  echo "#" $1 
+  echo "##########################"
+}
+
 source venv/bin/activate
 
 python --version
@@ -17,9 +25,17 @@ if [ -d pypinball.egg-info ]; then
 fi
 
 pip uninstall -y -q pypinball
+
+print_header "Formatting code"
 ./scripts/black-formatting.sh -c
+
+print_header "Running Pylint"
 ./scripts/linting.sh
+
+print_header "Running Unit-tests"
 ./scripts/run-tests.sh
+
+print_header "Building docs"
 ./scripts/build-docs.sh
 
 echo "Test suite has PASSED!"
