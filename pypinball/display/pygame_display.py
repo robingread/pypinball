@@ -11,8 +11,7 @@ logger = log.get_logger(name=__name__)
 
 
 class PyGameDisplay(DisplayInterface):
-    """Implementation of a DisplayInterface class that uses
-    PyGame as the underling Graphics engine/manager."""
+    """Implementation of a DisplayInterface class that uses PyGame as the underling Graphics engine/manager."""
 
     def __init__(
         self,

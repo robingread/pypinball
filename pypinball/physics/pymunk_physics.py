@@ -27,6 +27,8 @@ class CollisionEntity(enum.IntEnum):
 
 @dataclasses.dataclass
 class PymunkEntity:
+    """Data class to bring together all the Pymunk specific data and objects for a ball."""
+
     id: int
     body: pymunk.Body
     shape: pymunk.Shape
@@ -63,13 +65,17 @@ class PymunkEntity:
         """Remove the pymunk data/objects from a space.
 
         Args:
-            space (pymunk.Space): _description_
+            space (pymunk.Space): Space to remove the objects from.
         """
         space.remove(self.body, self.shape)
 
 
 @dataclasses.dataclass
 class PymunkBumper:
+    """Data class to bring together all the Pymunk specific data and objects for
+    a (rectangle or round) bumper.
+    """
+
     uid: int
     body: pymunk.Body
     shape: pymunk.Shape
@@ -77,14 +83,28 @@ class PymunkBumper:
     config: typing.Union[domain.RoundBumper, domain.RectangleBumper]
 
     def add_to_space(self, space: pymunk.Space) -> None:
+        """Add the pymunk objects/data to the space.
+
+        Args:
+            space (pymunk.Space): Pymunk space.
+        """
         space.add(self.body, self.shape)
 
     def remove_from_space(self, space: pymunk.Space) -> None:
+        """Remove the pymunk data/objects from a space.
+
+        Args:
+            space (pymunk.Space): Space to remove the objects from.
+        """
         space.remove(self.body, self.shape)
 
 
 @dataclasses.dataclass
 class PymunkFlipper:
+    """Data class to bring together all the Pymunk specific data and objects for
+    a flipper.
+    """
+
     id: int
     actuation_direction: int
     flipper_body: pymunk.Body
@@ -96,13 +116,28 @@ class PymunkFlipper:
 
     @property
     def angle(self) -> float:
+        """Get the current rotation angle of the flipper.
+
+        Returns:
+            float: Angle in radians.
+        """
         return self.flipper_body.angle
 
     @property
     def position(self) -> typing.Tuple[float, float]:
+        """Get the position of the flipper.
+
+        Returns:
+            typing.Tuple[float, float]: Position in the format (x, y).
+        """
         return self.flipper_body.position
 
-    def add_to_space(self, space) -> None:
+    def add_to_space(self, space: pymunk.Space) -> None:
+        """Add the pymunk objects/data to the space.
+
+        Args:
+            space (pymunk.Space): Pymunk space.
+        """
         space.add(
             self.flipper_body,
             self.flipper_shape,
@@ -113,6 +148,7 @@ class PymunkFlipper:
         )
 
     def actuate(self) -> None:
+        """Actuate the flipper."""
         actuation_force = 10000
         self.flipper_body.apply_impulse_at_local_point(
             impulse=pymunk.Vec2d.unit()
@@ -125,10 +161,19 @@ class PymunkFlipper:
 
 @dataclasses.dataclass
 class PymunkWall:
+    """Data class to bring together all the Pymunk specific data and objects for
+    a list of wall segments.
+    """
+
     id: int
     segment_bodies: typing.List[pymunk.Segment]
 
     def add_to_space(self, space: pymunk.Space) -> None:
+        """Add the pymunk objects/data to the space.
+
+        Args:
+            space (pymunk.Space): Pymunk space.
+        """
         for segment in self.segment_bodies:
             space.add(segment)
 
@@ -281,6 +326,7 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
 
     Args:
         wall (domain.Wall): Wall segment configuration from the domain model.
+        space (pymunk.Space): Pymunk space to use as a static body.
 
     Returns:
         PymunkWall: Pymunk specific data/objects.
@@ -303,6 +349,9 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
 
 
 class CollisionHandler:  # pylint: disable=too-few-public-methods
+
+    """Collision handler class for interactions between balls, bumpers, flippers and walls."""
+
     def __init__(
         self,
         event_pub: events.GameEventPublisher,
@@ -311,7 +360,7 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
         bumpers: typing.Dict[int, PymunkBumper],
         flippers: typing.Dict[int, PymunkFlipper],
         walls: typing.Dict[int, PymunkWall],
-    ):
+    ) -> None:
         self._balls = balls
         self._bumpers = bumpers
         self._flippers = flippers
@@ -326,12 +375,25 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
         handler.begin = self.handle_collision
 
     def handle_collision(
-        self, arbiter: pymunk.Arbiter, space: pymunk.Space, data: dict
+        self,
+        arbiter: pymunk.Arbiter,
+        space: pymunk.Space,  # pylint: disable=unused-argument
+        data: dict,  # pylint: disable=unused-argument
     ) -> bool:
+        """Handle Pymunk physics collisions.
+
+        Args:
+            arbiter (pymunk.Arbiter): Pymunk arbiter.
+            space (pymunk.Space): Pymink space the collision bodies are in.
+            data (dict): Data dictionary that can be populated optionally.
+
+        Returns:
+            bool: If the collision was handled.
+        """
         other_shape = arbiter.shapes[1]
 
         if other_shape.collision_type == CollisionEntity.WALL:
-            for uid, wall in self._walls.items():
+            for _, wall in self._walls.items():
                 for segment in wall.segment_bodies:
                     if segment == other_shape:
                         self._event_pub.emit(
@@ -340,21 +402,21 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
                         return True
 
         elif other_shape.collision_type == CollisionEntity.BALL:
-            for uid, ball in self._balls.items():
+            for _, ball in self._balls.items():
                 if other_shape != ball.shape:
                     continue
                 self._event_pub.emit(event=events.GameEvents.COLLISION_BALL_BALL)
                 return True
 
         elif other_shape.collision_type == CollisionEntity.FLIPPER:
-            for uid, flipper in self._flippers.items():
+            for _, flipper in self._flippers.items():
                 if other_shape != flipper.flipper_shape:
                     continue
                 self._event_pub.emit(event=events.GameEvents.COLLISION_BALL_FLIPPER)
                 return True
 
         elif other_shape.collision_type == CollisionEntity.BUMPER:
-            for uid, bumper in self._bumpers.items():
+            for _, bumper in self._bumpers.items():
                 if other_shape != bumper.shape:
                     continue
                 self._event_pub.emit(event=events.GameEvents.COLLISION_BALL_BUMPER)
@@ -364,6 +426,10 @@ class CollisionHandler:  # pylint: disable=too-few-public-methods
 
 
 class PymunkPhysics(PhysicsInterface):
+    """Implementation of the PhysicsInterface class that uses Pymunk as the underlying
+    physics modelling solution.
+    """
+
     def __init__(self, event_pub: events.GameEventPublisher) -> None:
         self._balls: typing.Dict[int, PymunkEntity] = dict()
         self._bumpers: typing.Dict[int, PymunkBumper] = dict()
@@ -494,6 +560,11 @@ class PymunkPhysics(PhysicsInterface):
         return True
 
     def set_debug_display(self, screen) -> None:
+        """Get a PyGame display surface for debugging.
+
+        Args:
+            screen (pygame.Surface): PyGame display surface.
+        """
         self._draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     def update(self) -> None:
