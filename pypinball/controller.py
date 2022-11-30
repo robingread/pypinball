@@ -16,6 +16,9 @@ class ObjectIdGenerator:
     def generate_id(self) -> int:
         """
         Generate a new ID from the internal counter.
+
+        Returns:
+            int: Newly generated ID value.
         """
         self._count += 1
         return self._count
@@ -28,6 +31,8 @@ class ObjectIdGenerator:
 
 
 class Controller:
+    """Controller class"""
+
     def __init__(
         self,
         display_interface: display.DisplayInterface,

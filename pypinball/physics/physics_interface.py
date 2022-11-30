@@ -155,17 +155,11 @@ class PhysicsInterface(typing.Protocol):
         Set the 2D gravity vector in the format (x, y).
 
         Args:
-            vec: Vector.
-
-        Returns:
-            None
+            vec (tuple): Vector.
         """
 
     def update(self) -> None:
         """
         Perform an update/tick of the Physics engine. This method should be
         called on a regular basis.
-
-        Returns:
-            None
         """

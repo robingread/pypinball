@@ -9,17 +9,11 @@ class DisplayInterface(typing.Protocol):
     def clear(self) -> None:
         """
         Clear the display window.
-
-        Returns:
-            None
         """
 
     def close(self) -> None:
         """
         Close the display window.
-
-        Returns:
-            None
         """
 
     def display_image(self, path: str) -> None:
@@ -43,7 +37,7 @@ class DisplayInterface(typing.Protocol):
         """
 
     def draw_flipper(self) -> None:
-        """ """
+        """Helper funcion to draw a flippper."""
 
     def draw_round_bumper(
         self,

@@ -26,6 +26,7 @@ enable=
 # multiple time (only on the command line, not in the configuration file where
 # it should appear only once).
 disable=
+    consider-alternative-union-syntax,
     consider-iterating-dictionary,
     deprecated-typing-alias,
     format,
@@ -44,4 +45,4 @@ function-naming-style=snake_case
 method-naming-style=snake_case
 module-naming-style=snake_case
 
-good-names=a, b, c, i, j, k, x, y
+good-names=a, b, c, i, j, k, x, y, id

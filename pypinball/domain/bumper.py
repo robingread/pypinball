@@ -121,7 +121,7 @@ class RectangleBumper(Bumper):
         """
         Get the size of the bumper in the local coordinate system.
 
-        Returns
+        Returns:
             tuple: Size in the format (x, y).
         """
         return self._size
