@@ -17,8 +17,7 @@ class KeyboardInput:  # pylint: disable=too-few-public-methods
     to the right button and the "spacebar" to firing the center button. Under the hood it uses the ``pyunput`` package.
     """
 
-    def __init__(self, event_pub: InputEventPublisher):
-
+    def __init__(self, event_pub: InputEventPublisher) -> None:
         self._event_pub = event_pub
 
         listener = pynput.keyboard.Listener(
