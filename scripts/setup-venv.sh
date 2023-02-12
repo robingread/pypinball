@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -e
+set -eu
 
 if ! which virtualenv &> /dev/null
 then
