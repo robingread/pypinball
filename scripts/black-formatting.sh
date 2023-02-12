@@ -21,7 +21,7 @@ then
   echo "Running isort check..."
   isort --profile black --check $BIN_DIR $SRC_DIR $TEST_DIR
   echo "Running black formatter check..."
-  black --check $BIN_DIR $SRC_DIR $TEST_DIR
+  black --check --diff --color $BIN_DIR $SRC_DIR $TEST_DIR
 else
   echo "Running isort..."
   isort --profile black $BIN_DIR $SRC_DIR $TEST_DIR
