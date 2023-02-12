@@ -10,7 +10,7 @@ class ObjectIdGenerator:
     as needed throughout a game.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._count = -1
 
     def generate_id(self) -> int:
@@ -39,7 +39,7 @@ class Controller:
         config: GameConfig,
         physics_interface: physics.PhysicsInterface,
         event_publisher: events.GameEventPublisher,
-    ):
+    ) -> None:
         self._display = display_interface
         self._config = config
         self._physics = physics_interface
