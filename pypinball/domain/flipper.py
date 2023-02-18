@@ -1,7 +1,7 @@
 import dataclasses
 import typing
 
-from .buttons import Buttons
+from ..inputs import InputEvents
 
 
 @dataclasses.dataclass(frozen=True)
@@ -13,7 +13,6 @@ class FlipperConfig:
     - angle (float): Angle of the flipper in the world coordinates.
     - length (float): Length of the flipper arm.
     - actuation_angle (float):
-    - actuation_button (Buttons): Button that actuates the flipper.
     - actuation_direction (int): Direction the flipper actuates in. 1 corresponds to counter clockwise and -1 clockwise.
     """
 
@@ -21,8 +20,8 @@ class FlipperConfig:
     angle: float
     length: float
     actuation_angle: float
-    actuation_button: Buttons
     actuation_direction: int
+    actuation_input: InputEvents
 
 
 class Flipper:
@@ -34,19 +33,26 @@ class Flipper:
 
     def __init__(self, uid: int, config: FlipperConfig):
         self._uid = uid
-        self._angle = config.angle
         self._config = config
 
     @property
-    def angle(self) -> float:
-        return self._angle
-
-    @property
     def config(self) -> FlipperConfig:
+        """
+        Get the flipper config.
+
+        Returns:
+            FlipperConfig: The flipper config data.
+        """
         return self._config
 
     @property
     def uid(self) -> int:
+        """
+        Get the flipper unique ID.
+
+        Returns:
+            int: Unique ID.
+        """
         return self._uid
 
 

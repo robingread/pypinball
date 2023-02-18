@@ -1,111 +1,72 @@
-import logging
 import typing
-from .audio import AudioInterface, Sounds
-from .domain import Buttons, Flipper
+
+from .display import DisplayInterface
+from .domain import BallState, Bumper, BumperType
 from .physics import PhysicsInterface
 
 
-INPUT_STATE = typing.Dict[Buttons, bool]
-BUTTON_SOUND_MAP = typing.Dict[Buttons, Sounds]
-SOUND_FILE_MAP = typing.Dict[Sounds, str]
-
-
-def actuate_flippers(
-    input_state: INPUT_STATE,
-    flippers: typing.List[Flipper],
-    physics: PhysicsInterface,
-) -> None:
-    """
-    Actuate flippers in the Physics model based upon the button input state.
-
-    Args:
-        input_state (dict): Dictionary where keys are ``Button`` enums and the value is a ``bool``.
-        flippers (list): List of flippers in game.
-        physics (PhysicsInterface): Concrete physics interface.
-
-    Returns:
-        None
-    """
-    pressed_buttons = [button for button, state in input_state.items() if state]
-
-    for flipper in flippers:
-        if flipper.config.actuation_button in pressed_buttons:
-            physics.actuate_flipper(flipper=flipper)
-
-
-def launch_new_ball(
-    input_state: INPUT_STATE, lives: int, physics: PhysicsInterface
+def check_ball_is_within_area(
+    ball_position: typing.Tuple[float, float], width: float, height: float
 ) -> bool:
     """
-    Launch a new ball, but only if there are enough lives and the center
-    button has been pressed.
+    Check whether a ball position is within the playing area.
 
     Args:
-        input_state (dict): Dictionary where keys are ``Button`` enums and the value is a ``bool``.
-        lives (int): Number of lives left.
-        physics (PhysicsInterface): Concrete physics interface.
+        ball_position (tuple): Ball position in the format (x, y).
+        width (float): Area width.
+        height (float): Area height.
 
     Returns:
-        bool: Whether a new ball has been launched.
+        bool: ``True`` if the ball is within the area else ``False``.
     """
-    if lives == 0:
-        return False
-    elif not input_state[Buttons.CENTER]:
-        return False
-    return True
+    ball_in_width = 0.0 <= ball_position[0] <= width
+    ball_in_height = 0.0 <= ball_position[1] <= height
+    return all([ball_in_width, ball_in_height])
 
 
-def handle_input_button_audio(
-    input_state: INPUT_STATE,
-    audio_interface: AudioInterface,
-    button_to_sound_map: BUTTON_SOUND_MAP,
-    sound_to_file_map: SOUND_FILE_MAP,
+def render_physics_balls(
+    balls: typing.List[BallState], display: DisplayInterface
 ) -> None:
     """
-    Play audio files based on input button state.
+    Render/draw the current state of the Balls in the Phyics simulation.
 
     Args:
-        input_state (dict): Input button state.
-        audio_interface (AudioInterface): Audio interface for playing audio.
-        button_to_sound_map (dict): Mapping buttons to game sounds.
-        sound_to_file_map (dict): Mapping game sounds to audio file paths.
-
-    Returns:
-        None
+        balls (list): List of ``BallState`` values.
+        display (DisplayInterface): Display to draw the balls onto.
     """
-    sounds = map_button_state_to_sound_type(
-        input_state=input_state, sound_map=button_to_sound_map
-    )
-
-    for sound in sounds:
-        file_path = sound_to_file_map[sound]
-        audio_interface.play_sound_file(file_path)
+    for ball in balls:
+        # TODO: Address this hard-coded diameter.
+        display.draw_ball(pos=ball.position, diameter=30, alpha=1.0)
 
 
-def map_button_state_to_sound_type(
-    input_state: INPUT_STATE, sound_map: BUTTON_SOUND_MAP
-) -> list:
-    """
-    Map the input ``Button`` state to a specified ``Sound`` type. This method
-    checks the state of the inputs and specifies which sound types should be
-    played as a result.
+def render_physics_bumpers(
+    bumpers: typing.List[Bumper], display: DisplayInterface
+) -> None:
+    """Render a lsit fo Bumpers into the dislay.
 
     Args:
-        input_state (dict): Dictionary where keys are ``Button`` enums and the value is a ``bool``.
-        sound_map (dict): Dictionary where keys are ``Button`` enums and the value is a ``Sound`` enum.
-
-    Returns:
-        list: List of ``Sound`` types to play.
+        bumpers (typing.List[Bumper]): List of bumpers to render.
+        display (DisplayInterface): Implementation of the display interface.
     """
-    ret = list()
-    for input_key, state in input_state.items():
-        if not state:
-            continue
-        try:
-            sound = sound_map[input_key]
-            ret.append(sound)
-        except KeyError:
-            logging.warning(
-                f"Unable to map button: {input_key}. The button is not in the sound map."
+    for bumper in bumpers:
+        if bumper.type == BumperType.ROUND:
+            display.draw_round_bumper(
+                pos=bumper.position, diameter=bumper.radius * 2.0, alpha=1.0
             )
-    return ret
+        elif bumper.type == BumperType.RECTANGE:
+            display.draw_rectangle_bumper(
+                pos=bumper.position, angle=bumper.angle, alpha=1.0, size=bumper.size
+            )
+
+
+# TODO: Unit test this method.
+def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -> None:
+    """
+    Render the state of the Physics scene in the display.
+
+    Args:
+        physics (PhysicsInterface): Physics to get the state from.
+        display (DisplayInterface): Display to draw on.
+    """
+    render_physics_balls(balls=physics.get_ball_states(), display=display)
+    render_physics_bumpers(bumpers=physics.get_bumper_states(), display=display)

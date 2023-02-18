@@ -1,0 +1,72 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Docs",
+            "type": "shell",
+            "command": "./scripts/build-docs.sh",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Format Code",
+            "type": "shell",
+            "command": "./scripts/black-formatting.sh",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+        },
+        {
+            "label": "Run CI Tests",
+            "type": "shell",
+            "command": "./scripts/ci-test.sh",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Play Game",
+            "type": "shell",
+            "command": "python bin/controller.py",
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Run PyLint",
+            "type": "shell",
+            "command": "./scripts/linting.sh",
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Unit Tests",
+            "type": "shell",
+            "command": "./scripts/run-tests.sh",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "View Docs",
+            "type": "shell",
+            "command": "setsid xdg-open docs/build/public/index.html",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "close": true,
+                "reveal": "never"
+            }
+        }
+    ]
+}

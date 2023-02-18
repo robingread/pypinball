@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -e
+set -eu
 
 if ! which virtualenv &> /dev/null
 then
@@ -11,17 +11,14 @@ else
 fi
 
 DST_DIR=./venv
-virtualenv --clear --python /usr/bin/python3 $DST_DIR
+WHICH_PYTHON=`which python3`
+
+echo "Setting up Virtual Python environment"
+echo "Python path:" $WHICH_PYTHON
+echo "Destination dir:" $DST_DIR
+
+virtualenv --clear --python $WHICH_PYTHON $DST_DIR
 
 source $DST_DIR/bin/activate
 pip install --upgrade pip
-pip install \
-    black \
-    pygame \
-    pymunk \
-    pynput \
-    pytest \
-    simpleaudio \
-    sphinx \
-    sphinxcontrib-mermaid \
-    sphinx_rtd_theme
+pip install -r requirements.txt

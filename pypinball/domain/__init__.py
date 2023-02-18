@@ -1,3 +1,4 @@
 from .ball import Ball, BallState
-from .buttons import Buttons
-from .flipper import FlipperConfig, Flipper, FlipperState
+from .bumper import Bumper, BumperType, RectangleBumper, RoundBumper
+from .flipper import Flipper, FlipperConfig, FlipperState
+from .wall import Wall

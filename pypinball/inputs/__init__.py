@@ -1,2 +1,2 @@
-from .input_interface import InputInterface
+from .events import InputEventPublisher, InputEvents
 from .keyboard_input import KeyboardInput

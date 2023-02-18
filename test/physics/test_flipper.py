@@ -1,6 +1,7 @@
 import math
-import pypinball
 import unittest
+
+import pypinball
 
 
 class AngleTracker:
@@ -45,17 +46,18 @@ class TestAngleTracker(unittest.TestCase):
 
 class TestPymunkFlipper(unittest.TestCase):
     def setUp(self):
-        self.physics = pypinball.physics.PymunkPhysics()
+        self.event_pub = pypinball.events.GameEventPublisher()
+        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
         self.left_flipper = pypinball.domain.Flipper(
             uid=0,
             config=pypinball.domain.FlipperConfig(
                 position=(50, 400),
                 angle=0,
-                length=15,
+                length=150,
                 actuation_angle=-1.0,
-                actuation_button=pypinball.domain.Buttons.LEFT,
                 actuation_direction=1,
+                actuation_input=pypinball.inputs.InputEvents.LEFT_BUTTON_PRESSED,
             ),
         )
 
@@ -66,8 +68,8 @@ class TestPymunkFlipper(unittest.TestCase):
                 angle=math.pi,
                 length=50,
                 actuation_angle=1.0,
-                actuation_button=pypinball.domain.Buttons.RIGHT,
                 actuation_direction=-1,
+                actuation_input=pypinball.inputs.InputEvents.RIGHT_BUTTON_PRESSED,
             ),
         )
 
@@ -105,7 +107,7 @@ class TestPymunkFlipper(unittest.TestCase):
         Test that actuating a flipper changes the angle in the desired direction.
         """
         self.physics.add_flipper(flipper=self.left_flipper)
-        self.physics.actuate_flipper(flipper=self.left_flipper)
+        self.physics.actuate_flipper(uid=self.left_flipper.uid)
 
         tracker = AngleTracker(reference=self.left_flipper.config.angle)
         for _ in range(100):
@@ -116,14 +118,19 @@ class TestPymunkFlipper(unittest.TestCase):
         target_angle = (
             self.left_flipper.config.angle + self.left_flipper.config.actuation_angle
         )
-        self.assertAlmostEqual(tracker.absolute_angle, target_angle, delta=0.1)
+        self.assertAlmostEqual(
+            tracker.absolute_angle,
+            target_angle,
+            delta=0.1,
+            msg="Actual angle of left flipper is not equal to target configuation angle",
+        )
 
     def test_actuate_right_flipper(self):
         """
         Test that actuating a flipper changes the angle in the desired direction.
         """
         self.physics.add_flipper(flipper=self.right_flipper)
-        self.physics.actuate_flipper(flipper=self.right_flipper)
+        self.physics.actuate_flipper(uid=self.right_flipper.uid)
 
         tracker = AngleTracker(reference=self.right_flipper.config.angle)
         for _ in range(100):
@@ -135,3 +142,40 @@ class TestPymunkFlipper(unittest.TestCase):
             self.right_flipper.config.angle + self.right_flipper.config.actuation_angle
         )
         self.assertAlmostEqual(tracker.absolute_angle, target_angle, delta=0.1)
+
+    def test_actuate_unregistered_flipper(self):
+        """
+        Test that actuating a flipper that hasn't been added to the Physics
+        environment doesn't do anything.
+        """
+        ret = self.physics.actuate_flipper(uid=self.right_flipper.uid)
+        self.assertFalse(ret)
+
+    def test_actuate_flipper_emits_event(self):
+        """
+        Test that the actuate_flipper() method also emits a FLIPPER_ACTIVATED
+        event via he GameEventPublisher.
+        """
+        event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=event_handler.handle_event)
+
+        self.physics.add_flipper(flipper=self.right_flipper)
+        self.physics.actuate_flipper(uid=self.right_flipper.uid)
+
+        for _ in range(100):
+            self.physics.update()
+
+        self.assertListEqual(
+            event_handler.events, [pypinball.events.GameEvents.FLIPPER_ACTIVATED]
+        )
+
+    def test_actuate_unregistered_flipper_does_not_emit_event(self):
+        """
+        Test that actuating a flipper that doesn't exist also doesn't emit a
+        FLIPPER_ACTIVATED game event.
+        """
+        event_handler = pypinball.events.MockEventHandler()
+        self.event_pub.subscribe(callback=event_handler.handle_event)
+
+        self.physics.actuate_flipper(uid=self.right_flipper.uid)
+        self.assertListEqual(event_handler.events, [])
