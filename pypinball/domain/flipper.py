@@ -64,3 +64,4 @@ class FlipperState:
 
     angle: float
     position: typing.Tuple[float, float]
+    length: float
