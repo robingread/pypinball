@@ -9,7 +9,7 @@ class FlipperConfig:
     """
     Flipper configuration dataclass. Flippers have the following properties:
 
-    - position (tuple): Position in the format (x, y) in the world coordinates.
+    - position (tuple): Position in the format (x, y) in the world coordinates. This should represent the point of rotation of the flipper.
     - angle (float): Angle of the flipper in the world coordinates.
     - length (float): Length of the flipper arm.
     - actuation_angle (float):
