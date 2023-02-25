@@ -31,7 +31,7 @@ class PymunkEntity:
 
     id: int
     body: pymunk.Body
-    shape: pymunk.Shape
+    shape: pymunk.Circle
 
     @property
     def position(self) -> typing.Tuple[float, float]:
@@ -41,6 +41,15 @@ class PymunkEntity:
             typing.Tuple[float, float]: Position in the format (x, y).
         """
         return self.body.position
+
+    @property
+    def radius(self) -> int:
+        """Get the radius of the ball.
+
+        Returns:
+            int: Ball radius.
+        """
+        return self.shape.radius
 
     def add_to_space(self, space: pymunk.Space) -> None:
         """Add the pymunk objects/data to the space.
