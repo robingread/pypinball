@@ -534,7 +534,10 @@ class PymunkPhysics(PhysicsInterface):
         if uid not in self._flippers.keys():
             raise KeyError(f"Unknown flipper id: {uid}")
         return domain.FlipperState(
-            angle=self._flippers[uid].angle, position=self._flippers[uid].position
+            uid=uid,
+            angle=self._flippers[uid].angle,
+            position=self._flippers[uid].position,
+            length=self._flippers[uid].config.length,
         )
 
     def launch_ball(self, uid: int) -> bool:
