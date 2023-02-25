@@ -188,6 +188,7 @@ class PymunkWall:
             space.add(segment)
 
 
+# TODO: Unit-test this method.
 def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     """Create a ball data structure from a domain specified ball.
 
