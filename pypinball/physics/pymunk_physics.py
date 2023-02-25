@@ -113,6 +113,7 @@ class PymunkFlipper:
     joint: pymunk.PivotJoint
     joint_limit: pymunk.RotaryLimitJoint
     spring: pymunk.DampedRotarySpring
+    config: domain.FlipperConfig
 
     @property
     def angle(self) -> float:
@@ -311,6 +312,7 @@ def create_pymunk_flipper(flipper: domain.Flipper) -> PymunkFlipper:
 
     return PymunkFlipper(
         id=flipper.uid,
+        config=flipper.config,
         actuation_direction=flipper.config.actuation_direction,
         flipper_body=flipper_body,
         flipper_shape=flipper_shape,
