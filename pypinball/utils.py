@@ -36,8 +36,7 @@ def render_physics_balls(
         display (DisplayInterface): Display to draw the balls onto.
     """
     for ball in balls:
-        # TODO: Address this hard-coded diameter.
-        display.draw_ball(pos=ball.position, diameter=30, alpha=1.0)
+        display.draw_ball(pos=ball.position, diameter=ball.radius, alpha=1.0)
 
 
 def render_physics_bumpers(
