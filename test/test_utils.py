@@ -33,7 +33,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
         self.width = 100
         self.height = 100
 
-    def test_ball_within_area(self):
+    def test_ball_within_area(self) -> None:
         """
         Test the condition where the ball is within the area.
         """
@@ -44,7 +44,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_above(self):
+    def test_ball_outside_area_above(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         above the playable area.
@@ -56,7 +56,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_below(self):
+    def test_ball_outside_area_below(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         below the playable area.
@@ -68,7 +68,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_left(self):
+    def test_ball_outside_area_left(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         to the left of the playable area.
@@ -80,7 +80,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_right(self):
+    def test_ball_outside_area_right(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         to the right of the playable area.
