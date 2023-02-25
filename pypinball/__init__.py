@@ -1,4 +1,4 @@
-from . import audio, display, domain, events, inputs, log, physics, resources
+from . import audio, display, domain, events, inputs, log, physics, resources, utils
 from .audio import AudioInterface
 from .controller import Controller
 from .display import DisplayInterface

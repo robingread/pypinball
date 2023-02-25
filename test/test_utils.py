@@ -75,9 +75,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
 
 
 class TestRenderPhysicsBalls(unittest.TestCase):
-    """
-    Test the utils.render_physics_balls() method.
-    """
+    """Test the utils.render_physics_balls() method."""
 
     def setUp(self) -> None:
         class MockDisplay(pypinball.DisplayInterface):
@@ -110,3 +108,54 @@ class TestRenderPhysicsBalls(unittest.TestCase):
         pypinball.utils.render_physics_balls(balls, self.display)
 
         self.assertEqual(self.display.draw_ball.call_count, n)
+
+
+class TestRenderPhysicsBumpers(unittest.TestCase):
+    """Test the utils.render_physics_bumpers() method."""
+
+    def setUp(self) -> None:
+        class MockDisplay(pypinball.DisplayInterface):
+            """Mock display class used for testing purposes"""
+
+        self.display = MockDisplay()
+        self.display.draw_ball = unittest.mock.MagicMock()
+        self.display.draw_rectangle_bumper = unittest.mock.MagicMock()
+        self.display.draw_round_bumper = unittest.mock.MagicMock()
+
+        self.round_bumper = pypinball.domain.RoundBumper(
+            uid=0,
+            radius=10,
+            position=(10, 10),
+        )
+
+        self.rectangle_bumper = pypinball.domain.RectangleBumper(
+            uid=1, angle=0.0, position=(20, 20), size=(10, 20)
+        )
+
+    def test_render_zero_bumpers(self) -> None:
+        """Call method with an empty list of bumpers. This should result in no calls to the display."""
+        bumpers = list()
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_not_called()
+        self.display.draw_round_bumper.assert_not_called()
+
+    def test_render_round_bumper(self) -> None:
+        """Call the method with a single round bumper. This should make a single display call."""
+        bumpers = [self.round_bumper]
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_not_called()
+        self.display.draw_round_bumper.assert_called_once()
+
+    def test_render_rectangle_bumper(self) -> None:
+        """Call the method with a single rectangle bumper. This should make a single display call."""
+        bumpers = [self.rectangle_bumper]
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_called_once()
+        self.display.draw_round_bumper.assert_not_called()
+
+    def test_two_bumpers(self) -> None:
+        """Call the method with a round and rectangle bumper. This should make two calls to the displya."""
+        bumpers = [self.rectangle_bumper, self.round_bumper]
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_called_once()
+        self.display.draw_round_bumper.assert_called_once()
