@@ -43,19 +43,23 @@ class PyGameDisplay(DisplayInterface):
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
-        img = pygame.transform.scale(self._ball_img, (diameter, diameter))
+        x, y = calculate_rectangle_bounding_box_image_coordinates(
+            pos=pos, size=(diameter, diameter), angle=0.0
+        )
+        img = pygame.transform.scale(self._ball_img, size=(diameter, diameter))
+        img = pygame.transform.rotate(img, angle=math.degrees(0.0))
         img.set_alpha(int(alpha * 255))
-        x = pos[0] - (diameter * 0.5)
-        y = pos[1] - (diameter * 0.5)
         self._screen.blit(img, (x, y))
 
     def draw_round_bumper(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
+        x, y = calculate_rectangle_bounding_box_image_coordinates(
+            pos=pos, size=(diameter, diameter), angle=0.0
+        )
         img = pygame.transform.scale(self._round_bumper_img, size=(diameter, diameter))
+        img = pygame.transform.rotate(img, angle=math.degrees(0.0))
         img.set_alpha(int(alpha * 255))
-        x = pos[0] - (diameter * 0.5)
-        y = pos[1] - (diameter * 0.5)
         self._screen.blit(img, (x, y))
 
     def draw_rectangle_bumper(
