@@ -5,6 +5,16 @@ import unittest.mock
 import pypinball
 
 
+class MockDisplay(pypinball.DisplayInterface):
+    """Mock DisplayInterface class to be used to unit-testing purposes."""
+
+    def __init__(self) -> None:
+        self.draw_ball = unittest.mock.MagicMock()
+        self.draw_flipper = unittest.mock.MagicMock()
+        self.draw_rectangle_bumper = unittest.mock.MagicMock()
+        self.draw_round_bumper = unittest.mock.MagicMock()
+
+
 class TestBallWithinAreaFunction(unittest.TestCase):
     """
     Test the utils.check_ball_is_within_area() method.
@@ -78,11 +88,7 @@ class TestRenderPhysicsBalls(unittest.TestCase):
     """Test the utils.render_physics_balls() method."""
 
     def setUp(self) -> None:
-        class MockDisplay(pypinball.DisplayInterface):
-            """Mock display class used for testing purposes"""
-
         self.display = MockDisplay()
-        self.display.draw_ball = unittest.mock.MagicMock()
 
     def test_render_zero_balls(self) -> None:
         """
@@ -114,13 +120,7 @@ class TestRenderPhysicsBumpers(unittest.TestCase):
     """Test the utils.render_physics_bumpers() method."""
 
     def setUp(self) -> None:
-        class MockDisplay(pypinball.DisplayInterface):
-            """Mock display class used for testing purposes"""
-
         self.display = MockDisplay()
-        self.display.draw_ball = unittest.mock.MagicMock()
-        self.display.draw_rectangle_bumper = unittest.mock.MagicMock()
-        self.display.draw_round_bumper = unittest.mock.MagicMock()
 
         self.round_bumper = pypinball.domain.RoundBumper(
             uid=0,
@@ -159,3 +159,30 @@ class TestRenderPhysicsBumpers(unittest.TestCase):
         pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
         self.display.draw_rectangle_bumper.assert_called_once()
         self.display.draw_round_bumper.assert_called_once()
+
+
+class TestRenderPhysicsFlippers(unittest.TestCase):
+    """Test the pypinballs.utils.render_physics_flippers() method."""
+
+    def setUp(self) -> None:
+        self.display = MockDisplay()
+
+    def test_call_with_no_flippers(self) -> None:
+        """Test calling the method with an empty list."""
+        flippers = list()
+        pypinball.utils.render_phyisics_flippers(
+            flippers=flippers, display=self.display
+        )
+        self.display.draw_flipper.assert_not_called()
+
+    def test_call_with_single_flipper(self) -> None:
+        """Test call the method with a list containing a single flipper state."""
+        flippers = [
+            pypinball.domain.FlipperState(
+                uid=0, position=(10, 10), angle=1.0, length=20
+            )
+        ]
+        pypinball.utils.render_phyisics_flippers(
+            flippers=flippers, display=self.display
+        )
+        self.display.draw_flipper.assert_called_once()
