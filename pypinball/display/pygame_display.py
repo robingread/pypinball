@@ -78,6 +78,25 @@ class PyGameDisplay(DisplayInterface):
         img.set_alpha(int(alpha * 255))
         self._screen.blit(img, (x, y))
 
+    def draw_flipper(
+        self,
+        pos: typing.Tuple[float, float],
+        angle: float,
+        size: typing.Tuple[float, float],
+        alpha: float,
+    ) -> None:
+        width = size[0]
+        height = size[1]
+
+        x, y = calculate_rectangle_bounding_box_image_coordinates(
+            pos=pos, size=(width, height), angle=angle
+        )
+
+        img = pygame.transform.scale(self._flipper_img, size=(width, height))
+        img = pygame.transform.rotate(img, angle=math.degrees(-angle))
+        img.set_alpha(int(alpha * 255))
+        self._screen.blit(img, (x, y))
+
     def update(self) -> None:
         pygame.display.flip()
         self._clock.tick(50)
