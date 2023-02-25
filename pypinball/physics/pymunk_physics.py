@@ -198,7 +198,7 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
         PymunkEntity: Populated data structure.
     """
     mass = 0.1
-    radius = 15
+    radius = ball.radius
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass, inertia)
     body.position = ball.position
