@@ -62,6 +62,7 @@ class FlipperState:
     State of the flipper, including the position and angle in the world frame.
     """
 
+    uid: int
     angle: float
     position: typing.Tuple[float, float]
     length: float
