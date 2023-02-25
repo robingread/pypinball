@@ -1,7 +1,8 @@
+import math
 import typing
 
 from .display import DisplayInterface
-from .domain import BallState, Bumper, BumperType
+from .domain import BallState, Bumper, BumperType, FlipperState
 from .physics import PhysicsInterface
 
 
@@ -42,10 +43,10 @@ def render_physics_balls(
 def render_physics_bumpers(
     bumpers: typing.List[Bumper], display: DisplayInterface
 ) -> None:
-    """Render a lsit fo Bumpers into the dislay.
+    """Render a list fo Bumpers into the dislay.
 
     Args:
-        bumpers (typing.List[Bumper]): List of bumpers to render.
+        bumpers (list): List of bumpers to render.
         display (DisplayInterface): Implementation of the display interface.
     """
     for bumper in bumpers:
@@ -59,7 +60,28 @@ def render_physics_bumpers(
             )
 
 
-# TODO: Unit test this method.
+def render_phyisics_flippers(
+    flippers: typing.List[FlipperState], display: DisplayInterface
+) -> None:
+    """Render a list of FlipperState into the display.
+
+    Args:
+        flippers (list): List fo FlipperState instances.
+        display (DisplayInterface): Implementation of the display interface.
+    """
+    for flipper in flippers:
+        dx = (flipper.length * 0.5) * math.cos(flipper.angle)
+        dy = (flipper.length * 0.5) * math.sin(flipper.angle)
+        x = flipper.position[0] + dx
+        y = flipper.position[1] + dy
+        display.draw_flipper(
+            pos=(x, y),
+            angle=flipper.angle,
+            size=(flipper.length, flipper.length * 0.35),
+            alpha=1.0,
+        )
+
+
 def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -> None:
     """
     Render the state of the Physics scene in the display.
@@ -70,3 +92,4 @@ def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -
     """
     render_physics_balls(balls=physics.get_ball_states(), display=display)
     render_physics_bumpers(bumpers=physics.get_bumper_states(), display=display)
+    render_phyisics_flippers(flippers=physics.get_flipper_states(), display=display)

@@ -15,6 +15,7 @@ class DisplayConfig:
     ball_image_path: str
     round_bumper_image_path: str
     rectangle_bumper_image_path: str
+    flipper_image_path: str
 
 
 @dataclasses.dataclass

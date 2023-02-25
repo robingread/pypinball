@@ -5,6 +5,25 @@ import unittest.mock
 import pypinball
 
 
+class MockDisplay(pypinball.DisplayInterface):
+    """Mock DisplayInterface class to be used to unit-testing purposes."""
+
+    def __init__(self) -> None:
+        self.draw_ball = unittest.mock.MagicMock()
+        self.draw_flipper = unittest.mock.MagicMock()
+        self.draw_rectangle_bumper = unittest.mock.MagicMock()
+        self.draw_round_bumper = unittest.mock.MagicMock()
+
+
+class MockPhysics(pypinball.PhysicsInterface):
+    """Mock PhysicsInterface class to be used to unit-testing purposes."""
+
+    def __init__(self) -> None:
+        self.get_ball_states = unittest.mock.MagicMock()
+        self.get_bumper_states = unittest.mock.MagicMock()
+        self.get_flipper_states = unittest.mock.MagicMock()
+
+
 class TestBallWithinAreaFunction(unittest.TestCase):
     """
     Test the utils.check_ball_is_within_area() method.
@@ -14,7 +33,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
         self.width = 100
         self.height = 100
 
-    def test_ball_within_area(self):
+    def test_ball_within_area(self) -> None:
         """
         Test the condition where the ball is within the area.
         """
@@ -25,7 +44,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_above(self):
+    def test_ball_outside_area_above(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         above the playable area.
@@ -37,7 +56,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_below(self):
+    def test_ball_outside_area_below(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         below the playable area.
@@ -49,7 +68,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_left(self):
+    def test_ball_outside_area_left(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         to the left of the playable area.
@@ -61,7 +80,7 @@ class TestBallWithinAreaFunction(unittest.TestCase):
             )
         )
 
-    def test_ball_outside_area_right(self):
+    def test_ball_outside_area_right(self) -> None:
         """
         Test the condition where the ball is outside the area where the ball is
         to the right of the playable area.
@@ -75,16 +94,10 @@ class TestBallWithinAreaFunction(unittest.TestCase):
 
 
 class TestRenderPhysicsBalls(unittest.TestCase):
-    """
-    Test the utils.render_physics_balls() method.
-    """
+    """Test the utils.render_physics_balls() method."""
 
     def setUp(self) -> None:
-        class MockDisplay(pypinball.DisplayInterface):
-            """Mock display class used for testing purposes"""
-
         self.display = MockDisplay()
-        self.display.draw_ball = unittest.mock.MagicMock()
 
     def test_render_zero_balls(self) -> None:
         """
@@ -110,3 +123,105 @@ class TestRenderPhysicsBalls(unittest.TestCase):
         pypinball.utils.render_physics_balls(balls, self.display)
 
         self.assertEqual(self.display.draw_ball.call_count, n)
+
+
+class TestRenderPhysicsBumpers(unittest.TestCase):
+    """Test the utils.render_physics_bumpers() method."""
+
+    def setUp(self) -> None:
+        self.display = MockDisplay()
+
+        self.round_bumper = pypinball.domain.RoundBumper(
+            uid=0,
+            radius=10,
+            position=(10, 10),
+        )
+
+        self.rectangle_bumper = pypinball.domain.RectangleBumper(
+            uid=1, angle=0.0, position=(20, 20), size=(10, 20)
+        )
+
+    def test_render_zero_bumpers(self) -> None:
+        """Call method with an empty list of bumpers. This should result in no calls to the display."""
+        bumpers = list()
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_not_called()
+        self.display.draw_round_bumper.assert_not_called()
+
+    def test_render_round_bumper(self) -> None:
+        """Call the method with a single round bumper. This should make a single display call."""
+        bumpers = [self.round_bumper]
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_not_called()
+        self.display.draw_round_bumper.assert_called_once()
+
+    def test_render_rectangle_bumper(self) -> None:
+        """Call the method with a single rectangle bumper. This should make a single display call."""
+        bumpers = [self.rectangle_bumper]
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_called_once()
+        self.display.draw_round_bumper.assert_not_called()
+
+    def test_two_bumpers(self) -> None:
+        """Call the method with a round and rectangle bumper. This should make two calls to the displya."""
+        bumpers = [self.rectangle_bumper, self.round_bumper]
+        pypinball.utils.render_physics_bumpers(bumpers=bumpers, display=self.display)
+        self.display.draw_rectangle_bumper.assert_called_once()
+        self.display.draw_round_bumper.assert_called_once()
+
+
+class TestRenderPhysicsFlippers(unittest.TestCase):
+    """Test the pypinballs.utils.render_physics_flippers() method."""
+
+    def setUp(self) -> None:
+        self.display = MockDisplay()
+
+    def test_call_with_no_flippers(self) -> None:
+        """Test calling the method with an empty list."""
+        flippers = list()
+        pypinball.utils.render_phyisics_flippers(
+            flippers=flippers, display=self.display
+        )
+        self.display.draw_flipper.assert_not_called()
+
+    def test_call_with_single_flipper(self) -> None:
+        """Test call the method with a list containing a single flipper state."""
+        flippers = [
+            pypinball.domain.FlipperState(
+                uid=0, position=(10, 10), angle=1.0, length=20
+            )
+        ]
+        pypinball.utils.render_phyisics_flippers(
+            flippers=flippers, display=self.display
+        )
+        self.display.draw_flipper.assert_called_once()
+
+
+class TestRenderPhysicsState(unittest.TestCase):
+    """Test the pypinball.utils.render_phyiscs_state() method."""
+
+    def setUp(self) -> None:
+        ball = pypinball.domain.BallState(uid=0, position=(10, 10))
+        flipper = pypinball.domain.FlipperState(
+            uid=1, angle=0.0, position=(10, 20), length=10
+        )
+        round_bumper = pypinball.domain.RoundBumper(uid=2, position=(20, 20), radius=15)
+        rect_bumper = pypinball.domain.RectangleBumper(
+            uid=3, size=(13, 30), position=(30, 30), angle=0.5
+        )
+
+        self.physics = MockPhysics()
+        self.physics.get_ball_states.return_value = [ball]
+        self.physics.get_bumper_states.return_value = [round_bumper, rect_bumper]
+        self.physics.get_flipper_states.return_value = [flipper]
+
+        self.display = MockDisplay()
+
+        pypinball.utils.render_physics_state(physics=self.physics, display=self.display)
+
+    def test_display_methods_called(self) -> None:
+        """Test that the expected display methods are called."""
+        self.display.draw_ball.assert_called_once()
+        self.display.draw_flipper.assert_called_once()
+        self.display.draw_rectangle_bumper.assert_called_once()
+        self.display.draw_round_bumper.assert_called_once()

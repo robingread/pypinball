@@ -115,6 +115,17 @@ class PhysicsInterface(typing.Protocol):
 
         Returns:
             FlipperState: State of the flipper.
+
+        Raises:
+            ``KeyError``: If the bumper UID is not known.
+        """
+
+    def get_flipper_states(self) -> typing.List[domain.FlipperState]:
+        """
+        Get the states for all the flippers.
+
+        Returns:
+            list: List of flipper states.
         """
 
     def launch_ball(self, uid: int) -> bool:

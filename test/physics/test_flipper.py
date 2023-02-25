@@ -90,13 +90,15 @@ class TestPymunkFlipper(unittest.TestCase):
         ret = self.physics.add_flipper(flipper=self.left_flipper)
         self.assertFalse(ret)
 
-    def test_get_flipper_state_after_adding(self):
+    def test_get_flipper_state_after_adding(self) -> None:
+        """Test that the get_flipper_state() method returns appropriate values."""
         self.physics.add_flipper(flipper=self.left_flipper)
         state = self.physics.get_flipper_state(uid=self.left_flipper.uid)
 
         self.assertIsInstance(state, pypinball.domain.FlipperState)
         self.assertEqual(self.left_flipper.config.angle, state.angle)
         self.assertEqual(self.left_flipper.config.position, state.position)
+        self.assertEqual(self.left_flipper.config.length, state.length)
 
     def test_get_state_of_flipper_with_unknown_id(self):
         with self.assertRaises(KeyError):
