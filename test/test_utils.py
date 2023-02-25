@@ -15,6 +15,15 @@ class MockDisplay(pypinball.DisplayInterface):
         self.draw_round_bumper = unittest.mock.MagicMock()
 
 
+class MockPhysics(pypinball.PhysicsInterface):
+    """Mock PhysicsInterface class to be used to unit-testing purposes."""
+
+    def __init__(self) -> None:
+        self.get_ball_states = unittest.mock.MagicMock()
+        self.get_bumper_states = unittest.mock.MagicMock()
+        self.get_flipper_states = unittest.mock.MagicMock()
+
+
 class TestBallWithinAreaFunction(unittest.TestCase):
     """
     Test the utils.check_ball_is_within_area() method.
@@ -186,3 +195,33 @@ class TestRenderPhysicsFlippers(unittest.TestCase):
             flippers=flippers, display=self.display
         )
         self.display.draw_flipper.assert_called_once()
+
+
+class TestRenderPhysicsState(unittest.TestCase):
+    """Test the pypinball.utils.render_phyiscs_state() method."""
+
+    def setUp(self) -> None:
+        ball = pypinball.domain.BallState(uid=0, position=(10, 10))
+        flipper = pypinball.domain.FlipperState(
+            uid=1, angle=0.0, position=(10, 20), length=10
+        )
+        round_bumper = pypinball.domain.RoundBumper(uid=2, position=(20, 20), radius=15)
+        rect_bumper = pypinball.domain.RectangleBumper(
+            uid=3, size=(13, 30), position=(30, 30), angle=0.5
+        )
+
+        self.physics = MockPhysics()
+        self.physics.get_ball_states.return_value = [ball]
+        self.physics.get_bumper_states.return_value = [round_bumper, rect_bumper]
+        self.physics.get_flipper_states.return_value = [flipper]
+
+        self.display = MockDisplay()
+
+        pypinball.utils.render_physics_state(physics=self.physics, display=self.display)
+
+    def test_display_methods_called(self) -> None:
+        """Test that the expected display methods are called."""
+        self.display.draw_ball.assert_called_once()
+        self.display.draw_flipper.assert_called_once()
+        self.display.draw_rectangle_bumper.assert_called_once()
+        self.display.draw_round_bumper.assert_called_once()

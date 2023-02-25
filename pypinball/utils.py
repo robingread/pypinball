@@ -82,7 +82,6 @@ def render_phyisics_flippers(
         )
 
 
-# TODO: Unit test this method.
 def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -> None:
     """
     Render the state of the Physics scene in the display.
