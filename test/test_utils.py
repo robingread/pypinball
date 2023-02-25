@@ -117,7 +117,7 @@ class TestRenderPhysicsBalls(unittest.TestCase):
         n = random.randint(1, 100)
         balls = list()
         for uid in range(n):
-            ball = pypinball.domain.BallState(uid=uid, position=(0.0, 0.0))
+            ball = pypinball.domain.BallState(uid=uid, position=(0.0, 0.0), radius=10)
             balls.append(ball)
 
         pypinball.utils.render_physics_balls(balls, self.display)
@@ -201,7 +201,7 @@ class TestRenderPhysicsState(unittest.TestCase):
     """Test the pypinball.utils.render_phyiscs_state() method."""
 
     def setUp(self) -> None:
-        ball = pypinball.domain.BallState(uid=0, position=(10, 10))
+        ball = pypinball.domain.BallState(uid=0, position=(10, 10), radius=20)
         flipper = pypinball.domain.FlipperState(
             uid=1, angle=0.0, position=(10, 20), length=10
         )
