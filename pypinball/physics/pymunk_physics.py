@@ -31,7 +31,7 @@ class PymunkEntity:
 
     id: int
     body: pymunk.Body
-    shape: pymunk.Shape
+    shape: pymunk.Circle
 
     @property
     def position(self) -> typing.Tuple[float, float]:
@@ -41,6 +41,15 @@ class PymunkEntity:
             typing.Tuple[float, float]: Position in the format (x, y).
         """
         return self.body.position
+
+    @property
+    def radius(self) -> int:
+        """Get the radius of the ball.
+
+        Returns:
+            int: Ball radius.
+        """
+        return self.shape.radius
 
     def add_to_space(self, space: pymunk.Space) -> None:
         """Add the pymunk objects/data to the space.
@@ -179,6 +188,7 @@ class PymunkWall:
             space.add(segment)
 
 
+# TODO: Unit-test this method.
 def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
     """Create a ball data structure from a domain specified ball.
 
@@ -189,7 +199,7 @@ def create_pymunk_ball(ball: domain.Ball) -> PymunkEntity:
         PymunkEntity: Populated data structure.
     """
     mass = 0.1
-    radius = 15
+    radius = ball.radius
     inertia = pymunk.moment_for_circle(mass, 0, radius, (0, 0))
     body = pymunk.Body(mass, inertia)
     body.position = ball.position
@@ -517,7 +527,9 @@ class PymunkPhysics(PhysicsInterface):
     def get_ball_state(self, uid: int) -> domain.BallState:
         if uid not in self._balls.keys():
             raise KeyError(f"Unknown ball id: {uid}")
-        return domain.BallState(uid=uid, position=self._balls[uid].position)
+        return domain.BallState(
+            uid=uid, position=self._balls[uid].position, radius=self._balls[uid].radius
+        )
 
     def get_ball_states(self) -> typing.List[domain.BallState]:
         return [self.get_ball_state(uid=uid) for uid in self._balls.keys()]

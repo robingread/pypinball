@@ -23,7 +23,8 @@ class GameConfig:
     """
     The GameConfig class is used to hold the configuration of a single instance of the game.
 
-    - playing_area: The size of hte play area in pixels (width, height).
+    - ball_radius: Radius of a ball in pixels
+    - playing_area: The size of the play area in pixels (width, height).
     - flippers: Specification of all flippers to create in the ``PhysicsInterface``.
     - walls: Specification of all walls to create in the ``PhysicsInterface``.
     - events_to_sounds: Mapping from ``GameEvents`` types to file paths for audio files.
@@ -40,3 +41,5 @@ class GameConfig:
     event_to_sounds: typing.Dict[events.GameEvents, str] = dataclasses.field(
         default_factory=dict
     )
+
+    ball_radius: int = 15

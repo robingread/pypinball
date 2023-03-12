@@ -9,11 +9,18 @@ class Ball:
     defined by the ``history`` parameter passed during initialisation.
     """
 
-    def __init__(self, uid: int, position: typing.Tuple[float, float], history=15):
+    def __init__(
+        self,
+        uid: int,
+        position: typing.Tuple[float, float],
+        radius: int = 20,
+        history=15,
+    ) -> None:
         self._uid = uid
         self._history = history
         self._position = position
         self._position_history = list()
+        self._radius = radius
 
     @property
     def uid(self) -> int:
@@ -46,6 +53,15 @@ class Ball:
         """
         return self._position_history
 
+    @property
+    def radius(self) -> int:
+        """Get the ball radius value.
+
+        Returns:
+            int: Radius value.
+        """
+        return self._radius
+
     def set_position(self, position: typing.Tuple[float, float]) -> None:
         """
         Set the current position of the ball. This will also update the
@@ -68,3 +84,4 @@ class BallState:
 
     uid: int
     position: typing.Tuple[float, float]
+    radius: int

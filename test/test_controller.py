@@ -6,6 +6,7 @@ import pypinball
 from . import moc_interfaces
 
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
+    ball_radius=15,
     playing_area=(450, 650),
     event_to_sounds={
         pypinball.events.GameEvents.BALL_LOST: "ball_lost",
