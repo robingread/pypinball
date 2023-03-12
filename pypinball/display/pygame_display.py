@@ -25,6 +25,9 @@ class PyGameDisplay(DisplayInterface):
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
 
+        self._background_img = pygame.image.load(
+            config.background_image_path
+        ).convert_alpha()
         self._ball_img = pygame.image.load(config.ball_image_path).convert_alpha()
         self._round_bumper_img = pygame.image.load(
             config.round_bumper_image_path
@@ -39,6 +42,12 @@ class PyGameDisplay(DisplayInterface):
 
     def close(self) -> None:
         pygame.quit()
+
+    def draw_background(self) -> None:
+        width = self._screen.get_width()
+        height = self._screen.get_height()
+        img = pygame.transform.scale(self._background_img, size=(width, height))
+        self._screen.blit(img, (0, 0))
 
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
