@@ -89,6 +89,7 @@ def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -
         physics (PhysicsInterface): Physics to get the state from.
         display (DisplayInterface): Display to draw on.
     """
+    display.draw_background()
     render_physics_balls(balls=physics.get_ball_states(), display=display)
     render_physics_bumpers(bumpers=physics.get_bumper_states(), display=display)
     render_phyisics_flippers(flippers=physics.get_flipper_states(), display=display)

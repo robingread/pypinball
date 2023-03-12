@@ -9,6 +9,7 @@ class MockDisplay(pypinball.DisplayInterface):
     """Mock DisplayInterface class to be used to unit-testing purposes."""
 
     def __init__(self) -> None:
+        self.draw_background = unittest.mock.MagicMock()
         self.draw_ball = unittest.mock.MagicMock()
         self.draw_flipper = unittest.mock.MagicMock()
         self.draw_rectangle_bumper = unittest.mock.MagicMock()
@@ -221,6 +222,7 @@ class TestRenderPhysicsState(unittest.TestCase):
 
     def test_display_methods_called(self) -> None:
         """Test that the expected display methods are called."""
+        self.display.draw_background.assert_called_once()
         self.display.draw_ball.assert_called_once()
         self.display.draw_flipper.assert_called_once()
         self.display.draw_rectangle_bumper.assert_called_once()
