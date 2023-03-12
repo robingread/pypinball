@@ -24,6 +24,9 @@ class DisplayInterface(typing.Protocol):
             path (str): Absolute path to the image resource.
         """
 
+    def draw_background(self) -> None:
+        pass
+
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:

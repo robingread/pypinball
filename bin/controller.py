@@ -1,6 +1,7 @@
 import pypinball
 
 DISPLAY_CONFIG = pypinball.game_config.DisplayConfig(
+    background_image_path=pypinball.resources.get_image_resource_path("background.png"),
     ball_image_path=pypinball.resources.get_image_resource_path("ball.png"),
     round_bumper_image_path=pypinball.resources.get_image_resource_path(
         "round_bumper.png"
