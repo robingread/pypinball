@@ -12,6 +12,7 @@ class DisplayConfig:
     elements.
     """
 
+    background_image_path: str
     ball_image_path: str
     round_bumper_image_path: str
     rectangle_bumper_image_path: str
