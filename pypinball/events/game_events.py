@@ -3,7 +3,7 @@ import enum
 
 class GameEvents(enum.Enum):
     """
-    Game realted event types. Thes should all be self explanatory.
+    Game related event types. These should all be self explanatory.
     """
 
     BALL_LAUNCHED = enum.auto()

@@ -4,6 +4,8 @@ set -eu
 
 source venv/bin/activate
 
+RUN_CHECK=false
+
 while getopts c flag
 do
   case "${flag}" in

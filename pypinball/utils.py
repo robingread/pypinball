@@ -29,7 +29,7 @@ def render_physics_balls(
     balls: typing.List[BallState], display: DisplayInterface
 ) -> None:
     """
-    Render/draw the current state of the Balls in the Phyics simulation.
+    Render/draw the current state of the Balls in the Physics simulation.
 
     Args:
         balls (list): List of ``BallState`` values.
@@ -42,7 +42,7 @@ def render_physics_balls(
 def render_physics_bumpers(
     bumpers: typing.List[Bumper], display: DisplayInterface
 ) -> None:
-    """Render a list fo Bumpers into the dislay.
+    """Render a list fo Bumpers into the display.
 
     Args:
         bumpers (list): List of bumpers to render.

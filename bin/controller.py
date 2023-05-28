@@ -106,6 +106,8 @@ input_interface = pypinball.inputs.KeyboardInput(event_pub=input_pub)
 physics_interface = pypinball.physics.PymunkPhysics(event_pub=events_pub)
 physics_interface.set_debug_display(screen=display_interface._screen)
 
+scoring = pypinball.scoring.get_scorer(event_pub=events_pub)
+
 controller = pypinball.Controller(
     config=GAME_CONFIG,
     display_interface=display_interface,
