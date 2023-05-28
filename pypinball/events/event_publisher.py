@@ -7,7 +7,7 @@ logger = log.get_logger(name=__name__)
 
 class EventPublisher:
     """
-    The ``EventPublisher`` class is a generic mechnaism that allows you to emit events
+    The ``EventPublisher`` class is a generic mechanism that allows you to emit events
     and connect callback methods to those events.
     """
 
@@ -17,7 +17,7 @@ class EventPublisher:
 
     @property
     def num_subscribers(self) -> int:
-        """Get the number of subscrber callback methods.
+        """Get the number of subscriber callback methods.
 
         Returns:
             int: Subscriber count.

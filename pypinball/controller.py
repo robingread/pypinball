@@ -54,7 +54,7 @@ class Controller:
     def handle_input_event(self, event: inputs.InputEvents) -> None:
         """
         Input device event handler class. This method is used to react to input
-        events and should be registred as a callback with a ``InputEventPublisher`` instance.
+        events and should be registered as a callback with a ``InputEventPublisher`` instance.
 
         Args:
             event (InputEvents): Input device event.
