@@ -1,12 +1,15 @@
 #! /usr/bin/bash
 
-set -e
+set -eu
+
+IMG=robingread/pypinball:latest
 
 xhost +local:*
 
 docker run \
     -e DISPLAY=$DISPLAY \
+    -e LIBGL_ALWAYS_SOFTWARE=1 \
     -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
     --device /dev/snd \
-    -it rread/pypinball:latest \
-    python3 bin/controller.py
+    -it ${IMG} \
+    pypinball
