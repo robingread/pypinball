@@ -161,14 +161,6 @@ class PhysicsInterface(typing.Protocol):
             bool: ``True`` is the bumper was removed, else ``False``.
         """
 
-    def set_gravity_vector(self, vec: typing.Tuple[float, float]) -> None:
-        """
-        Set the 2D gravity vector in the format (x, y).
-
-        Args:
-            vec (tuple): Vector.
-        """
-
     def update(self) -> None:
         """
         Perform an update/tick of the Physics engine. This method should be
