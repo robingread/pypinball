@@ -1,0 +1,33 @@
+name: CI Testing Pipeline
+
+on:
+  push:
+    branches: [ "**" ]
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install the dependencies
+      run: sudo ./scripts/install-deps.sh
+      
+    - name: Setup python virtual env
+      run: ./scripts/setup-venv.sh
+      
+    - name: Run CI test script
+      run: ./scripts/ci-test.sh
