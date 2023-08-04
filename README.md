@@ -1,11 +1,9 @@
 # Pi-Pinball
 
-
-[![pipeline status](https://gitlab.com/robin.g.read/pypinball/badges/master/pipeline.svg)](https://gitlab.com/robin.g.read/pypinball/-/commits/master)
+[![ci tests](https://github.com/robingread/pypinball/actions/workflows/ci-test-pipeline.yaml/badge.svg)](https://github.com/robingread/pypinball/actions/workflows/ci-test-pipeline.yaml)
 [![coverage report](https://gitlab.com/robin.g.read/pypinball/badges/master/coverage.svg)](https://gitlab.com/robin.g.read/pypinball/-/commits/master)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
-
 
 ## Setup
 
@@ -38,7 +36,7 @@ This test suite will:
 
 ## Documentation
 
-Pre-built documentation can be found at [https://robin.g.read.gitlab.io/pypinball/index.html](https://robin.g.read.gitlab.io/pypinball/index.html). 
+Pre-built documentation can be found at [https://robin.g.read.gitlab.io/pypinball/index.html](https://robin.g.read.gitlab.io/pypinball/index.html).
 To build the documentation locally, run:
 
 ```bash
