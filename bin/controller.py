@@ -96,8 +96,8 @@ audio_event_handler = pypinball.audio.AudioGameEventHandler(
 events_pub.subscribe(audio_event_handler.update)
 
 display_interface = pypinball.display.PyGameDisplay(
-    width=GAME_CONFIG.playing_area[0],
-    height=GAME_CONFIG.playing_area[1],
+    width=int(GAME_CONFIG.playing_area[0]),
+    height=int(GAME_CONFIG.playing_area[1]),
     game_events=events_pub,
     config=DISPLAY_CONFIG,
 )

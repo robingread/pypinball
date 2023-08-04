@@ -84,4 +84,4 @@ class BallState:
 
     uid: int
     position: typing.Tuple[float, float]
-    radius: int
+    radius: float

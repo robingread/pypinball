@@ -36,6 +36,15 @@ class Scoring:
         return self._multiplier
 
     def event_callback(self, event: GameEvents) -> None:
+        """Callback method for handling GameEvents. The intention is that this method
+        is used to subscribe to GameEvents via an instance of a GameEVentPublisher.
+
+        When a GameEvents.COLLISION_BALL_BUMPER event occurs, the internal score count
+        is increased based upon the multiplier amount.
+
+        Args:
+            event (GameEvents): Event to handle.
+        """
         LOGGER.debug(f"Handing event: {event}, updating score...")
         if event != GameEvents.COLLISION_BALL_BUMPER:
             return
