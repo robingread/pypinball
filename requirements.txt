@@ -2,6 +2,7 @@ black
 coverage
 docutils<0.18
 isort
+mypy>=1.4.1
 pygame
 pylint
 pylint-exit
