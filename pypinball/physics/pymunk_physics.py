@@ -43,11 +43,11 @@ class PymunkEntity:
         return self.body.position
 
     @property
-    def radius(self) -> int:
+    def radius(self) -> float:
         """Get the radius of the ball.
 
         Returns:
-            int: Ball radius.
+            float: Ball radius.
         """
         return self.shape.radius
 
