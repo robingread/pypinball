@@ -16,14 +16,6 @@ class DisplayInterface(typing.Protocol):
         Close the display window.
         """
 
-    def display_image(self, path: str) -> None:
-        """
-        Display an image.
-
-        Args:
-            path (str): Absolute path to the image resource.
-        """
-
     def draw_background(self) -> None:
         pass
 
