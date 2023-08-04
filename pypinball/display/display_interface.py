@@ -17,7 +17,9 @@ class DisplayInterface(typing.Protocol):
         """
 
     def draw_background(self) -> None:
-        pass
+        """
+        Draw the background image in the display.
+        """
 
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
