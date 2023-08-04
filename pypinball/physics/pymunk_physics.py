@@ -266,7 +266,7 @@ def create_rectangle_bumper(bumper: domain.RectangleBumper) -> PymunkBumper:
         uid=bumper.uid,
         body=body,
         shape=shape,
-        type=domain.BumperType.RECTANGE,
+        type=domain.BumperType.RECTANGLE,
         config=bumper,
     )
 

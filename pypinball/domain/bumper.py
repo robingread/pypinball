@@ -8,7 +8,7 @@ class BumperType(enum.Enum):
     """
 
     ROUND = enum.auto()
-    RECTANGE = enum.auto()
+    RECTANGLE = enum.auto()
 
 
 class Bumper:
@@ -101,7 +101,7 @@ class RectangleBumper(Bumper):
     def __init__(
         self, angle: float, size: typing.Tuple[float, float], *args, **kwargs
     ) -> None:
-        super().__init__(bumper_type=BumperType.RECTANGE, *args, **kwargs)
+        super().__init__(bumper_type=BumperType.RECTANGLE, *args, **kwargs)
         self._angle = angle
         self._size = size
 
