@@ -1,5 +1,7 @@
 from . import display, domain, events, inputs, log, physics, utils
 from .game_config import GameConfig
+from .lives import Lives
+from .scoring import Scoring
 
 logger = log.get_logger(__name__)
 
@@ -45,6 +47,9 @@ class Controller:
         self._physics = physics_interface
         self._id_generator = ObjectIdGenerator()
         self._event_publisher = event_publisher
+
+        self._scoring = Scoring()
+        self._lives = Lives(lives=5, event_pub=self._event_publisher)
 
         self._should_quit = False
 
@@ -96,6 +101,9 @@ class Controller:
         ret += [self._physics.add_bumper(f) for f in self._config.bumpers]
         ret += [self._physics.add_flipper(f) for f in self._config.flippers]
         ret += [self._physics.add_wall(w) for w in self._config.walls]
+
+        self._event_publisher.subscribe(callback=self._scoring.event_callback)
+        self._event_publisher.subscribe(callback=self._lives.event_callback)
         return all(ret)
 
     def stop(self) -> None:
@@ -121,6 +129,9 @@ class Controller:
         self._display.clear()
         self._physics.update()
         utils.render_physics_state(physics=self._physics, display=self._display)
+        utils.render_score_and_lives(
+            scoring=self._scoring, lives=self._lives, display=self._display
+        )
         self._display.update()
 
         self._handle_lost_balls()
