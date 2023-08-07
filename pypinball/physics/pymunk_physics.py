@@ -355,7 +355,7 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
             radius=segment_radius,
         )
         segment.collision_type = CollisionEntity.WALL
-        segment.elasticity = 0.9
+        segment.elasticity = 0.75
         segments.append(segment)
     return PymunkWall(id=wall.uid, segment_bodies=segments)
 
