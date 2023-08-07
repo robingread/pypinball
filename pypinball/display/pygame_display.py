@@ -120,6 +120,11 @@ class PyGameDisplay(DisplayInterface):
             text_surface, (self._width - text_surface.get_rect().width, 0)
         )
 
+    def draw_score(self, score: str) -> None:
+        my_font = pygame.font.SysFont("Comic Sans MS", 35)
+        text_surface = my_font.render(score, False, (255, 255, 255))
+        self._screen.blit(text_surface, (0, 0))
+
     def update(self) -> None:
         pygame.display.flip()
         self._clock.tick(50)
