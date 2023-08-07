@@ -20,8 +20,11 @@ class PyGameDisplay(DisplayInterface):
         game_events: events.GameEventPublisher,
         config: game_config.DisplayConfig,
     ) -> None:
+        self._width = width
+        self._height = height
         self._game_events = game_events
         pygame.init()
+        pygame.font.init()
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
 
@@ -109,6 +112,13 @@ class PyGameDisplay(DisplayInterface):
         img = pygame.transform.rotate(img, angle=math.degrees(-angle))
         img.set_alpha(int(alpha * 255))
         self._screen.blit(img, (x, y))
+
+    def draw_lives(self, lives: int) -> None:
+        my_font = pygame.font.SysFont("Comic Sans MS", 35)
+        text_surface = my_font.render("*" * lives, False, (255, 255, 255))
+        self._screen.blit(
+            text_surface, (self._width - text_surface.get_rect().width, 0)
+        )
 
     def update(self) -> None:
         pygame.display.flip()
