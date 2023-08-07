@@ -2,7 +2,7 @@ import math
 import typing
 
 from .display import DisplayInterface
-from .domain import BallState, Bumper, BumperType, FlipperState
+from .domain import BallState, Bumper, FlipperState, RectangleBumper, RoundBumper
 from .lives import Lives
 from .physics import PhysicsInterface
 from .scoring import Scoring
@@ -51,11 +51,11 @@ def render_physics_bumpers(
         display (DisplayInterface): Implementation of the display interface.
     """
     for bumper in bumpers:
-        if bumper.type == BumperType.ROUND:
+        if isinstance(bumper, RoundBumper):
             display.draw_round_bumper(
                 pos=bumper.position, diameter=bumper.radius * 2.0, alpha=1.0
             )
-        elif bumper.type == BumperType.RECTANGLE:
+        elif isinstance(bumper, RectangleBumper):
             display.draw_rectangle_bumper(
                 pos=bumper.position, angle=bumper.angle, alpha=1.0, size=bumper.size
             )
