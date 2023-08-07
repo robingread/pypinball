@@ -87,6 +87,14 @@ class DisplayInterface(typing.Protocol):
             lives (int): Number of lives.
         """
 
+    def draw_score(self, score: str) -> None:
+        """
+        Draw the current score.
+
+        Args:
+            score (str): Score value as a string.
+        """
+
     def update(self) -> None:
         """
         Update the display. This is something that should be called on each loop of the game.
