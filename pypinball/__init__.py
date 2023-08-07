@@ -4,6 +4,7 @@ from . import (
     domain,
     events,
     inputs,
+    lives,
     log,
     physics,
     resources,
