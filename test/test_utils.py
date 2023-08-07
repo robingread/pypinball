@@ -180,9 +180,7 @@ class TestRenderPhysicsFlippers(unittest.TestCase):
     def test_call_with_no_flippers(self) -> None:
         """Test calling the method with an empty list."""
         flippers = list()
-        pypinball.utils.render_phyisics_flippers(
-            flippers=flippers, display=self.display
-        )
+        pypinball.utils.render_physics_flippers(flippers=flippers, display=self.display)
         self.display.draw_flipper.assert_not_called()
 
     def test_call_with_single_flipper(self) -> None:
@@ -192,9 +190,7 @@ class TestRenderPhysicsFlippers(unittest.TestCase):
                 uid=0, position=(10, 10), angle=1.0, length=20
             )
         ]
-        pypinball.utils.render_phyisics_flippers(
-            flippers=flippers, display=self.display
-        )
+        pypinball.utils.render_physics_flippers(flippers=flippers, display=self.display)
         self.display.draw_flipper.assert_called_once()
 
 
@@ -227,3 +223,31 @@ class TestRenderPhysicsState(unittest.TestCase):
         self.display.draw_flipper.assert_called_once()
         self.display.draw_rectangle_bumper.assert_called_once()
         self.display.draw_round_bumper.assert_called_once()
+
+
+class TestRenderScoreAndLives(unittest.TestCase):
+    """Test the utils.render_score_and_lives() method."""
+
+    def setUp(self) -> None:
+        self.display = unittest.mock.MagicMock(spec=pypinball.DisplayInterface)
+        self.lives = unittest.mock.MagicMock(spec=pypinball.lives.Lives)
+        self.lives.get_lives.returns = 5
+
+        self.scoring = unittest.mock.MagicMock(spec=pypinball.scoring.Scoring)
+        self.scoring.current_score = unittest.mock.PropertyMock(return_value=100)
+
+        pypinball.utils.render_score_and_lives(
+            scoring=self.scoring, lives=self.lives, display=self.display
+        )
+
+    def test_lives_get_lives_called(self) -> None:
+        """Test that teh lives object is accessed."""
+        self.lives.get_lives.assert_called_once()
+
+    def test_display_draw_lives_called_once(self) -> None:
+        """Test that the draw_lives method is called in the DisplayInterface"""
+        self.display.draw_lives.assert_called_once()
+
+    def test_display_draw_score_called_once(self) -> None:
+        """Test that the draw_score() method is called in the DisplayInterface"""
+        self.display.draw_score.assert_called_once()

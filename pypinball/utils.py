@@ -2,8 +2,10 @@ import math
 import typing
 
 from .display import DisplayInterface
-from .domain import BallState, Bumper, BumperType, FlipperState
+from .domain import BallState, Bumper, FlipperState, RectangleBumper, RoundBumper
+from .lives import Lives
 from .physics import PhysicsInterface
+from .scoring import Scoring
 
 
 def check_ball_is_within_area(
@@ -49,17 +51,17 @@ def render_physics_bumpers(
         display (DisplayInterface): Implementation of the display interface.
     """
     for bumper in bumpers:
-        if bumper.type == BumperType.ROUND:
+        if isinstance(bumper, RoundBumper):
             display.draw_round_bumper(
                 pos=bumper.position, diameter=bumper.radius * 2.0, alpha=1.0
             )
-        elif bumper.type == BumperType.RECTANGLE:
+        elif isinstance(bumper, RectangleBumper):
             display.draw_rectangle_bumper(
                 pos=bumper.position, angle=bumper.angle, alpha=1.0, size=bumper.size
             )
 
 
-def render_phyisics_flippers(
+def render_physics_flippers(
     flippers: typing.List[FlipperState], display: DisplayInterface
 ) -> None:
     """Render a list of FlipperState into the display.
@@ -92,4 +94,18 @@ def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -
     display.draw_background()
     render_physics_balls(balls=physics.get_ball_states(), display=display)
     render_physics_bumpers(bumpers=physics.get_bumper_states(), display=display)
-    render_phyisics_flippers(flippers=physics.get_flipper_states(), display=display)
+    render_physics_flippers(flippers=physics.get_flipper_states(), display=display)
+
+
+def render_score_and_lives(
+    scoring: Scoring, lives: Lives, display: DisplayInterface
+) -> None:
+    """Render the current score and lives.
+
+    Args:
+        scoring (Scoring): Score counting object.
+        lives (Lives): Lives tracking object.
+        display (DisplayInterface): Display to render to.
+    """
+    display.draw_lives(lives=lives.get_lives())
+    display.draw_score(score=str(scoring.current_score))
