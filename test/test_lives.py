@@ -1,7 +1,8 @@
 import random
 import unittest
+import unittest.mock
 
-from pypinball.events import GameEvents
+from pypinball.events import GameEventPublisher, GameEvents
 from pypinball.lives import Lives
 
 
@@ -9,7 +10,8 @@ class TestInit(unittest.TestCase):
     """Test the Lives class at initialization."""
 
     def setUp(self) -> None:
-        self.lives = Lives(lives=5)
+        self.event_pub = unittest.mock.MagicMock(spec=GameEventPublisher)
+        self.lives = Lives(lives=5, event_pub=self.event_pub)
 
     def test_get_lives(self) -> None:
         """Test that the number of lives at __init__() is as expected."""
@@ -21,7 +23,8 @@ class TestBallLostEvent(unittest.TestCase):
     behaves as expected."""
 
     def setUp(self) -> None:
-        self.lives = Lives(lives=5)
+        self.event_pub = unittest.mock.MagicMock(spec=GameEventPublisher)
+        self.lives = Lives(lives=5, event_pub=self.event_pub)
         self.lives.event_callback(event=GameEvents.BALL_LOST)
 
     def test_live_has_been_lost(self) -> None:
@@ -38,7 +41,8 @@ class TestOtherEvent(unittest.TestCase):
         events.remove(GameEvents.BALL_LOST)
         event = random.choice(events)
 
-        self.lives = Lives(lives=5)
+        self.event_pub = unittest.mock.MagicMock(spec=GameEventPublisher)
+        self.lives = Lives(lives=5, event_pub=self.event_pub)
         self.lives.event_callback(event=event)
 
     def test_get_lives(self) -> None:
@@ -53,3 +57,27 @@ class TestOtherEvent(unittest.TestCase):
         for event in events:
             self.lives.event_callback(event=event)
             self.assertEqual(self.lives.get_lives(), 5)
+
+
+class TestRunOutOfLives(unittest.TestCase):
+    """Test the scenario in which the last live is lost."""
+
+    def setUp(self) -> None:
+        self.event_pub = unittest.mock.MagicMock(spec=GameEventPublisher)
+        self.lives = Lives(lives=1, event_pub=self.event_pub)
+        self.lives.event_callback(event=GameEvents.BALL_LOST)
+
+    def test_lives_left(self) -> None:
+        """Test that the number of lives left is zero."""
+        self.assertEqual(self.lives.get_lives(), 0)
+
+    def test_game_over_event_emitted(self) -> None:
+        """Test that on the last live lost, the GAME_OVER event is emitted"""
+        exp = {"event": GameEvents.GAME_OVER}
+        res = self.event_pub.emit.call_args.kwargs
+        self.assertEqual(res, exp)
+
+    def test_calling_ball_lost_event_again_has_no_effect(self) -> None:
+        """Test that once the lives has reached zero, no more BALL_LOST events have an impact"""
+        self.lives.event_callback(event=GameEvents.BALL_LOST)
+        self.assertEqual(self.lives.get_lives(), 0)

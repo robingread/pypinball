@@ -1,4 +1,4 @@
-from .events import GameEvents
+from .events import GameEventPublisher, GameEvents
 
 
 class Lives:
@@ -7,8 +7,9 @@ class Lives:
     GameEvents and handle the scenario in which a ball is lost.
     """
 
-    def __init__(self, lives: int) -> None:
+    def __init__(self, lives: int, event_pub: GameEventPublisher) -> None:
         self._lives = lives
+        self._pub = event_pub
 
     def get_lives(self) -> int:
         """Get the number of remaining lives that remain.
@@ -25,5 +26,14 @@ class Lives:
         Args:
             event (GameEvents): Game event to handle
         """
-        if event == GameEvents.BALL_LOST:
-            self._lives -= 1
+        if self._lives == 0:
+            return
+
+        if event != GameEvents.BALL_LOST:
+            return
+
+        self._lives -= 1
+
+        if self._lives > 0:
+            return
+        self._pub.emit(event=GameEvents.GAME_OVER)
