@@ -59,7 +59,7 @@ def render_physics_bumpers(
             )
 
 
-def render_phyisics_flippers(
+def render_physics_flippers(
     flippers: typing.List[FlipperState], display: DisplayInterface
 ) -> None:
     """Render a list of FlipperState into the display.
@@ -92,4 +92,4 @@ def render_physics_state(physics: PhysicsInterface, display: DisplayInterface) -
     display.draw_background()
     render_physics_balls(balls=physics.get_ball_states(), display=display)
     render_physics_bumpers(bumpers=physics.get_bumper_states(), display=display)
-    render_phyisics_flippers(flippers=physics.get_flipper_states(), display=display)
+    render_physics_flippers(flippers=physics.get_flipper_states(), display=display)

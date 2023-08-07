@@ -180,9 +180,7 @@ class TestRenderPhysicsFlippers(unittest.TestCase):
     def test_call_with_no_flippers(self) -> None:
         """Test calling the method with an empty list."""
         flippers = list()
-        pypinball.utils.render_phyisics_flippers(
-            flippers=flippers, display=self.display
-        )
+        pypinball.utils.render_physics_flippers(flippers=flippers, display=self.display)
         self.display.draw_flipper.assert_not_called()
 
     def test_call_with_single_flipper(self) -> None:
@@ -192,9 +190,7 @@ class TestRenderPhysicsFlippers(unittest.TestCase):
                 uid=0, position=(10, 10), angle=1.0, length=20
             )
         ]
-        pypinball.utils.render_phyisics_flippers(
-            flippers=flippers, display=self.display
-        )
+        pypinball.utils.render_physics_flippers(flippers=flippers, display=self.display)
         self.display.draw_flipper.assert_called_once()
 
 
