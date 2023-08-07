@@ -145,5 +145,5 @@ class Controller:
             self._event_publisher.emit(event=events.GameEvents.BALL_LOST)
 
     def _handle_game_events(self, event: events.GameEvents) -> None:
-        if event in [events.GameEvents.QUIT]:
+        if event in [events.GameEvents.QUIT, events.GameEvents.GAME_OVER]:
             self.stop()
