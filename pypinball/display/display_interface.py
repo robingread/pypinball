@@ -80,6 +80,13 @@ class DisplayInterface(typing.Protocol):
 
         """
 
+    def draw_lives(self, lives: int) -> None:
+        """Draw the remaining number of lives the player has remaining.
+
+        Args:
+            lives (int): Number of lives.
+        """
+
     def update(self) -> None:
         """
         Update the display. This is something that should be called on each loop of the game.
