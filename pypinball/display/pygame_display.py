@@ -35,7 +35,7 @@ class PyGameDisplay(DisplayInterface):
         self._round_bumper_img = pygame.image.load(
             config.round_bumper_image_path
         ).convert_alpha()
-        self._rectable_bumper_img = pygame.image.load(
+        self._rectangle_bumper_img = pygame.image.load(
             config.rectangle_bumper_image_path
         ).convert_alpha()
         self._flipper_img = pygame.image.load(config.flipper_image_path).convert_alpha()
@@ -89,7 +89,7 @@ class PyGameDisplay(DisplayInterface):
             pos=pos, size=(width, height), angle=angle
         )
 
-        img = pygame.transform.scale(self._rectable_bumper_img, size=(width, height))
+        img = pygame.transform.scale(self._rectangle_bumper_img, size=(width, height))
         img = pygame.transform.rotate(img, angle=math.degrees(-angle))
         img.set_alpha(int(alpha * 255))
         self._screen.blit(img, (x, y))
