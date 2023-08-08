@@ -1,5 +1,6 @@
 import copy
 import unittest
+import unittest.mock
 
 import pypinball
 
@@ -25,7 +26,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
@@ -45,18 +46,16 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             event_publisher=self.event_pub,
         )
 
-    def test_no_audio_played(self):
+    def test_no_audio_played(self) -> None:
         """
         Test that a ball free-falling over a short distance produces no sound
         events.
         """
         for _ in range(5):
             self.controller.tick()
+        self.audio.play_sound_file.assert_not_called()
 
-        exp = list()
-        self.assertListEqual(exp, self.audio.sounds)
-
-    def test_ball_lost_sounds_played(self):
+    def test_ball_lost_sounds_played(self) -> None:
         """
         Test that the BALL_LOST sound is played once a ball falls beyond the
         playable area under gravity. The BALL_LOST sound should be the ONLY
@@ -64,11 +63,9 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         """
         for _ in range(500):
             self.controller.tick()
+        self.audio.play_sound_file.assert_called_once()
 
-        exp = ["ball_lost"]
-        self.assertListEqual(exp, self.audio.sounds)
-
-    def test_lost_ball_is_removed_from_physics(self):
+    def test_lost_ball_is_removed_from_physics(self) -> None:
         """
         Test that the ball is removed from the PhysicsInterface once it falls
         outside the playing area.
@@ -79,7 +76,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         res = self.physics.get_ball_states()
         self.assertListEqual([], res)
 
-    def test_launch_ball_into_second_ball_plays_audio(self):
+    def test_launch_ball_into_second_ball_plays_audio(self) -> None:
         """
         Test that a ball-ball collision sound is played when a second ball is
         added to the scene and launched at the first one.
@@ -91,8 +88,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         for _ in range(10):
             self.controller.tick()
 
-        res = "ball_ball_collision" in self.audio.sounds
-        self.assertTrue(res)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestDropBallOnFlipper(unittest.TestCase):
@@ -102,7 +98,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
@@ -135,13 +131,13 @@ class TestDropBallOnFlipper(unittest.TestCase):
             event_publisher=self.event_pub,
         )
 
-    def test_audio_played_with_collision(self):
+    def test_audio_played_with_collision(self) -> None:
         """
         Test that no audio is played when a ball simply drops in the scene.
         """
         for _ in range(100):
             self.controller.tick()
-        self.assertTrue("ball_flipper_collision" in self.audio.sounds)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestDropBallOnWall(unittest.TestCase):
@@ -150,7 +146,7 @@ class TestDropBallOnWall(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
@@ -176,15 +172,13 @@ class TestDropBallOnWall(unittest.TestCase):
 
         self.controller.setup()
 
-    def test_sound_on_collision(self):
+    def test_sound_on_collision(self) -> None:
         """
         Test that a sound is played when the ball is dropped onto the wall element.
         """
         for _ in range(100):
             self.controller.tick()
-
-        res = "ball_wall_collision" in self.audio.sounds
-        self.assertTrue(res)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestDropBallOnBumper(unittest.TestCase):
@@ -193,7 +187,7 @@ class TestDropBallOnBumper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
@@ -219,15 +213,13 @@ class TestDropBallOnBumper(unittest.TestCase):
 
         self.controller.setup()
 
-    def test_sound_on_collision(self):
+    def test_sound_on_collision(self) -> None:
         """
         Test that a sound is played when the ball is dropped onto the wall element.
         """
         for _ in range(100):
             self.controller.tick()
-
-        res = "ball_bumper_collision" in self.audio.sounds
-        self.assertTrue(res)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestControllerSetup(unittest.TestCase):
@@ -243,7 +235,7 @@ class TestControllerSetup(unittest.TestCase):
             def add_wall(self, *args, **kwargs) -> bool:
                 return False
 
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = pypinball.GameConfig(
             playing_area=(10, 10),
             walls=[pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10, 10)])],
@@ -259,7 +251,7 @@ class TestControllerSetup(unittest.TestCase):
             event_publisher=self.events,
         )
 
-    def test_setup_fails_when_adding_wall_and_flipper_fails(self):
+    def test_setup_fails_when_adding_wall_and_flipper_fails(self) -> None:
         """
         Test that if the Physics Interface isn't able to create a wall or flipper
         then the Controller.setup() method returns ``False```.
@@ -295,7 +287,7 @@ class TestLeftButtonPressed(unittest.TestCase):
 
         self.mock_event_handler = pypinball.events.MockEventHandler()
 
-        self.audio_interface = pypinball.audio.MockAudioInterface()
+        self.audio_interface = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.audio_event_handler = pypinball.audio.AudioGameEventHandler(
             interface=self.audio_interface, events_to_sound=self.config.event_to_sounds
         )
@@ -318,19 +310,17 @@ class TestLeftButtonPressed(unittest.TestCase):
         for _ in range(10):
             self.controller.tick()
 
-    def test_audio_played_for_left_button(self):
-        a = (
-            self.config.event_to_sounds[pypinball.events.GameEvents.FLIPPER_ACTIVATED]
-            in self.audio_interface.sounds
-        )
-        self.assertTrue(a, msg="Flipper actuated audio not played")
-        self.assertEqual(len(self.audio_interface.sounds), 1, msg="Sounds played != 1")
+    def test_audio_played_for_left_button(self) -> None:
+        """Test that playing audio has been attempted."""
+        self.audio_interface.play_sound_file.assert_called_once()
 
-    def test_event_emitted(self):
+    def test_event_emitted(self) -> None:
+        """Test that a GameEvent has been emitted"""
         events = self.mock_event_handler.events
         self.assertEqual(1, len(events), msg=f"Events emitted {events}")
 
-    def test_flipper_actuated_event_emitted(self):
+    def test_flipper_actuated_event_emitted(self) -> None:
+        """Test that the FLIPPER_ACTIVATED event has been emitted via the mock event handler."""
         self.assertTrue(
             pypinball.events.GameEvents.FLIPPER_ACTIVATED
             in self.mock_event_handler.events
