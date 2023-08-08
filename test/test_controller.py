@@ -46,7 +46,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             event_publisher=self.event_pub,
         )
 
-    def test_no_audio_played(self):
+    def test_no_audio_played(self) -> None:
         """
         Test that a ball free-falling over a short distance produces no sound
         events.
@@ -55,7 +55,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             self.controller.tick()
         self.audio.play_sound_file.assert_not_called()
 
-    def test_ball_lost_sounds_played(self):
+    def test_ball_lost_sounds_played(self) -> None:
         """
         Test that the BALL_LOST sound is played once a ball falls beyond the
         playable area under gravity. The BALL_LOST sound should be the ONLY
@@ -65,7 +65,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
             self.controller.tick()
         self.audio.play_sound_file.assert_called_once()
 
-    def test_lost_ball_is_removed_from_physics(self):
+    def test_lost_ball_is_removed_from_physics(self) -> None:
         """
         Test that the ball is removed from the PhysicsInterface once it falls
         outside the playing area.
@@ -76,7 +76,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         res = self.physics.get_ball_states()
         self.assertListEqual([], res)
 
-    def test_launch_ball_into_second_ball_plays_audio(self):
+    def test_launch_ball_into_second_ball_plays_audio(self) -> None:
         """
         Test that a ball-ball collision sound is played when a second ball is
         added to the scene and launched at the first one.
@@ -131,7 +131,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
             event_publisher=self.event_pub,
         )
 
-    def test_audio_played_with_collision(self):
+    def test_audio_played_with_collision(self) -> None:
         """
         Test that no audio is played when a ball simply drops in the scene.
         """
@@ -172,7 +172,7 @@ class TestDropBallOnWall(unittest.TestCase):
 
         self.controller.setup()
 
-    def test_sound_on_collision(self):
+    def test_sound_on_collision(self) -> None:
         """
         Test that a sound is played when the ball is dropped onto the wall element.
         """
@@ -213,7 +213,7 @@ class TestDropBallOnBumper(unittest.TestCase):
 
         self.controller.setup()
 
-    def test_sound_on_collision(self):
+    def test_sound_on_collision(self) -> None:
         """
         Test that a sound is played when the ball is dropped onto the wall element.
         """
@@ -251,7 +251,7 @@ class TestControllerSetup(unittest.TestCase):
             event_publisher=self.events,
         )
 
-    def test_setup_fails_when_adding_wall_and_flipper_fails(self):
+    def test_setup_fails_when_adding_wall_and_flipper_fails(self) -> None:
         """
         Test that if the Physics Interface isn't able to create a wall or flipper
         then the Controller.setup() method returns ``False```.
@@ -310,14 +310,17 @@ class TestLeftButtonPressed(unittest.TestCase):
         for _ in range(10):
             self.controller.tick()
 
-    def test_audio_played_for_left_button(self):
+    def test_audio_played_for_left_button(self) -> None:
+        """Test that playing audio has been attempted."""
         self.audio_interface.play_sound_file.assert_called_once()
 
-    def test_event_emitted(self):
+    def test_event_emitted(self) -> None:
+        """Test that a GameEvent has been emitted"""
         events = self.mock_event_handler.events
         self.assertEqual(1, len(events), msg=f"Events emitted {events}")
 
-    def test_flipper_actuated_event_emitted(self):
+    def test_flipper_actuated_event_emitted(self) -> None:
+        """Test that the FLIPPER_ACTIVATED event has been emitted via the mock event handler."""
         self.assertTrue(
             pypinball.events.GameEvents.FLIPPER_ACTIVATED
             in self.mock_event_handler.events
