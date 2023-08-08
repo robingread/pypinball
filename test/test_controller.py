@@ -4,8 +4,6 @@ import unittest.mock
 
 import pypinball
 
-from . import moc_interfaces
-
 MOC_SOUND_FILE_MAP = pypinball.GameConfig(
     ball_radius=15,
     playing_area=(450, 650),
@@ -41,7 +39,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
 
         self.controller = pypinball.Controller(
             config=self.config,
-            display_interface=moc_interfaces.MocDisplayInterface(),
+            display_interface=unittest.mock.MagicMock(spec=pypinball.DisplayInterface),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -126,7 +124,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
 
         self.controller = pypinball.Controller(
             config=self.config,
-            display_interface=moc_interfaces.MocDisplayInterface(),
+            display_interface=unittest.mock.MagicMock(spec=pypinball.DisplayInterface),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -148,7 +146,6 @@ class TestDropBallOnWall(unittest.TestCase):
     def setUp(self) -> None:
         self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
-        self.display = moc_interfaces.MocDisplayInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
@@ -165,7 +162,7 @@ class TestDropBallOnWall(unittest.TestCase):
 
         self.controller = pypinball.Controller(
             config=self.config,
-            display_interface=moc_interfaces.MocDisplayInterface(),
+            display_interface=unittest.mock.MagicMock(spec=pypinball.DisplayInterface),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -189,7 +186,6 @@ class TestDropBallOnBumper(unittest.TestCase):
     def setUp(self) -> None:
         self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
-        self.display = moc_interfaces.MocDisplayInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
@@ -206,7 +202,7 @@ class TestDropBallOnBumper(unittest.TestCase):
 
         self.controller = pypinball.Controller(
             config=self.config,
-            display_interface=moc_interfaces.MocDisplayInterface(),
+            display_interface=unittest.mock.MagicMock(spec=pypinball.DisplayInterface),
             physics_interface=self.physics,
             event_publisher=self.event_pub,
         )
@@ -240,7 +236,7 @@ class TestControllerSetup(unittest.TestCase):
             playing_area=(10, 10),
             walls=[pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10, 10)])],
         )
-        self.display = moc_interfaces.MocDisplayInterface()
+        self.display = unittest.mock.MagicMock(spec=pypinball.DisplayInterface)
         self.physics = MocPhysics()
         self.events = pypinball.events.GameEventPublisher()
 
@@ -299,7 +295,7 @@ class TestLeftButtonPressed(unittest.TestCase):
 
         self.controller = pypinball.Controller(
             config=self.config,
-            display_interface=moc_interfaces.MocDisplayInterface(),
+            display_interface=unittest.mock.MagicMock(spec=pypinball.DisplayInterface),
             event_publisher=self.event_pub,
             physics_interface=self.physics,
         )
