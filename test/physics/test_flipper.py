@@ -1,5 +1,6 @@
 import math
 import unittest
+import unittest.mock
 
 import pypinball
 
@@ -46,7 +47,9 @@ class TestAngleTracker(unittest.TestCase):
 
 class TestPymunkFlipper(unittest.TestCase):
     def setUp(self):
-        self.event_pub = pypinball.events.GameEventPublisher()
+        self.event_pub = unittest.mock.MagicMock(
+            wraps=pypinball.events.GameEventPublisher()
+        )
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
         self.left_flipper = pypinball.domain.Flipper(
@@ -158,17 +161,14 @@ class TestPymunkFlipper(unittest.TestCase):
         Test that the actuate_flipper() method also emits a FLIPPER_ACTIVATED
         event via he GameEventPublisher.
         """
-        event_handler = pypinball.events.MockEventHandler()
-        self.event_pub.subscribe(callback=event_handler.handle_event)
-
         self.physics.add_flipper(flipper=self.right_flipper)
         self.physics.actuate_flipper(uid=self.right_flipper.uid)
 
         for _ in range(100):
             self.physics.update()
 
-        self.assertListEqual(
-            event_handler.events, [pypinball.events.GameEvents.FLIPPER_ACTIVATED]
+        self.event_pub.emit.assert_called_once_with(
+            event=pypinball.events.GameEvents.FLIPPER_ACTIVATED
         )
 
     def test_actuate_unregistered_flipper_does_not_emit_event(self):
@@ -176,8 +176,5 @@ class TestPymunkFlipper(unittest.TestCase):
         Test that actuating a flipper that doesn't exist also doesn't emit a
         FLIPPER_ACTIVATED game event.
         """
-        event_handler = pypinball.events.MockEventHandler()
-        self.event_pub.subscribe(callback=event_handler.handle_event)
-
         self.physics.actuate_flipper(uid=self.right_flipper.uid)
-        self.assertListEqual(event_handler.events, [])
+        self.event_pub.emit.assert_not_called()
