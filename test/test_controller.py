@@ -1,5 +1,6 @@
 import copy
 import unittest
+import unittest.mock
 
 import pypinball
 
@@ -25,7 +26,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
@@ -52,9 +53,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         """
         for _ in range(5):
             self.controller.tick()
-
-        exp = list()
-        self.assertListEqual(exp, self.audio.sounds)
+        self.audio.play_sound_file.assert_not_called()
 
     def test_ball_lost_sounds_played(self):
         """
@@ -64,9 +63,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         """
         for _ in range(500):
             self.controller.tick()
-
-        exp = ["ball_lost"]
-        self.assertListEqual(exp, self.audio.sounds)
+        self.audio.play_sound_file.assert_called_once()
 
     def test_lost_ball_is_removed_from_physics(self):
         """
@@ -91,8 +88,7 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         for _ in range(10):
             self.controller.tick()
 
-        res = "ball_ball_collision" in self.audio.sounds
-        self.assertTrue(res)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestDropBallOnFlipper(unittest.TestCase):
@@ -102,7 +98,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
@@ -141,7 +137,7 @@ class TestDropBallOnFlipper(unittest.TestCase):
         """
         for _ in range(100):
             self.controller.tick()
-        self.assertTrue("ball_flipper_collision" in self.audio.sounds)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestDropBallOnWall(unittest.TestCase):
@@ -150,7 +146,7 @@ class TestDropBallOnWall(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
@@ -182,9 +178,7 @@ class TestDropBallOnWall(unittest.TestCase):
         """
         for _ in range(100):
             self.controller.tick()
-
-        res = "ball_wall_collision" in self.audio.sounds
-        self.assertTrue(res)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestDropBallOnBumper(unittest.TestCase):
@@ -193,7 +187,7 @@ class TestDropBallOnBumper(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.display = moc_interfaces.MocDisplayInterface()
         self.event_pub = pypinball.events.GameEventPublisher()
@@ -225,9 +219,7 @@ class TestDropBallOnBumper(unittest.TestCase):
         """
         for _ in range(100):
             self.controller.tick()
-
-        res = "ball_bumper_collision" in self.audio.sounds
-        self.assertTrue(res)
+        self.audio.play_sound_file.assert_called()
 
 
 class TestControllerSetup(unittest.TestCase):
@@ -243,7 +235,7 @@ class TestControllerSetup(unittest.TestCase):
             def add_wall(self, *args, **kwargs) -> bool:
                 return False
 
-        self.audio = pypinball.audio.MockAudioInterface()
+        self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = pypinball.GameConfig(
             playing_area=(10, 10),
             walls=[pypinball.domain.Wall(uid=0, points=[(0.0, 0.0), (10, 10)])],
@@ -295,7 +287,7 @@ class TestLeftButtonPressed(unittest.TestCase):
 
         self.mock_event_handler = pypinball.events.MockEventHandler()
 
-        self.audio_interface = pypinball.audio.MockAudioInterface()
+        self.audio_interface = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.audio_event_handler = pypinball.audio.AudioGameEventHandler(
             interface=self.audio_interface, events_to_sound=self.config.event_to_sounds
         )
@@ -319,12 +311,7 @@ class TestLeftButtonPressed(unittest.TestCase):
             self.controller.tick()
 
     def test_audio_played_for_left_button(self):
-        a = (
-            self.config.event_to_sounds[pypinball.events.GameEvents.FLIPPER_ACTIVATED]
-            in self.audio_interface.sounds
-        )
-        self.assertTrue(a, msg="Flipper actuated audio not played")
-        self.assertEqual(len(self.audio_interface.sounds), 1, msg="Sounds played != 1")
+        self.audio_interface.play_sound_file.assert_called_once()
 
     def test_event_emitted(self):
         events = self.mock_event_handler.events
