@@ -279,9 +279,9 @@ class TestLeftButtonPressed(unittest.TestCase):
         self.config.flippers.append(flipper)
 
         self.input_pub = pypinball.inputs.InputEventPublisher()
-        self.event_pub = pypinball.events.GameEventPublisher()
-
-        self.mock_event_handler = pypinball.events.MockEventHandler()
+        self.event_pub = unittest.mock.MagicMock(
+            wraps=pypinball.events.GameEventPublisher()
+        )
 
         self.audio_interface = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.audio_event_handler = pypinball.audio.AudioGameEventHandler(
@@ -289,7 +289,6 @@ class TestLeftButtonPressed(unittest.TestCase):
         )
 
         self.event_pub.subscribe(callback=self.audio_event_handler.update)
-        self.event_pub.subscribe(callback=self.mock_event_handler.handle_event)
 
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
@@ -312,12 +311,10 @@ class TestLeftButtonPressed(unittest.TestCase):
 
     def test_event_emitted(self) -> None:
         """Test that a GameEvent has been emitted"""
-        events = self.mock_event_handler.events
-        self.assertEqual(1, len(events), msg=f"Events emitted {events}")
+        self.event_pub.emit.assert_called_once()
 
     def test_flipper_actuated_event_emitted(self) -> None:
         """Test that the FLIPPER_ACTIVATED event has been emitted via the mock event handler."""
-        self.assertTrue(
-            pypinball.events.GameEvents.FLIPPER_ACTIVATED
-            in self.mock_event_handler.events
+        self.event_pub.emit.assert_any_call(
+            event=pypinball.events.GameEvents.FLIPPER_ACTIVATED
         )
