@@ -7,7 +7,6 @@
     ],
     "python.analysis.inlayHints.functionReturnTypes": true,
     "python.analysis.inlayHints.variableTypes": false,
-    "python.formatting.provider": "black",
     "python.linting.lintOnSave": true,
     "python.linting.pylintEnabled": true,
     "python.sortImports.args": [
@@ -22,7 +21,8 @@
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
-        }
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
     "terminal.integrated.tabs.enabled": true,
     "workbench.tree.indent": 25
