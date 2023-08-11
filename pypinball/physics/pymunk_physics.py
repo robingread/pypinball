@@ -453,7 +453,7 @@ class PymunkPhysics(PhysicsInterface):
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
 
-        self._draw_options = None
+        self._draw_options: typing.Optional[pymunk.pygame_util.DrawOptions] = None
 
         self._collision_handler = CollisionHandler(
             event_pub=event_pub,
@@ -492,10 +492,14 @@ class PymunkPhysics(PhysicsInterface):
                     f"Unable to add bumper. ID is already registered: {bumper.uid}"
                 )
                 return False
-            if bumper.type == domain.BumperType.ROUND:
+
+            if isinstance(bumper, domain.RoundBumper):
                 entity = create_round_bumper(bumper=bumper)
-            else:
+            elif isinstance(bumper, domain.RectangleBumper):
                 entity = create_rectangle_bumper(bumper=bumper)
+            else:
+                raise ValueError()
+
             entity.add_to_space(space=self._space)
             self._bumpers[bumper.uid] = entity
             return True

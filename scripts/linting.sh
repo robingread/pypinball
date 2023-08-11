@@ -12,4 +12,4 @@ fi
 
 echo ""
 echo "Running MyPy for Type Checking..."
-mypy --install-types --non-interactive --ignore-missing-imports pypinball/ bin/ || true
+mypy --install-types --non-interactive --ignore-missing-imports pypinball/ bin/ 

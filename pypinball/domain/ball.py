@@ -19,7 +19,7 @@ class Ball:
         self._uid = uid
         self._history = history
         self._position = position
-        self._position_history = list()
+        self._position_history: typing.List[typing.Tuple[float, float]] = list()
         self._radius = radius
 
     @property
