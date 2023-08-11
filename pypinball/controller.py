@@ -78,6 +78,8 @@ class Controller:
 
         elif event == inputs.InputEvents.CENTER_BUTTON_PRESSED:
             # TODO: Make this a unit-testable function
+            if len(self._physics.get_ball_states()) > 0:
+                return
             uid = self._id_generator.generate_id()
             ball = domain.Ball(
                 uid=uid, position=(400, 500), radius=self._config.ball_radius
