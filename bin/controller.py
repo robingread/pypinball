@@ -63,13 +63,13 @@ GAME_CONFIG = pypinball.GameConfig(
     ],
     event_to_sounds={
         pypinball.events.GameEvents.FLIPPER_ACTIVATED: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
+            filename="flipper_actuated.wav"
         ),
         pypinball.events.GameEvents.BALL_LAUNCHED: pypinball.resources.get_audio_resource_path(
-            filename="Bounce4.wav"
+            filename="ball_launch.wav"
         ),
         pypinball.events.GameEvents.BALL_LOST: pypinball.resources.get_audio_resource_path(
-            filename="Bounce1.wav"
+            filename="ball_lost.wav"
         ),
         pypinball.events.GameEvents.COLLISION_BALL_BALL: pypinball.resources.get_audio_resource_path(
             filename="Bounce4.wav"
