@@ -8,6 +8,32 @@ from .physics import PhysicsInterface
 from .scoring import Scoring
 
 
+class ObjectIdGenerator:
+    """
+    The object ID generator is used to create unique ID for objects
+    as needed throughout a game.
+    """
+
+    def __init__(self) -> None:
+        self._count = -1
+
+    def generate_id(self) -> int:
+        """
+        Generate a new ID from the internal counter.
+
+        Returns:
+            int: Newly generated ID value.
+        """
+        self._count += 1
+        return self._count
+
+    def reset(self) -> None:
+        """
+        Reset the internal counter.
+        """
+        self._count = -1
+
+
 def check_ball_is_within_area(
     ball_position: typing.Tuple[float, float], width: float, height: float
 ) -> bool:
