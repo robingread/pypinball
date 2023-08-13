@@ -128,6 +128,13 @@ class PhysicsInterface(typing.Protocol):
             list: List of flipper states.
         """
 
+    def get_num_balls(self) -> int:
+        """Get the number of balls in the scene.
+
+        Returns:
+            int: Number of balls
+        """
+
     def launch_ball(self, uid: int) -> bool:
         """
         Launch a ball by applying a high impulse/force to it.
