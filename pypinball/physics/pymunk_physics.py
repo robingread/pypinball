@@ -559,6 +559,9 @@ class PymunkPhysics(PhysicsInterface):
     def get_flipper_states(self) -> typing.List[domain.FlipperState]:
         return [self.get_flipper_state(uid=uid) for uid in self._flippers.keys()]
 
+    def get_num_balls(self) -> int:
+        return len(self._balls.keys())
+
     def launch_ball(self, uid: int) -> bool:
         with self._threading_lock:
             if uid not in self._balls.keys():

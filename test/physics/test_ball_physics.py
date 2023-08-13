@@ -15,6 +15,10 @@ class TestBallGeneration(unittest.TestCase):
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
 
+    def test_no_balls_present(self) -> None:
+        """Test that after setUp() there are no balls in the physics scene."""
+        self.assertEqual(self.physics.get_num_balls(), 0)
+
     def test_add_ball(self):
         """
         Test adding a new ball to the physics scene returns ``True``.
@@ -61,6 +65,10 @@ class TestRemoveBall(unittest.TestCase):
         self.event_pub = pypinball.events.GameEventPublisher()
         self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
         self.physics.add_ball(ball=self.ball)
+
+    def test_one_ball_in_scene(self) -> None:
+        """Test that there is one ball in the physics scene after calling setUp()."""
+        self.assertEqual(self.physics.get_num_balls(), 1)
 
     def test_remove_ball_success(self):
         """
