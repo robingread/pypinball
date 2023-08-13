@@ -6,6 +6,7 @@ from . import (
     inputs,
     lives,
     log,
+    main,
     physics,
     resources,
     scoring,
