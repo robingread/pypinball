@@ -2,7 +2,8 @@ import math
 import typing
 
 from .display import DisplayInterface
-from .domain import BallState, Bumper, FlipperState, RectangleBumper, RoundBumper
+from .domain import Ball, BallState, Bumper, FlipperState, RectangleBumper, RoundBumper
+from .game_config import GameConfig
 from .lives import Lives
 from .physics import PhysicsInterface
 from .scoring import Scoring
@@ -51,6 +52,26 @@ def check_ball_is_within_area(
     ball_in_width = 0.0 <= ball_position[0] <= width
     ball_in_height = 0.0 <= ball_position[1] <= height
     return all([ball_in_width, ball_in_height])
+
+
+def handle_center_button_press(
+    physics: PhysicsInterface, config: GameConfig, id_gen: ObjectIdGenerator
+) -> None:
+    """Handler method for when the user has pressed the center button. This method will launch
+    a new ball, but only if there are no balls left in the Physics scene.
+
+    Args:
+        physics (PhysicsInterface): Physics interface
+        config (GameConfig): Game configuration parameters.
+        id_gen (ObjectIdGenerator): Generated used to create unique IDs for game objects.
+    """
+    if physics.get_num_balls() > 0:
+        return
+    uid = id_gen.generate_id()
+    launch_pos = (400, 500)
+    ball = Ball(uid=uid, position=launch_pos, radius=config.ball_radius)
+    physics.add_ball(ball=ball)
+    physics.launch_ball(uid=ball.uid)
 
 
 def render_physics_balls(

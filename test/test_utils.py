@@ -251,3 +251,70 @@ class TestRenderScoreAndLives(unittest.TestCase):
     def test_display_draw_score_called_once(self) -> None:
         """Test that the draw_score() method is called in the DisplayInterface"""
         self.display.draw_score.assert_called_once()
+
+
+class TestHandleCenterButtonPressedWithRemainingBalls(unittest.TestCase):
+    """Test the utils.handle_center_button_pressed() method when there are some balls
+    left in the physics scene. In this case we do not expect a new ball to be added or
+    launched via the PhysicsInterface
+    """
+
+    def setUp(self) -> None:
+        cfg = pypinball.GameConfig(playing_area=(400, 400))
+        self.id_gen = unittest.mock.MagicMock(wrap=pypinball.utils.ObjectIdGenerator())
+        self.physics = unittest.mock.MagicMock(spec=pypinball.PhysicsInterface)
+        self.physics.get_num_balls.return_value = 10
+
+        pypinball.utils.handle_center_button_press(
+            physics=self.physics,
+            config=cfg,
+            id_gen=self.id_gen,
+        )
+
+    def test_get_num_balls_called(self) -> None:
+        """Test that the get_num_balls() is called"""
+        self.physics.get_num_balls.assert_called_once()
+
+    def test_add_ball_not_called(self) -> None:
+        """Test that no new balls are added to the physics scene"""
+        self.physics.add_ball.assert_not_called()
+
+    def test_launch_ball_not_called(self) -> None:
+        """Test that the launch_ball() method is not called."""
+        self.physics.launch_ball.assert_not_called()
+
+    def test_id_gen_not_called(self) -> None:
+        """Test that the ID generator has not been called/used"""
+        self.id_gen.generate_id.assert_not_called()
+
+
+class TestHandleCenterButtonPressedWithNoBalls(unittest.TestCase):
+    """Test the utils.handle_center_button_pressed() method when there are no balls
+    left in the physics scene. In this case we expect that a new ball is both added and
+    launched via the PhysicsInterface"""
+
+    def setUp(self) -> None:
+        cfg = pypinball.GameConfig(playing_area=(400, 400))
+        self.id_gen = unittest.mock.MagicMock(wrap=pypinball.utils.ObjectIdGenerator())
+        self.physics = unittest.mock.MagicMock(spec=pypinball.PhysicsInterface)
+        self.physics.get_num_balls.return_value = 0
+
+        pypinball.utils.handle_center_button_press(
+            physics=self.physics, config=cfg, id_gen=self.id_gen
+        )
+
+    def test_get_num_balls_called(self) -> None:
+        """Test that the get_num_balls() is called"""
+        self.physics.get_num_balls.assert_called_once()
+
+    def test_add_ball_called(self) -> None:
+        """Test that no new balls are added to the physics scene"""
+        self.physics.add_ball.assert_called_once()
+
+    def test_launch_ball_called(self) -> None:
+        """Test that the launch_ball() method is not called."""
+        self.physics.launch_ball.assert_called_once()
+
+    def test_id_gen_called(self) -> None:
+        """Test that the ID generator has not been called/used"""
+        self.id_gen.generate_id.assert_called_once()
