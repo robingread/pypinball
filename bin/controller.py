@@ -89,10 +89,11 @@ GAME_CONFIG = pypinball.GameConfig(
 input_pub = pypinball.inputs.InputEventPublisher()
 events_pub = pypinball.events.GameEventPublisher()
 
-audio_interface = pypinball.audio.SimpleAudio()
 audio_event_handler = pypinball.audio.AudioGameEventHandler(
-    interface=audio_interface, events_to_sound=GAME_CONFIG.event_to_sounds
+    interface=pypinball.audio.SimpleAudio(),
+    events_to_sound=GAME_CONFIG.event_to_sounds,
 )
+
 events_pub.subscribe(audio_event_handler.update)
 
 display_interface = pypinball.display.PyGameDisplay(
@@ -101,12 +102,10 @@ display_interface = pypinball.display.PyGameDisplay(
     game_events=events_pub,
     config=DISPLAY_CONFIG,
 )
-input_interface = pypinball.inputs.KeyboardInput(event_pub=input_pub)
 
+input_interface = pypinball.inputs.KeyboardInput(event_pub=input_pub)
 physics_interface = pypinball.physics.PymunkPhysics(event_pub=events_pub)
 physics_interface.set_debug_display(screen=display_interface._screen)
-
-scoring = pypinball.scoring.get_scorer(event_pub=events_pub)
 
 controller = pypinball.Controller(
     config=GAME_CONFIG,
@@ -114,6 +113,7 @@ controller = pypinball.Controller(
     physics_interface=physics_interface,
     event_publisher=events_pub,
 )
+
 controller.setup()
 
 input_pub.subscribe(callback=controller.handle_input_event)
