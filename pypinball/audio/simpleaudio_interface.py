@@ -1,4 +1,5 @@
 import os
+import typing
 
 import simpleaudio
 
@@ -16,6 +17,15 @@ class SimpleAudio(AudioInterface):  # pylint: disable=too-few-public-methods
 
     def __init__(self, blocking=False) -> None:
         self._blocking = blocking
+        self._cache: typing.Dict[str, simpleaudio.WaveObject] = dict()
+
+    def cached_files(self) -> typing.Set[str]:
+        """Get a set of the cached files paths.
+
+        Returns:
+            set[str]: List of file paths.
+        """
+        return set(list(self._cache.keys()))
 
     def play_sound_file(self, file_path: str) -> bool:
         logger.debug(f"Playing sound file: {file_path}")
@@ -26,7 +36,7 @@ class SimpleAudio(AudioInterface):  # pylint: disable=too-few-public-methods
             )
             return False
 
-        wave_obj = simpleaudio.WaveObject.from_wave_file(file_path)
+        wave_obj = self.get_wav_sound(file_path=file_path)
 
         try:
             play_obj = wave_obj.play()
@@ -40,3 +50,23 @@ class SimpleAudio(AudioInterface):  # pylint: disable=too-few-public-methods
             play_obj.wait_done()
 
         return True
+
+    def get_wav_sound(self, file_path: str) -> simpleaudio.WaveObject:
+        """Load a WAV object either from file or from an internal cache.
+
+        Args:
+            file_path (str): Path to WAV object.
+
+        Returns:
+            simpleaudio.WaveObject: WAV object to play.
+        """
+        try:
+            ret = self._cache[file_path]
+            logger.debug(f"Loaded audio file from cache: {file_path}")
+            return ret
+
+        except KeyError:
+            wave_obj = simpleaudio.WaveObject.from_wave_file(file_path)
+            self._cache[file_path] = wave_obj
+            logger.debug(f"Added audio file to cache: {file_path}")
+            return wave_obj
