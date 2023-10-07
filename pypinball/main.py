@@ -111,7 +111,7 @@ def main() -> None:
 
     input_interface = KeyboardInput(event_pub=input_pub)
     physics_interface = PymunkPhysics(event_pub=events_pub)
-    physics_interface.set_debug_display(screen=display_interface._screen)
+    # physics_interface.set_debug_display(screen=display_interface._screen)
 
     controller = Controller(
         config=GAME_CONFIG,
