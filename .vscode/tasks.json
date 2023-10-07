@@ -38,6 +38,16 @@
             }
         },
         {
+            "label": "Play & Profile",
+            "type": "shell",
+            "command": "./scripts/profile-game.sh",
+            "group": "none",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "Run PyLint",
             "type": "shell",
             "command": "./scripts/linting.sh",
