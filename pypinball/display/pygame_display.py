@@ -5,6 +5,7 @@ import pygame
 
 from .. import events, game_config, log
 from .display_interface import DisplayInterface
+from .pygame_score import ScoringCache
 from .utils import calculate_rectangle_bounding_box_image_coordinates
 
 logger = log.get_logger(name=__name__)
@@ -21,16 +22,18 @@ class PyGameDisplay(DisplayInterface):
         config: game_config.DisplayConfig,
     ) -> None:
         self._width = width
-        self._height = height
         self._game_events = game_events
         pygame.init()
         pygame.font.init()
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
 
-        self._background_img = pygame.image.load(
-            config.background_image_path
-        ).convert_alpha()
+        self._background_surface = pygame.Surface(size=(width, height))
+        self._background_surface.blit(
+            source=pygame.image.load(config.background_image_path).convert_alpha(),
+            dest=(0, 0),
+        )
+
         self._ball_img = pygame.image.load(config.ball_image_path).convert_alpha()
         self._round_bumper_img = pygame.image.load(
             config.round_bumper_image_path
@@ -40,17 +43,17 @@ class PyGameDisplay(DisplayInterface):
         ).convert_alpha()
         self._flipper_img = pygame.image.load(config.flipper_image_path).convert_alpha()
 
+        self._score_cache = ScoringCache(max_score=500)
+
     def clear(self) -> None:
-        self._screen.fill(pygame.Color("white"))
+        # self._screen.fill(pygame.Color("white"))
+        pass
 
     def close(self) -> None:
         pygame.quit()
 
     def draw_background(self) -> None:
-        width = self._screen.get_width()
-        height = self._screen.get_height()
-        img = pygame.transform.scale(self._background_img, size=(width, height))
-        self._screen.blit(img, (0, 0))
+        self._screen.blit(self._background_surface, (0, 0))
 
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
@@ -121,9 +124,7 @@ class PyGameDisplay(DisplayInterface):
         )
 
     def draw_score(self, score: str) -> None:
-        my_font = pygame.font.SysFont("Comic Sans MS", 35)
-        text_surface = my_font.render(score, False, (255, 255, 255))
-        self._screen.blit(text_surface, (0, 0))
+        self._screen.blit(self._score_cache[int(score)], (0, 0))
 
     def update(self) -> None:
         pygame.display.flip()
