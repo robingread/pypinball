@@ -21,7 +21,6 @@ class PyGameDisplay(DisplayInterface):
         config: game_config.DisplayConfig,
     ) -> None:
         self._width = width
-        self._height = height
         self._game_events = game_events
         pygame.init()
         pygame.font.init()
