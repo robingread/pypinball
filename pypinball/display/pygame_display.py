@@ -5,6 +5,7 @@ import pygame
 
 from .. import events, game_config, log
 from .display_interface import DisplayInterface
+from .pygame_lives import LivesCache
 from .pygame_score import ScoringCache
 from .utils import calculate_rectangle_bounding_box_image_coordinates
 
@@ -43,6 +44,12 @@ class PyGameDisplay(DisplayInterface):
         ).convert_alpha()
         self._flipper_img = pygame.image.load(config.flipper_image_path).convert_alpha()
 
+        self._lives_cache = LivesCache(
+            max_lives=5,
+            icon_path=config.life_icon_path,
+            icon_width=25,
+            icon_spacing=3,
+        )
         self._score_cache = ScoringCache(max_score=500)
 
     def clear(self) -> None:
@@ -117,11 +124,8 @@ class PyGameDisplay(DisplayInterface):
         self._screen.blit(img, (x, y))
 
     def draw_lives(self, lives: int) -> None:
-        my_font = pygame.font.SysFont("Comic Sans MS", 35)
-        text_surface = my_font.render("*" * lives, False, (255, 255, 255))
-        self._screen.blit(
-            text_surface, (self._width - text_surface.get_rect().width, 0)
-        )
+        surface = self._lives_cache[lives]
+        self._screen.blit(surface, (self._width - surface.get_rect().width, 0))
 
     def draw_score(self, score: str) -> None:
         self._screen.blit(self._score_cache[int(score)], (0, 0))

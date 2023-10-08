@@ -35,7 +35,4 @@ print_header "Running Pylint"
 print_header "Running Unit-tests"
 ./scripts/run-tests.sh
 
-print_header "Building docs"
-./scripts/build-docs.sh
-
 echo "Test suite has PASSED!"

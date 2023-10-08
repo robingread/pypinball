@@ -8,7 +8,7 @@ from . import domain, events
 class DisplayConfig:
     """
     Configuration data for the DisplayInterface. The parameters listed here are to provide
-    full system paths to the image assests that are to be used to render the various game
+    full system paths to the image assets that are to be used to render the various game
     elements.
     """
 
@@ -17,6 +17,7 @@ class DisplayConfig:
     round_bumper_image_path: str
     rectangle_bumper_image_path: str
     flipper_image_path: str
+    life_icon_path: str
 
 
 @dataclasses.dataclass
