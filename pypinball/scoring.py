@@ -1,5 +1,3 @@
-import logging
-
 from . import log
 from .events import GameEventPublisher, GameEvents
 
