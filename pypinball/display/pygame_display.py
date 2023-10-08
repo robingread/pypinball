@@ -5,6 +5,7 @@ import pygame
 
 from .. import events, game_config, log
 from .display_interface import DisplayInterface
+from .pygame_score import ScoringCache
 from .utils import calculate_rectangle_bounding_box_image_coordinates
 
 logger = log.get_logger(name=__name__)
@@ -41,6 +42,8 @@ class PyGameDisplay(DisplayInterface):
             config.rectangle_bumper_image_path
         ).convert_alpha()
         self._flipper_img = pygame.image.load(config.flipper_image_path).convert_alpha()
+
+        self._score_cache = ScoringCache(max_score=500)
 
     def clear(self) -> None:
         # self._screen.fill(pygame.Color("white"))
@@ -121,9 +124,7 @@ class PyGameDisplay(DisplayInterface):
         )
 
     def draw_score(self, score: str) -> None:
-        my_font = pygame.font.SysFont("Comic Sans MS", 35)
-        text_surface = my_font.render(score, False, (255, 255, 255))
-        self._screen.blit(text_surface, (0, 0))
+        self._screen.blit(self._score_cache[int(score)], (0, 0))
 
     def update(self) -> None:
         pygame.display.flip()
