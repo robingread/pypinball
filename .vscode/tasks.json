@@ -28,10 +28,21 @@
                 "cwd": "${workspaceFolder}"
             }
         },
+         {
+            "label": "Build & Play",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Run CI Tests",
+                "Play Game"
+            ],
+            "group": "none",
+            "problemMatcher": []
+        },
         {
             "label": "Play Game",
             "type": "shell",
-            "command": "python bin/controller.py",
+            "command": "pypinball",
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}"

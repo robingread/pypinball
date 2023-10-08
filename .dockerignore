@@ -1,0 +1,7 @@
+*
+!bin/
+!pypinball/
+!scripts/
+!setup.py
+!requirements.txt
+**/*.pyc
