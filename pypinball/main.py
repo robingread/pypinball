@@ -16,6 +16,7 @@ DISPLAY_CONFIG = DisplayConfig(
         "rectangle_bumper.png"
     ),
     flipper_image_path=resources.get_image_resource_path("flipper.png"),
+    life_icon_path=resources.get_image_resource_path("heart_icon.png"),
 )
 
 GAME_CONFIG = GameConfig(
