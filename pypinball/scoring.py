@@ -1,9 +1,7 @@
-import logging
-
 from . import log
 from .events import GameEventPublisher, GameEvents
 
-LOGGER = log.get_logger(name="scoring", level=logging.DEBUG)
+LOGGER = log.get_logger(name=__name__)
 
 
 class Scoring:

@@ -17,8 +17,8 @@
             "group": "test",
             "options": {
                 "cwd": "${workspaceFolder}"
-            },
-        },
+            }
+        }, 
         {
             "label": "Run CI Tests",
             "type": "shell",
@@ -28,7 +28,7 @@
                 "cwd": "${workspaceFolder}"
             }
         },
-         {
+        {
             "label": "Build & Play",
             "type": "shell",
             "dependsOrder": "sequence",
@@ -46,7 +46,8 @@
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}"
-            }
+            },
+            "problemMatcher": []
         },
         {
             "label": "Play & Profile",

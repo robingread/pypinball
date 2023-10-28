@@ -4,6 +4,7 @@ import typing
 import pygame
 
 from .. import events, game_config, log
+from .ball_cache import BallCache
 from .display_interface import DisplayInterface
 from .pygame_lives import LivesCache
 from .pygame_score import ScoringCache
@@ -28,6 +29,7 @@ class PyGameDisplay(DisplayInterface):
         pygame.font.init()
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
+        self._config = config
 
         self._background_surface = pygame.Surface(size=(width, height))
         self._background_surface.blit(
@@ -35,7 +37,6 @@ class PyGameDisplay(DisplayInterface):
             dest=(0, 0),
         )
 
-        self._ball_img = pygame.image.load(config.ball_image_path).convert_alpha()
         self._round_bumper_img = pygame.image.load(
             config.round_bumper_image_path
         ).convert_alpha()
@@ -52,6 +53,8 @@ class PyGameDisplay(DisplayInterface):
         )
         self._score_cache = ScoringCache(max_score=500)
 
+        self._ball_cache: typing.Union[BallCache, None] = None
+
     def clear(self) -> None:
         # self._screen.fill(pygame.Color("white"))
         pass
@@ -65,13 +68,17 @@ class PyGameDisplay(DisplayInterface):
     def draw_ball(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
+        if self._ball_cache is None:
+            self._ball_cache = BallCache(
+                icon_path=self._config.ball_image_path,
+                diameter=int(diameter),
+            )
+
         x, y = calculate_rectangle_bounding_box_image_coordinates(
             pos=pos, size=(diameter, diameter), angle=0.0
         )
-        img = pygame.transform.scale(self._ball_img, size=(diameter, diameter))
-        img = pygame.transform.rotate(img, angle=math.degrees(0.0))
-        img.set_alpha(int(alpha * 255))
-        self._screen.blit(img, (x, y))
+
+        self._screen.blit(self._ball_cache.get(), (x, y))
 
     def draw_round_bumper(
         self, pos: typing.Tuple[float, float], diameter: float, alpha: float
