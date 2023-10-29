@@ -3,6 +3,12 @@ import os
 import sys
 import typing
 
+DEBUG = logging.DEBUG
+INFO = logging.INFO
+WARNING = logging.WARNING
+ERROR = logging.ERROR
+CRITICAL = logging.CRITICAL
+
 
 class CustomFormatter(logging.Formatter):
     """
