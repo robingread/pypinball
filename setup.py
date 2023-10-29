@@ -8,5 +8,5 @@ setup(
         "pypinball.resources.audio": ["*.wav"],
         "pypinball.resources.images": ["*.png"],
     },
-    scripts=["bin/pypinball"],
+    entry_points={"console_scripts": ["pypinball = pypinball.main:main"]},
 )

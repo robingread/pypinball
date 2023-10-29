@@ -14,19 +14,18 @@ do
   esac
 done
 
-BIN_DIR=bin/
 SRC_DIR=pypinball/
 TEST_DIR=test/
 
 if [ "$RUN_CHECK" = true ]
 then
   echo "Running isort check..."
-  isort --profile black --check $BIN_DIR $SRC_DIR $TEST_DIR
+  isort --profile black --check $SRC_DIR $TEST_DIR
   echo "Running black formatter check..."
-  black --check --diff --color $BIN_DIR $SRC_DIR $TEST_DIR
+  black --check --diff --color $SRC_DIR $TEST_DIR
 else
   echo "Running isort..."
-  isort --profile black $BIN_DIR $SRC_DIR $TEST_DIR
+  isort --profile black $SRC_DIR $TEST_DIR
   echo "Running black formatter..."
-  black $BIN_DIR $SRC_DIR $TEST_DIR
+  black $SRC_DIR $TEST_DIR
 fi
