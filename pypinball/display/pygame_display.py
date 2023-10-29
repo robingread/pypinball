@@ -4,7 +4,7 @@ import typing
 import pygame
 
 from .. import events, game_config, log
-from .ball_cache import BallCache
+from .ball_cache import BallCache, FlipperCache
 from .display_interface import DisplayInterface
 from .pygame_lives import LivesCache
 from .pygame_score import ScoringCache
@@ -43,7 +43,6 @@ class PyGameDisplay(DisplayInterface):
         self._rectangle_bumper_img = pygame.image.load(
             config.rectangle_bumper_image_path
         ).convert_alpha()
-        self._flipper_img = pygame.image.load(config.flipper_image_path).convert_alpha()
 
         self._lives_cache = LivesCache(
             max_lives=5,
@@ -54,6 +53,11 @@ class PyGameDisplay(DisplayInterface):
         self._score_cache = ScoringCache(max_score=500)
 
         self._ball_cache: typing.Union[BallCache, None] = None
+
+        self._flipper_cache = FlipperCache(
+            icon_path=config.flipper_image_path,
+            angle_rounding=5,
+        )
 
     def clear(self) -> None:
         # self._screen.fill(pygame.Color("white"))
@@ -113,6 +117,7 @@ class PyGameDisplay(DisplayInterface):
 
     def draw_flipper(
         self,
+        uid: int,
         pos: typing.Tuple[float, float],
         angle: float,
         size: typing.Tuple[float, float],
@@ -121,13 +126,18 @@ class PyGameDisplay(DisplayInterface):
         width = size[0]
         height = size[1]
 
-        x, y = calculate_rectangle_bounding_box_image_coordinates(
-            pos=pos, size=(width, height), angle=angle
+        img = self._flipper_cache.get(
+            uid=uid,
+            size=(int(width), int(height)),
+            angle=angle,
         )
 
-        img = pygame.transform.scale(self._flipper_img, size=(width, height))
-        img = pygame.transform.rotate(img, angle=math.degrees(-angle))
-        img.set_alpha(int(alpha * 255))
+        x, y = calculate_rectangle_bounding_box_image_coordinates(
+            pos=pos,
+            size=(width, height),
+            angle=angle,
+        )
+
         self._screen.blit(img, (x, y))
 
     def draw_lives(self, lives: int) -> None:
