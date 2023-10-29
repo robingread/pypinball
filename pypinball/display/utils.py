@@ -7,7 +7,7 @@ def calculate_rotated_rectangle_bounding_box(
     height: float,
     angle: float,
 ) -> typing.Tuple[float, float]:
-    """Given a rectangle with a known rotation angle, calulatue the encompasing bounding
+    """Given a rectangle with a known rotation angle, calculate the encompassing bounding
     box. The width and height of the box are expected to be in the frame of the box.
 
     Args:
@@ -28,7 +28,7 @@ def calculate_rectangle_bounding_box_image_coordinates(
 ) -> typing.Tuple[float, float]:
     """
     Calculate the top-left coordinate of a bounding box for a rotated rectangle. This is
-    useful when rendinering images (which have been scaled and rotated) using PyGame.
+    useful when rendering images (which have been scaled and rotated) using PyGame.
 
     Args:
         pos (tuple): Position of the rectangle centre in (x, y) format.
