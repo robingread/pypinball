@@ -1,6 +1,0 @@
-#!/usr/bin/env python
-
-import pypinball
-
-if __name__ == "__main__":
-    pypinball.main.main()
