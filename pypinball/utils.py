@@ -123,6 +123,7 @@ def render_physics_flippers(
         x = flipper.position[0] + dx
         y = flipper.position[1] + dy
         display.draw_flipper(
+            uid=flipper.uid,
             pos=(x, y),
             angle=flipper.angle,
             size=(flipper.length, flipper.length * 0.35),

@@ -35,14 +35,16 @@ class DisplayInterface(typing.Protocol):
 
     def draw_flipper(
         self,
+        uid: int,
         pos: typing.Tuple[float, float],
         angle: float,
         size: typing.Tuple[float, float],
         alpha: float,
     ) -> None:
-        """Helper funcion to draw a flippper.
+        """Helper function to draw a flipper.
 
         Args:
+            uid (int): Unique ID of flipper to draw.
             pos (tuple): Position of the center of the flipper in the format (x, y) both in pixel coordinates.
             size (tuple): Size of the bumper in (width, height) format in pixel coordinates.
             angle (float): Angle of the bumper.
