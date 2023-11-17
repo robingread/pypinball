@@ -4,7 +4,7 @@ set -eu
 
 BUILDER_NAME=multi-arch
 IMG=robingread/pypinball
-TAG=${1}
+TAG=${1:-latest}
 
 echo "Deploying docker image with tag:" ${IMG}:${TAG}
 
@@ -17,6 +17,5 @@ docker buildx inspect --bootstrap
 docker buildx build \
     --platform linux/amd64,linux/arm64 \
     -t $IMG:$TAG \
-    -t $IMG:latest \
     -f Dockerfile \
     --push ..
