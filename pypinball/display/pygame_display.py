@@ -61,8 +61,7 @@ class PyGameDisplay(DisplayInterface):
         )
 
     def clear(self) -> None:
-        # self._screen.fill(pygame.Color("white"))
-        pass
+        self._screen.fill(pygame.Color("white"))
 
     def close(self) -> None:
         pygame.quit()
