@@ -4,7 +4,7 @@ import typing
 import pygame
 
 from .. import events, game_config, log
-from .ball_cache import BallCache, FlipperCache
+from .ball_cache import BallCache, BumperCache, FlipperCache
 from .display_interface import DisplayInterface
 from .pygame_lives import LivesCache
 from .pygame_score import ScoringCache
@@ -37,13 +37,6 @@ class PyGameDisplay(DisplayInterface):
             dest=(0, 0),
         )
 
-        self._round_bumper_img = pygame.image.load(
-            config.round_bumper_image_path
-        ).convert_alpha()
-        self._rectangle_bumper_img = pygame.image.load(
-            config.rectangle_bumper_image_path
-        ).convert_alpha()
-
         self._lives_cache = LivesCache(
             max_lives=5,
             icon_path=config.life_icon_path,
@@ -53,6 +46,14 @@ class PyGameDisplay(DisplayInterface):
         self._score_cache = ScoringCache(max_score=500)
 
         self._ball_cache: typing.Union[BallCache, None] = None
+
+        self._round_bumper_cache = BumperCache(
+            icon_path=config.round_bumper_image_path,
+        )
+
+        self._rect_bumper_cache = BumperCache(
+            icon_path=config.rectangle_bumper_image_path,
+        )
 
         self._flipper_cache = FlipperCache(
             icon_path=config.flipper_image_path,
@@ -85,18 +86,20 @@ class PyGameDisplay(DisplayInterface):
         self._screen.blit(self._ball_cache.get(), (x, y))
 
     def draw_round_bumper(
-        self, pos: typing.Tuple[float, float], diameter: float, alpha: float
+        self, uid: int, pos: typing.Tuple[float, float], diameter: float, alpha: float
     ) -> None:
+        img = self._round_bumper_cache.get(
+            uid=uid, size=(int(diameter), int(diameter)), angle=0.0
+        )
         x, y = calculate_rectangle_bounding_box_image_coordinates(
             pos=pos, size=(diameter, diameter), angle=0.0
         )
-        img = pygame.transform.scale(self._round_bumper_img, size=(diameter, diameter))
-        img = pygame.transform.rotate(img, angle=math.degrees(0.0))
-        img.set_alpha(int(alpha * 255))
+
         self._screen.blit(img, (x, y))
 
     def draw_rectangle_bumper(
         self,
+        uid: int,
         pos: typing.Tuple[float, float],
         size: typing.Tuple[float, float],
         angle: float,
@@ -106,13 +109,14 @@ class PyGameDisplay(DisplayInterface):
         width = size[0] + padding
         height = size[1] + padding
 
+        img = self._rect_bumper_cache.get(
+            uid=uid, size=(int(width), int(height)), angle=angle
+        )
+
         x, y = calculate_rectangle_bounding_box_image_coordinates(
             pos=pos, size=(width, height), angle=angle
         )
 
-        img = pygame.transform.scale(self._rectangle_bumper_img, size=(width, height))
-        img = pygame.transform.rotate(img, angle=math.degrees(-angle))
-        img.set_alpha(int(alpha * 255))
         self._screen.blit(img, (x, y))
 
     def draw_flipper(

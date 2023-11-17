@@ -53,6 +53,7 @@ class DisplayInterface(typing.Protocol):
 
     def draw_round_bumper(
         self,
+        uid: int,
         pos: typing.Tuple[float, float],
         diameter: float,
         alpha: float,
@@ -61,6 +62,7 @@ class DisplayInterface(typing.Protocol):
         Helper function to draw a round bumper.
 
         Args:
+            uid (int): Unique ID of bumper to draw.
             pos (tuple): Position in the format (x, y) both in pixel coordinates.
             diameter (float): Diameter of the bumper in of the ball in pixels.
             alpha (float): Alpha transparency. Values expected to be in the range [0, 1] where 1.0 means full opacity.
@@ -68,6 +70,7 @@ class DisplayInterface(typing.Protocol):
 
     def draw_rectangle_bumper(
         self,
+        uid: int,
         pos: typing.Tuple[float, float],
         size: typing.Tuple[float, float],
         angle: float,
@@ -75,6 +78,7 @@ class DisplayInterface(typing.Protocol):
     ) -> None:
         """
         Args:
+            uid (int): Unique ID of bumper to draw.
             pos (tuple): Position in the format (x, y) both in pixel coordinates.
             size (tuple): Size of the bumper in (width, height) format in pixel coordinates.
             angle (float): Angle of the bumper.
