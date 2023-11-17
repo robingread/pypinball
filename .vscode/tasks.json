@@ -18,7 +18,7 @@
             "options": {
                 "cwd": "${workspaceFolder}"
             }
-        }, 
+        },
         {
             "label": "Run CI Tests",
             "type": "shell",
@@ -42,7 +42,7 @@
         {
             "label": "Play Game",
             "type": "shell",
-            "command": "pypinball",
+            "command": "source venv/bin/activate && pypinball",
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}"
