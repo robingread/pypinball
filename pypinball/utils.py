@@ -100,11 +100,18 @@ def render_physics_bumpers(
     for bumper in bumpers:
         if isinstance(bumper, RoundBumper):
             display.draw_round_bumper(
-                pos=bumper.position, diameter=bumper.radius * 2.0, alpha=1.0
+                uid=bumper.uid,
+                pos=bumper.position,
+                diameter=bumper.radius * 2.0,
+                alpha=1.0,
             )
         elif isinstance(bumper, RectangleBumper):
             display.draw_rectangle_bumper(
-                pos=bumper.position, angle=bumper.angle, alpha=1.0, size=bumper.size
+                uid=bumper.uid,
+                pos=bumper.position,
+                angle=bumper.angle,
+                alpha=1.0,
+                size=bumper.size,
             )
 
 

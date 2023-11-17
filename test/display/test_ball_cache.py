@@ -33,6 +33,51 @@ class TestBallCache(unittest.TestCase):
         self.assertEqual(exp, height)
 
 
+class TestBumperCache(unittest.TestCase):
+    """Test the BumperCache class in the pygame.display.ball_cache module."""
+
+    def setUp(self) -> None:
+        pygame.display.set_mode((1, 1), pygame.NOFRAME)
+        path = pypinball.resources.get_image_resource_path(filename="ball.png")
+        self.cache = pypinball.display.ball_cache.BumperCache(icon_path=path)
+
+    def test_length_at_init(self) -> None:
+        """Test that the length of the cache is zero upon initialisation."""
+        res = len(self.cache)
+        self.assertEqual(0, res)
+
+    def test_get_new_value(self) -> None:
+        """Test that getting a new value for the first time increments the size of the cache."""
+        self.cache.get(uid=0, size=(10, 10), angle=1.0)
+        self.assertEqual(1, len(self.cache))
+
+    def test_get_new_value_twice(self) -> None:
+        """Test that getting the same value twice doesn't add anything new to the cache."""
+        self.cache.get(uid=0, size=(10, 10), angle=0.0)
+        self.cache.get(uid=0, size=(10, 10), angle=0.0)
+        self.assertEqual(len(self.cache), 1)
+
+    def test_get_two_new_values(self) -> None:
+        """Test that getting the same value twice doesn't add anything new to the cache."""
+        self.cache.get(uid=0, size=(10, 10), angle=0.0)
+        self.cache.get(uid=1, size=(10, 10), angle=11.0)
+        self.assertEqual(len(self.cache), 2)
+
+    def test_the_cached_surfaces_matches_the_input_size(self) -> None:
+        """Test that the cached Surface has the correct dimensions."""
+        surface = self.cache.get(uid=0, size=(10, 20), angle=0.0)
+        self.assertEqual(surface.get_width(), 10)
+        self.assertEqual(surface.get_height(), 20)
+
+    def test_clear_cache(self) -> None:
+        """Test that the clear() method works."""
+        for i in range(100):
+            self.cache.get(uid=i, size=(10, 20), angle=0.0)
+        self.assertGreater(len(self.cache), 1)
+        self.cache.clear()
+        self.assertEqual(len(self.cache), 0)
+
+
 class TestFlipperCache(unittest.TestCase):
     """Test the FlipperCache class in the pygame.display.ball_cache module."""
 
