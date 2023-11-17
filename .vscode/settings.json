@@ -7,23 +7,22 @@
     ],
     "python.analysis.inlayHints.functionReturnTypes": true,
     "python.analysis.inlayHints.variableTypes": false,
-    "python.linting.lintOnSave": true,
-    "python.linting.pylintEnabled": true,
-    "python.sortImports.args": [
-        "--profile",
-        "black"
-    ],
     "python.testing.pytestArgs": [
         "test"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "[python]": {
+        "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         },
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
     "terminal.integrated.tabs.enabled": true,
     "workbench.tree.indent": 25
 }
