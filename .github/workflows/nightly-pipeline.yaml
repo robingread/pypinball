@@ -1,8 +1,6 @@
 name: Nightly CI Test Pipeline
 
 on:
-  push:
-    branches: ["main"]
   schedule:
     - cron: '0 0 * * *'
 
