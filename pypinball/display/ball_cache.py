@@ -31,6 +31,45 @@ class BallCache:
         return self._img
 
 
+class BumperCache:
+    """The BumperCache class is used to maintain a cache of the bumper states that have
+    been render previously. The aim of this is to increase by rendering efficiency
+    during runtime.
+    """
+
+    def __init__(self, icon_path: str) -> None:
+        self._icon_img = pygame.image.load(icon_path).convert_alpha()
+        self._cache: typing.Dict[int, pygame.Surface] = dict()
+
+    def __len__(self) -> int:
+        return len(self._cache.keys())
+
+    def clear(self) -> None:
+        """Clear the cache."""
+        self._cache.clear()
+
+    def get(
+        self, uid: int, size: typing.Tuple[int, int], angle: float
+    ) -> pygame.Surface:
+        """Get the pre-loaded PyGame surface representing the graphic for a bumper.
+
+        Args:
+            uid (int): Unique ID of the bumper to get.
+            size (typing.Tuple[int, int]): The size of the bumper in the format (width, heigth), in pixels.
+            angle (float): Angle of the bumper.
+
+        Returns:
+            pygame.Surface: PyGame surface.
+        """
+        if uid not in self._cache.keys():
+            logger.debug(f"Loading bumper into cache, uid: {uid}")
+            img = pygame.transform.scale(self._icon_img, size=size)
+            img = pygame.transform.rotate(img, angle=math.degrees(-angle))
+            img.set_alpha(255)
+            self._cache[uid] = img
+        return self._cache[uid]
+
+
 class FlipperCache:
     """The FlipperCache class is used to cache the various states of the flippers
     during the game at runtime. This is done to be able to speed up the rendering
