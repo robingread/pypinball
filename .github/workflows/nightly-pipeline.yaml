@@ -34,7 +34,7 @@ jobs:
       run: |
         cd docker 
         chmod +x build.sh
-        ./build.sh ${{ github.sha }}
+        ./build.sh nightly
 
     env:
       DOCKER_CLI_EXPERIMENTAL: enabled
