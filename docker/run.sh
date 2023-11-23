@@ -2,7 +2,8 @@
 
 set -eu
 
-IMG=robingread/pypinball:latest
+TAG=${1:-latest}
+IMG=robingread/pypinball:${TAG}
 
 xhost +local:*
 
