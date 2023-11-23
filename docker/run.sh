@@ -8,6 +8,7 @@ xhost +local:*
 
 docker run \
     --name pypinball \
+    --rm \
     -e DISPLAY=$DISPLAY \
     -e LIBGL_ALWAYS_SOFTWARE=1 \
     -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
