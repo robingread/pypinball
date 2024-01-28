@@ -50,7 +50,9 @@ class TestPymunkFlipper(unittest.TestCase):
         self.event_pub = unittest.mock.MagicMock(
             wraps=pypinball.events.GameEventPublisher()
         )
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
         self.left_flipper = pypinball.domain.Flipper(
             uid=0,

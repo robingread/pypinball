@@ -27,7 +27,9 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
         audio_event_handler = pypinball.audio.AudioGameEventHandler(
             interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
@@ -99,7 +101,9 @@ class TestDropBallOnFlipper(unittest.TestCase):
         self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
         audio_event_handler = pypinball.audio.AudioGameEventHandler(
             interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
@@ -147,7 +151,9 @@ class TestDropBallOnWall(unittest.TestCase):
         self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
         audio_event_handler = pypinball.audio.AudioGameEventHandler(
             interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
@@ -187,7 +193,9 @@ class TestDropBallOnBumper(unittest.TestCase):
         self.audio = unittest.mock.MagicMock(spec=pypinball.AudioInterface)
         self.config = MOC_SOUND_FILE_MAP
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
         audio_event_handler = pypinball.audio.AudioGameEventHandler(
             interface=self.audio, events_to_sound=MOC_SOUND_FILE_MAP.event_to_sounds
@@ -290,7 +298,9 @@ class TestLeftButtonPressed(unittest.TestCase):
 
         self.event_pub.subscribe(callback=self.audio_event_handler.update)
 
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
         self.controller = pypinball.Controller(
             config=self.config,

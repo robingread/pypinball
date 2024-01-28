@@ -10,7 +10,9 @@ class TestBumper(unittest.TestCase):
 
     def setUp(self) -> None:
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
     def test_add_bumper(self):
         """
