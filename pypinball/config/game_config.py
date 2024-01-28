@@ -45,3 +45,5 @@ class GameConfig:
     )
 
     ball_radius: int = 15
+
+    fames_per_second: float = 60.0
