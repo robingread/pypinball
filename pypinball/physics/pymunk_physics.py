@@ -361,7 +361,6 @@ def create_pymunk_wall(wall: domain.Wall, space: pymunk.Space) -> PymunkWall:
 
 
 class CollisionHandler:  # pylint: disable=too-few-public-methods
-
     """Collision handler class for interactions between balls, bumpers, flippers and walls."""
 
     def __init__(
