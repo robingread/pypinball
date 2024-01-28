@@ -108,6 +108,7 @@ def main() -> None:
         height=int(GAME_CONFIG.playing_area[1]),
         game_events=events_pub,
         config=DISPLAY_CONFIG,
+        fps=60.0,
     )
 
     input_interface = KeyboardInput(event_pub=input_pub)
