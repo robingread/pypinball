@@ -2,7 +2,7 @@ import typing
 
 import pygame
 
-from .. import events, game_config, log
+from .. import config, events, log
 from .ball_cache import BallCache, BumperCache, FlipperCache
 from .display_interface import DisplayInterface
 from .pygame_lives import LivesCache
@@ -20,7 +20,7 @@ class PyGameDisplay(DisplayInterface):
         width: int,
         height: int,
         game_events: events.GameEventPublisher,
-        config: game_config.DisplayConfig,
+        config: config.DisplayConfig,
         fps: float,
     ) -> None:
         self._width = width

@@ -1,7 +1,7 @@
 import dataclasses
 import typing
 
-from . import domain, events
+from .. import domain, events
 
 
 @dataclasses.dataclass
@@ -45,3 +45,5 @@ class GameConfig:
     )
 
     ball_radius: int = 15
+
+    fames_per_second: float = 60.0

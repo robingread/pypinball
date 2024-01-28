@@ -13,7 +13,7 @@ from . import (
     utils,
 )
 from .audio import AudioInterface
+from .config import GameConfig
 from .controller import Controller
 from .display import DisplayInterface
-from .game_config import GameConfig
 from .physics import PhysicsInterface
