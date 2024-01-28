@@ -441,13 +441,14 @@ class PymunkPhysics(PhysicsInterface):
     physics modelling solution.
     """
 
-    def __init__(self, event_pub: events.GameEventPublisher) -> None:
+    def __init__(self, event_pub: events.GameEventPublisher, fps: float) -> None:
         self._balls: typing.Dict[int, PymunkEntity] = dict()
         self._bumpers: typing.Dict[int, PymunkBumper] = dict()
         self._flippers: typing.Dict[int, PymunkFlipper] = dict()
         self._walls: typing.Dict[int, PymunkWall] = dict()
         self._event_pub = event_pub
         self._threading_lock = threading.Lock()
+        self._fps = fps
 
         self._space = pymunk.Space()
         self._space.gravity = (0.0, 900.0)
@@ -597,8 +598,9 @@ class PymunkPhysics(PhysicsInterface):
         with self._threading_lock:
             logger.debug("Updating Pymunk Physics")
 
-            delta_time = 1.0 / 60.0 / 5.0
-            for _ in range(5):
+            sub_step = 5
+            delta_time = 1.0 / self._fps / float(sub_step)
+            for _ in range(sub_step):
                 self._space.step(delta_time)
 
             if self._draw_options is not None:
