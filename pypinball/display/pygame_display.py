@@ -21,6 +21,7 @@ class PyGameDisplay(DisplayInterface):
         height: int,
         game_events: events.GameEventPublisher,
         config: game_config.DisplayConfig,
+        fps: float,
     ) -> None:
         self._width = width
         self._game_events = game_events
@@ -29,6 +30,7 @@ class PyGameDisplay(DisplayInterface):
         self._screen = pygame.display.set_mode(size=(width, height))
         self._clock = pygame.time.Clock()
         self._config = config
+        self._fps = fps
 
         self._background_surface = pygame.Surface(size=(width, height))
         self._background_surface.blit(
@@ -151,7 +153,7 @@ class PyGameDisplay(DisplayInterface):
 
     def update(self) -> None:
         pygame.display.flip()
-        self._clock.tick(50)
+        self._clock.tick(self._fps)
         pygame.display.set_caption("fps: " + str(self._clock.get_fps()))
 
         for event in pygame.event.get():
