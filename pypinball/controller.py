@@ -1,5 +1,5 @@
 from . import display, events, inputs, log, physics, utils
-from .game_config import GameConfig
+from .config import GameConfig
 from .lives import Lives
 from .scoring import Scoring
 

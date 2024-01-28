@@ -1,9 +1,9 @@
 import math
 import typing
 
+from .config import GameConfig
 from .display import DisplayInterface
 from .domain import Ball, BallState, Bumper, FlipperState, RectangleBumper, RoundBumper
-from .game_config import GameConfig
 from .lives import Lives
 from .physics import PhysicsInterface
 from .scoring import Scoring
