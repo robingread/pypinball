@@ -13,7 +13,9 @@ class TestBallGeneration(unittest.TestCase):
 
     def setUp(self) -> None:
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
     def test_no_balls_present(self) -> None:
         """Test that after setUp() there are no balls in the physics scene."""
@@ -63,7 +65,9 @@ class TestRemoveBall(unittest.TestCase):
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(50.0, 50.0))
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
 
     def test_one_ball_in_scene(self) -> None:
@@ -98,9 +102,13 @@ class TestBallLaunch(unittest.TestCase):
     def setUp(self) -> None:
         self.ball = pypinball.domain.Ball(uid=0, position=(100, 100))
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
 
     def test_launch_ball(self):
@@ -143,7 +151,9 @@ class TestGravity(unittest.TestCase):
 
     def setUp(self) -> None:
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
     def test_default_gravity(self):
         """
@@ -176,7 +186,9 @@ class TestWallGeneration(unittest.TestCase):
 
     def setUp(self):
         self.event_pub = pypinball.events.GameEventPublisher()
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
 
     def test_add_wall_section(self):
         """
@@ -213,7 +225,9 @@ class TestBallDropOnDiagonalWall(unittest.TestCase):
         self.event_pub = unittest.mock.MagicMock(
             wraps=pypinball.events.GameEventPublisher()
         )
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
         self.physics.add_wall(wall=self.wall)
 
@@ -257,7 +271,9 @@ class TestBallDropInEmptyScene(unittest.TestCase):
         self.event_pub = unittest.mock.MagicMock(
             wraps=pypinball.events.GameEventPublisher()
         )
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
 
         for _ in range(100):
@@ -302,7 +318,9 @@ class TestBallDropsOnLaunchedBall(unittest.TestCase):
             wraps=pypinball.events.GameEventPublisher()
         )
 
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball_1)
         self.physics.add_ball(ball=self.ball_2)
         self.physics.launch_ball(uid=self.ball_1.uid)
@@ -344,7 +362,9 @@ class TestBallDropsOnFlipper(unittest.TestCase):
         self.event_pub = unittest.mock.MagicMock(
             wraps=pypinball.events.GameEventPublisher()
         )
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
         self.physics.add_flipper(flipper=self.flipper)
 
@@ -387,7 +407,9 @@ class TestBallDroppedOnRoundBumper(unittest.TestCase):
         self.event_pub = unittest.mock.MagicMock(
             wraps=pypinball.events.GameEventPublisher()
         )
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
         self.physics.add_bumper(bumper=self.bumper)
 
@@ -425,7 +447,9 @@ class TestBallDroppedOnRectangleBumper(unittest.TestCase):
         self.event_pub = unittest.mock.MagicMock(
             wraps=pypinball.events.GameEventPublisher()
         )
-        self.physics = pypinball.physics.PymunkPhysics(event_pub=self.event_pub)
+        self.physics = pypinball.physics.PymunkPhysics(
+            event_pub=self.event_pub, fps=60.0
+        )
         self.physics.add_ball(ball=self.ball)
 
     def test_ball_bounces_right_when_bumper_rotated_clockwise(self):
