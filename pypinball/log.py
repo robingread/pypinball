@@ -10,6 +10,10 @@ ERROR = logging.ERROR
 CRITICAL = logging.CRITICAL
 
 
+# Internal module variable to keep track of all created loggers.
+_LOGGERS: typing.Dict[str, logging.Logger] = dict()
+
+
 class CustomFormatter(logging.Formatter):
     """
     Custom logging.Formatter class that provides colouing to the different log levels.
@@ -104,4 +108,15 @@ def get_logger(
         logger.addHandler(get_file_handler(filename=filename))
 
     logger.propagate = False
+    _LOGGERS[name] = logger
     return logger
+
+
+def set_global_log_level(level: int) -> None:
+    """Set the logging level for all created loggers
+
+    Args:
+        level (int): Logging level.
+    """
+    for l in _LOGGERS.values():
+        l.setLevel(level)

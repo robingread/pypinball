@@ -57,3 +57,26 @@ class TestLoggerInitWithFilePath(unittest.TestCase):
         with open(self.filepath, mode="r", encoding="utf-8") as file:
             lines = file.readlines()
             self.assertEqual(len(lines), 1)
+
+
+class TestSetGlobalLogLevel(unittest.TestCase):
+    """Test the set_global_log_level() method."""
+
+    def setUp(self) -> None:
+        self._logger_1 = pypinball.log.get_logger(
+            name="logger1", level=pypinball.log.INFO
+        )
+
+        self._logger_2 = pypinball.log.get_logger(
+            name="logger2", level=pypinball.log.INFO
+        )
+
+        pypinball.log.set_global_log_level(level=pypinball.log.DEBUG)
+
+    def test_logger_1_log_level(self) -> None:
+        """Test that the level of logger 1 has been set to DEBUG"""
+        self.assertEqual(pypinball.log.DEBUG, self._logger_1.level)
+
+    def test_logger_2_log_level(self) -> None:
+        """Test that the level of logger 2 has been set to DEBUG"""
+        self.assertEqual(pypinball.log.DEBUG, self._logger_2.level)
