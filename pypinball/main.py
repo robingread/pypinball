@@ -25,11 +25,14 @@ def main() -> None:
         height=int(DEFAULT_GAME_CONFIG.playing_area[1]),
         game_events=events_pub,
         config=DEFAULT_DISPLAY_CONFIG,
-        fps=60.0,
+        fps=DEFAULT_GAME_CONFIG.fames_per_second,
     )
 
     input_interface = KeyboardInput(event_pub=input_pub)
-    physics_interface = PymunkPhysics(event_pub=events_pub, fps=60.0)
+    physics_interface = PymunkPhysics(
+        event_pub=events_pub,
+        fps=DEFAULT_GAME_CONFIG.fames_per_second,
+    )
     # physics_interface.set_debug_display(screen=display_interface._screen)
 
     controller = Controller(
