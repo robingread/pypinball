@@ -87,7 +87,7 @@ class Controller:
 
     def run(self) -> None:
         """
-        Start running the controller main loop.
+        Start running the controller main loop. This calls the ``tick()`` method in the background.
         """
         logger.info("Starting main loop")
         while not self._should_quit:
@@ -95,8 +95,8 @@ class Controller:
 
     def tick(self) -> None:
         """
-        Tick the controller. This will update the PhysicsInterface as well as the DisplayInterface
-        implementations.
+        Tick the controller one iteration. This will update the ``PhysicsInterface`` as well as the ``DisplayInterface``
+        implementations based upon the input values received.
         """
         self._display.clear()
         self._physics.update()
