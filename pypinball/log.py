@@ -16,7 +16,7 @@ _LOGGERS: typing.Dict[str, logging.Logger] = dict()
 
 class CustomFormatter(logging.Formatter):
     """
-    Custom logging.Formatter class that provides colouing to the different log levels.
+    Custom logging.Formatter class that provides coloring to the different log levels.
     """
 
     GRAY = "\x1b[38;20m"
