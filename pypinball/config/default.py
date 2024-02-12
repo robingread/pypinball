@@ -1,3 +1,7 @@
+"""
+File contains default configuration values for the pypinball game.
+"""
+
 from .. import resources
 from ..domain import Flipper, FlipperConfig, RectangleBumper, RoundBumper, Wall
 from ..events import GameEvents
