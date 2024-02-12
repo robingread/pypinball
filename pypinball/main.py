@@ -10,14 +10,12 @@ from .physics import PymunkPhysics
 def main() -> None:
     """Main entry point for the pypinball game"""
 
-    input_pub = InputEventPublisher()
-    events_pub = GameEventPublisher()
-
     audio_event_handler = AudioGameEventHandler(
         interface=SimpleAudio(),
         events_to_sound=DEFAULT_GAME_CONFIG.event_to_sounds,
     )
 
+    events_pub = GameEventPublisher()
     events_pub.subscribe(audio_event_handler.update)
 
     display_interface = PyGameDisplay(
@@ -28,7 +26,6 @@ def main() -> None:
         fps=DEFAULT_GAME_CONFIG.fames_per_second,
     )
 
-    input_interface = KeyboardInput(event_pub=input_pub)
     physics_interface = PymunkPhysics(
         event_pub=events_pub,
         fps=DEFAULT_GAME_CONFIG.fames_per_second,
@@ -44,7 +41,9 @@ def main() -> None:
 
     controller.setup()
 
+    input_pub = InputEventPublisher()
     input_pub.subscribe(callback=controller.handle_input_event)
+    input_interface = KeyboardInput(event_pub=input_pub)
 
     controller.run()
 
