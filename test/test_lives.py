@@ -81,3 +81,17 @@ class TestRunOutOfLives(unittest.TestCase):
         """Test that once the lives has reached zero, no more BALL_LOST events have an impact"""
         self.lives.event_callback(event=GameEvents.BALL_LOST)
         self.assertEqual(self.lives.get_lives(), 0)
+
+
+class TestSetRemainingLives(unittest.TestCase):
+    """Test overriding the current lives value with a new user-defined value."""
+
+    def setUp(self) -> None:
+        self.event_pub = unittest.mock.MagicMock(spec=GameEventPublisher)
+        self.lives = Lives(lives=2, event_pub=self.event_pub)
+
+    def test_set_lives(self) -> None:
+        """Test the set_lives() method to confirm it overrides the current lives value."""
+        n = 5
+        self.lives.set_lives(value=n)
+        self.assertEqual(self.lives.get_lives(), n)

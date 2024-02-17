@@ -1,4 +1,7 @@
 from .events import GameEventPublisher, GameEvents
+from .log import get_logger
+
+LOGGER = get_logger(name="Lives")
 
 
 class Lives:
@@ -37,3 +40,12 @@ class Lives:
         if self._lives > 0:
             return
         self._pub.emit(event=GameEvents.GAME_OVER)
+
+    def set_lives(self, value: int) -> None:
+        """Set the current lives value.
+
+        Args:
+            value (int): Value to set.
+        """
+        LOGGER.debug(f"Setting lives value: {value}")
+        self._lives = value
