@@ -1,4 +1,7 @@
 from .events import GameEventPublisher, GameEvents
+from .log import get_logger
+
+LOGGER = get_logger(name="Lives")
 
 
 class Lives:
