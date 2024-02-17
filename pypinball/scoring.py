@@ -46,8 +46,14 @@ class Scoring:
         LOGGER.debug(f"Handing event: {event}, updating score...")
         if event != GameEvents.COLLISION_BALL_BUMPER:
             return
-        self._score += int(self._multiplier * 1.0)
+        new_score = self._score + int(self._multiplier * 1.0)
+        self.set_score(value=new_score)
         LOGGER.debug(f"Score: {self.current_score}")
+
+    def reset(self) -> None:
+        """Reset the score back to zero."""
+        LOGGER.debug("Resetting the score.")
+        self.set_score(value=0)
 
     def set_multiplier(self, value: float) -> None:
         """
@@ -57,6 +63,15 @@ class Scoring:
             value (float): New value.
         """
         self._multiplier = value
+
+    def set_score(self, value: int) -> None:
+        """Set the current score value.
+
+        Args:
+            value (int): Value to set the score to.
+        """
+        LOGGER.debug(f"Setting a new score value: {value}")
+        self._score = int(value)
 
 
 def get_scorer(event_pub: GameEventPublisher) -> Scoring:

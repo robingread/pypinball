@@ -63,3 +63,21 @@ class TestScoring(unittest.TestCase):
                 0,
                 msg="Random game event has impacted the score!",
             )
+
+
+class TestResetScore(unittest.TestCase):
+    """Test case of resetting a score back to zero."""
+
+    def setUp(self) -> None:
+        self.score = pypinball.scoring.Scoring()
+
+    def test_set_score(self) -> None:
+        """Test setting the score to a given value."""
+        self.score.set_score(10)
+        self.assertEqual(self.score.current_score, 10)
+
+    def test_reset_score(self) -> None:
+        """Test the reset() method to check that the score goes back to zero."""
+        self.score.set_score(10)
+        self.score.reset()
+        self.assertEqual(self.score.current_score, 0)
