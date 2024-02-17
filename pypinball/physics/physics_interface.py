@@ -36,7 +36,6 @@ class PhysicsInterface(typing.Protocol):
         """
         Add a bumper to the Physics simulation.
 
-
         Args:
             bumper (Bumper): Bumper instance.
 
@@ -46,7 +45,8 @@ class PhysicsInterface(typing.Protocol):
 
     def add_flipper(self, flipper: domain.Flipper) -> bool:
         """
-        Addd a flipper to the Physics simulation
+        Add a flipper to the Physics simulation
+
         Args:
             flipper (Flipper): Flipper instance.
 
