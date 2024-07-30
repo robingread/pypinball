@@ -25,6 +25,11 @@ def define_arguments() -> argparse.Namespace:
 def main() -> None:
     """Main entry point for the pypinball game"""
 
+    args = define_arguments()
+
+    if args.debug:
+        set_global_log_level(level=DEBUG)
+
     audio_event_handler = AudioGameEventHandler(
         interface=SimpleAudio(),
         events_to_sound=DEFAULT_GAME_CONFIG.event_to_sounds,
