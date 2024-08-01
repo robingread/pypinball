@@ -13,6 +13,7 @@
         },
         {
             "label": "Build & Play",
+            "detail": "Reinstall and test the pypinball package and then run it",
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
