@@ -55,16 +55,6 @@
             "problemMatcher": []
         },
         {
-            "label": "Run PyLint",
-            "type": "shell",
-            "command": "./scripts/linting.sh",
-            "group": "none",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
-        {
             "label": "Test",
             "detail": "Run the unit-tests and calculate the test coverage",
             "type": "shell",
