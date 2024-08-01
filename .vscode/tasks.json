@@ -12,16 +12,6 @@
             }
         },
         {
-            "label": "Run CI Tests",
-            "detail": "Run the full CI test suite",
-            "type": "shell",
-            "command": "./scripts/ci-test.sh",
-            "group": "test",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
             "label": "Build & Play",
             "type": "shell",
             "dependsOrder": "sequence",
