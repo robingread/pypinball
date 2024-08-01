@@ -50,9 +50,10 @@
             "problemMatcher": []
         },
         {
-            "label": "Play & Profile",
+            "label": "Profile",
+            "detail": "Run the pypinball game, and the show the profile data in a web broswewr via snakevis",
             "type": "shell",
-            "command": "./scripts/profile-game.sh",
+            "command": "source venv/bin/activate && ./scripts/profile-game.sh",
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}"
