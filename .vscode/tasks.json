@@ -2,16 +2,8 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Docs",
-            "type": "shell",
-            "command": "./scripts/build-docs.sh",
-            "group": "test",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
             "label": "Format Code",
+            "detail": "Run the black code formatter on the code base",
             "type": "shell",
             "command": "./scripts/black-formatting.sh",
             "group": "test",
@@ -20,20 +12,12 @@
             }
         },
         {
-            "label": "Run CI Tests",
-            "type": "shell",
-            "command": "./scripts/ci-test.sh",
-            "group": "test",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
             "label": "Build & Play",
+            "detail": "Reinstall and test the pypinball package and then run it",
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Run CI Tests",
+                "Test",
                 "Play Game"
             ],
             "group": "none",
@@ -41,6 +25,7 @@
         },
         {
             "label": "Play Game",
+            "detail": "Run the pypinball game",
             "type": "shell",
             "command": "source venv/bin/activate && pypinball",
             "group": "none",
@@ -50,9 +35,10 @@
             "problemMatcher": []
         },
         {
-            "label": "Play & Profile",
+            "label": "Profile",
+            "detail": "Run the pypinball game, and the show the profile data in a web broswewr via snakevis",
             "type": "shell",
-            "command": "./scripts/profile-game.sh",
+            "command": "source venv/bin/activate && ./scripts/profile-game.sh",
             "group": "none",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -60,17 +46,8 @@
             "problemMatcher": []
         },
         {
-            "label": "Run PyLint",
-            "type": "shell",
-            "command": "./scripts/linting.sh",
-            "group": "none",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Run Unit Tests",
+            "label": "Test",
+            "detail": "Run the unit-tests and calculate the test coverage",
             "type": "shell",
             "command": "./scripts/run-tests.sh",
             "group": "test",
@@ -79,15 +56,13 @@
             }
         },
         {
-            "label": "View Docs",
+            "label": "Test (CI)",
+            "detail": "Run the full CI test suite",
             "type": "shell",
-            "command": "setsid xdg-open docs/build/public/index.html",
+            "command": "./scripts/ci-test.sh",
+            "group": "test",
             "options": {
                 "cwd": "${workspaceFolder}"
-            },
-            "presentation": {
-                "close": true,
-                "reveal": "never"
             }
         }
     ]

@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added the `set_lives()` method to the `Lives` class to allow setting of the value without needing to create a new instance of the class.
 - Added the `pypinball.physics.utils` module with a `remove_all_balls()` helper function.
 
+### Fixed
+
+- Fixed the profiling script (`./scripts/profile-game.sh`) so that this works properly.
+
 ## v0.0.1 - 2024/2/12
 
 ### Added
