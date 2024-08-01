@@ -92,18 +92,6 @@
             "options": {
                 "cwd": "${workspaceFolder}"
             }
-        },
-        {
-            "label": "View Docs",
-            "type": "shell",
-            "command": "setsid xdg-open docs/build/public/index.html",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "presentation": {
-                "close": true,
-                "reveal": "never"
-            }
         }
     ]
 }
