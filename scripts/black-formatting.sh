@@ -14,18 +14,21 @@ do
   esac
 done
 
-SRC_DIR=pypinball/
-TEST_DIR=test/
+DIRECTORIES=(
+  pypinball/
+  test/
+  scripts/
+)
 
 if [ "$RUN_CHECK" = true ]
 then
   echo "Running isort check..."
-  isort --profile black --check $SRC_DIR $TEST_DIR
+  isort --profile black --check "${DIRECTORIES[@]}"
   echo "Running black formatter check..."
-  black --check --diff --color $SRC_DIR $TEST_DIR
+  black --check --diff --color "${DIRECTORIES[@]}"
 else
   echo "Running isort..."
-  isort --profile black $SRC_DIR $TEST_DIR
+  isort --profile black "${DIRECTORIES[@]}"
   echo "Running black formatter..."
-  black $SRC_DIR $TEST_DIR
+  black "${DIRECTORIES[@]}"
 fi
