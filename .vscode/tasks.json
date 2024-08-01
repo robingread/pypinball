@@ -2,15 +2,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Docs",
-            "type": "shell",
-            "command": "./scripts/build-docs.sh",
-            "group": "test",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
             "label": "Format Code",
             "detail": "Run the black code formatter on the code base",
             "type": "shell",
