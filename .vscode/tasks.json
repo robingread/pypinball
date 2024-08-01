@@ -12,6 +12,7 @@
         },
         {
             "label": "Format Code",
+            "detail": "Run the black code formatter on the code base",
             "type": "shell",
             "command": "./scripts/black-formatting.sh",
             "group": "test",
@@ -21,6 +22,7 @@
         },
         {
             "label": "Run CI Tests",
+            "detail": "Run the full CI test suite",
             "type": "shell",
             "command": "./scripts/ci-test.sh",
             "group": "test",
@@ -33,7 +35,7 @@
             "type": "shell",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "Run CI Tests",
+                "Test",
                 "Play Game"
             ],
             "group": "none",
@@ -41,6 +43,7 @@
         },
         {
             "label": "Play Game",
+            "detail": "Run the pypinball game",
             "type": "shell",
             "command": "source venv/bin/activate && pypinball",
             "group": "none",
@@ -71,9 +74,20 @@
             "problemMatcher": []
         },
         {
-            "label": "Run Unit Tests",
+            "label": "Test",
+            "detail": "Run the unit-tests and calculate the test coverage",
             "type": "shell",
             "command": "./scripts/run-tests.sh",
+            "group": "test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Test (CI)",
+            "detail": "Run the full CI test suite",
+            "type": "shell",
+            "command": "./scripts/ci-test.sh",
             "group": "test",
             "options": {
                 "cwd": "${workspaceFolder}"
