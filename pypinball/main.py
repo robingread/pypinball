@@ -10,7 +10,7 @@ from .log import DEBUG, set_global_log_level
 from .physics import PymunkPhysics
 
 
-def define_arguments() -> argparse.Namespace:
+def define_arguments(args=None) -> argparse.Namespace:
     """Define the top-level argument parser.
 
     Returns:
@@ -18,14 +18,14 @@ def define_arguments() -> argparse.Namespace:
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true", help="Run in debug mode")
-    args = parser.parse_args()
+    args = parser.parse_args(args)
     return args
 
 
-def main() -> None:
+def main(args=None) -> None:
     """Main entry point for the pypinball game"""
 
-    args = define_arguments()
+    args = define_arguments(args)
 
     if args.debug:
         set_global_log_level(level=DEBUG)
