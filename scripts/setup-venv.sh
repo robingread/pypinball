@@ -17,7 +17,7 @@ echo "Setting up Virtual Python environment"
 echo "Python path:" $WHICH_PYTHON
 echo "Destination dir:" $DST_DIR
 
-virtualenv --clear --python $WHICH_PYTHON $DST_DIR
+virtualenv --clear --python $WHICH_PYTHON $DST_DIR --prompt pypinball
 
 source $DST_DIR/bin/activate
 pip install --upgrade pip
