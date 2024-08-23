@@ -3,6 +3,7 @@ coverage
 docutils<0.18
 isort
 mypy>=1.4.1
+pydub>=0.25.1
 pygame
 pylint
 pylint-exit
