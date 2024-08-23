@@ -64,6 +64,9 @@ DEFAULT_GAME_CONFIG = GameConfig(
             ],
         ),
     ],
+    background_music=resources.get_audio_resource_path(
+        filename="default_background_music.mp3"
+    ),
     event_to_sounds={
         GameEvents.FLIPPER_ACTIVATED: resources.get_audio_resource_path(
             filename="flipper_actuated.wav"
