@@ -1,6 +1,6 @@
 import argparse
 
-from .audio import AudioGameEventHandler, SimpleAudio
+from .audio import AudioGameEventHandler, LoopedAudioPlayer, SimpleAudio
 from .config import DEFAULT_DISPLAY_CONFIG, DEFAULT_GAME_CONFIG
 from .controller import Controller
 from .display import PyGameDisplay
@@ -65,6 +65,10 @@ def main(args=None) -> None:
     input_pub.subscribe(callback=controller.handle_input_event)
     input_interface = KeyboardInput(event_pub=input_pub)
 
+    background_audio = LoopedAudioPlayer(filename=DEFAULT_GAME_CONFIG.background_music)
+    background_audio.play()
+
     controller.run()
 
     display_interface.close()
+    background_audio.stop()
