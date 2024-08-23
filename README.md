@@ -5,6 +5,18 @@
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
 
+## Overview
+The game is installed as a python package, `pypinball`, which can be called from the command line.
+
+### Controls
+
+The game assumes that there are three buttons, *left*, *right* and *centre*.
+
+When playing on a keyboard, the mapping is:
+- left -> **f**
+- right -> **j**
+- centre -> **sparebar**
+
 ## Setup
 
 Install dependencies:
