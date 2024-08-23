@@ -5,6 +5,18 @@
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
 
+## Overview
+The game is installed as a python package, `pypinball`, which can be called from the command line.
+
+### Controls
+
+The game assumes that there are three buttons, *left*, *right* and *centre*.
+
+When playing on a keyboard, the mapping is:
+- left -> **f**
+- right -> **j**
+- centre -> **sparebar**
+
 ## Setup
 
 Install dependencies:
@@ -32,20 +44,3 @@ This test suite will:
 - Remove all installed instances of `pypinball`.
 - Check that the code adheres to the [`black`](https://black.readthedocs.io/en/stable/) formatting standard.
 - Run all unit-tests in the `test` directory.
-- Build all documentation locally in the `docs` directory.
-
-## Documentation
-
-Pre-built documentation can be found at [https://robin.g.read.gitlab.io/pypinball/index.html](https://robin.g.read.gitlab.io/pypinball/index.html).
-To build the documentation locally, run:
-
-```bash
-source venv/bin/activate
-./scripts/build-docs.sh
-```
-
-## Gitlab CI Variables
-
-| Name | Default | Description |
-|---|---|---|
-| `BUILD_DOCKER_IMAGE` | "false" | Whether to build a Docker image. This can be used to build a Docker image only once a day and use that image throughout the day rather than needing to build it on each CI run. |

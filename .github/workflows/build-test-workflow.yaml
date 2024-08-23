@@ -27,6 +27,18 @@ jobs:
       
     - name: Setup python virtual env
       run: ./scripts/setup-venv.sh
+
+    - name: Setup virtual audio sink
+      run: |
+        sudo apt-get install -y pulseaudio
+        pulseaudio --start
+        pactl load-module module-null-sink sink_name=DummyOutput
+        export PULSE_SINK=DummyOutput
+        pactl list short sinks  # Optional: List sinks to verify setup
       
     - name: Run CI test script
       run: ./scripts/ci-test.sh
+
+    - name: Stop PulseAudio
+      run: |
+        pulseaudio --kill

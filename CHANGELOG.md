@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the `Scoring` class to include `set_score()` and `reset()` methods to make it easier to reset everything without needing to create a new instance of the `Scoring` class.
 - Added the `set_lives()` method to the `Lives` class to allow setting of the value without needing to create a new instance of the class.
 - Added the `pypinball.physics.utils` module with a `remove_all_balls()` helper function.
+- Added the ability to play background music via the `LoopedAudioPlayer` class.
 
 ### Fixed
 
