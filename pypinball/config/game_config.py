@@ -29,6 +29,7 @@ class GameConfig:
     - playing_area: The size of the play area in pixels (width, height).
     - flippers: Specification of all flippers to create in the ``PhysicsInterface``.
     - walls: Specification of all walls to create in the ``PhysicsInterface``.
+    - background_music: Name of the background music file to play.
     - events_to_sounds: Mapping from ``GameEvents`` types to file paths for audio files.
     """
 
@@ -39,6 +40,8 @@ class GameConfig:
     flippers: typing.List[domain.Flipper] = dataclasses.field(default_factory=list)
 
     walls: typing.List[domain.Wall] = dataclasses.field(default_factory=list)
+
+    background_music: str = dataclasses.field(default_factory=str)
 
     event_to_sounds: typing.Dict[events.GameEvents, str] = dataclasses.field(
         default_factory=dict
