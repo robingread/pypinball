@@ -1,6 +1,6 @@
 """Script to run cProfile on the pypinball.main.main() function.
 
-The script requires an output file to write the profiling data to so that it can be 
+The script requires an output file to write the profiling data to so that it can be
 visualized using snakeviz.
 """
 
